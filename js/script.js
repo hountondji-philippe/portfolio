@@ -468,10 +468,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ].join('');
     document.head.appendChild(style);
   }
-=======
-// ===== PORTFOLIO - VERSION SÉCURISÉE =====
-
-// === PROTECTION DE BASE ===
 (function() {
   document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 
