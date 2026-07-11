@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Administration | Philippe Hountondji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;1,800;1,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/admin/style.css">
+</head>
+<body>
+
+<div id="barre-serveur">
+  Connexion au serveur en cours, patientez...
+  <button onclick="verifierServeurBtn()">Réessayer</button>
+</div>
+
+<div id="page-connexion" class="zone-connexion">
+  <div class="carte-connexion">
+    <div class="titre-connexion">
+      <div class="icone-admin">PH</div>
+      <h1>Administration</h1>
+      <p>Accès réservé</p>
+    </div>
+    <form id="formulaire-connexion" novalidate>
+      <div class="groupe-champ">
+        <label for="champ-email">Email</label>
+        <input type="email" id="champ-email" required autocomplete="email" maxlength="254">
+      </div>
+      <div class="groupe-champ">
+        <label for="champ-motdepasse">Mot de passe</label>
+        <div class="champ-mdp">
+          <input type="password" id="champ-motdepasse" required autocomplete="current-password" maxlength="128">
+          <button type="button" class="bouton-voir-mdp">Afficher</button>
+        </div>
+      </div>
+      <div class="options-login">
+        <label class="case-souvenir"><input type="checkbox" id="se-souvenir"> Se souvenir de moi</label>
+      </div>
+      <button type="submit" class="bouton-connexion">Se connecter</button>
+      <button type="button" class="bouton-retour-site" onclick="window.location.href='/index.html'">Voir le portfolio</button>
+      <div id="erreur-connexion" class="message-erreur"><span></span></div>
+    </form>
+    <div class="pied-connexion">Connexion sécurisée</div>
+  </div>
+</div>
+
+<div id="tableau-bord" class="tableau-bord masque">
+  <aside class="barre-laterale" id="barreLaterale">
+    <div class="entete-barre"><div class="logo-admin">Admin Panel</div></div>
+    <nav class="navigation-admin">
+      <a href="#" class="element-nav actif" data-page="vue-ensemble">Vue d'ensemble</a>
+      <a href="#" class="element-nav" data-page="messages">Messages <span class="compteur-messages" id="nb-messages">0</span></a>
+      <a href="#" class="element-nav" data-page="projets">Projets</a>
+      <a href="#" class="element-nav" data-page="formations">Formation</a>
+      <a href="#" class="element-nav" data-page="experiences">Expériences</a>
+      <a href="#" class="element-nav" data-page="competences">Compétences</a>
+      <a href="#" class="element-nav" data-page="analytics">Visiteurs</a>
+      <a href="#" class="element-nav" data-page="parametres">Paramètres</a>
+    </nav>
+    <div class="pied-barre">
+      <button class="bouton-deconnexion" id="btn-deconnexion">Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="contenu-principal">
+    <header class="entete-tableau">
+      <div class="gauche-entete">
+        <button class="bouton-hamburger" id="btn-menu">☰</button>
+        <h2 id="titre-page">Vue d'ensemble</h2>
+      </div>
+      <div class="droite-entete">
+        <button class="bascule-theme" id="basculeTheme" aria-label="Changer de thème">
+          <span class="icone-soleil">☀</span>
+          <span class="icone-lune">☾</span>
+        </button>
+        <button class="bouton-icone" id="btn-actualiser" title="Actualiser">↻</button>
+      </div>
+    </header>
+
+    <!-- VUE D'ENSEMBLE -->
+    <div id="page-vue-ensemble" class="page active">
+      <div class="contenu-page">
+        <div class="grille-stats">
+          <div class="carte-stat"><span class="libelle-stat">Total messages</span><span class="chiffre-stat" id="total-messages">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Non lus</span><span class="chiffre-stat" id="messages-non-lus">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Aujourd'hui</span><span class="chiffre-stat" id="messages-aujourd-hui">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Compétences</span><span class="chiffre-stat" id="total-competences">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Projets</span><span class="chiffre-stat" id="total-projets">0</span></div>
+        </div>
+        <div class="bloc-messages-recents">
+          <div class="entete-section"><h3>Messages récents</h3><a href="#" class="lien-voir-tout" data-page="messages">Voir tout</a></div>
+          <div id="liste-messages-recents"><div class="etat-vide">Aucun message</div></div>
+        </div>
+        <div class="bloc-actions-rapides">
+          <h3>Actions rapides</h3>
+          <div class="grille-actions">
+            <button class="carte-action" data-action="exporter">Exporter les messages (CSV)</button>
+            <button class="carte-action" data-action="supprimer-lus">Supprimer les messages lus</button>
+            <button class="carte-action" data-action="tout-marquer-lu">Tout marquer comme lu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div id="page-messages" class="page">
+      <div class="contenu-page">
+        <div class="barre-outils">
+          <div class="champ-recherche"><input type="text" id="recherche-messages" placeholder="Rechercher un message..."></div>
+          <select id="filtre-messages" class="selecteur">
+            <option value="all">Tous les messages</option>
+            <option value="unread">Non lus</option>
+            <option value="read">Lus</option>
+          </select>
+        </div>
+        <div id="liste-messages" class="liste-messages"><div class="etat-vide">Aucun message</div></div>
+      </div>
+    </div>
+
+    <!-- PROJETS -->
+    <div id="page-projets" class="page">
+      <div class="contenu-page">
+        <div class="formulaire-ajout">
+          <h4>Ajouter un projet</h4>
+          <form id="form-ajout-projet" novalidate>
+            <div class="grille-champs">
+              <div class="champ-form"><label>Titre *</label><input type="text" id="projet-titre" maxlength="200" required></div>
+              <div class="champ-form"><label>Type *</label>
+                <select id="projet-type" required>
+                  <option value="ACADEMIQUE">Académique</option>
+                  <option value="PROFESSIONNEL">Professionnel</option>
+                </select>
+              </div>
+              <div class="champ-form pleine-largeur"><label>Description *</label><textarea id="projet-description" maxlength="2000" required></textarea></div>
+              <div class="champ-form"><label>Technologies (séparées par virgule)</label><input type="text" id="projet-technologies" maxlength="500"></div>
+              <div class="champ-form"><label>Statut</label>
+                <select id="projet-statut">
+                  <option value="TERMINE">Terminé</option>
+                  <option value="EN_COURS">En cours</option>
+                  <option value="PREVU">Prévu</option>
+                </select>
+              </div>
+              <div class="champ-form"><label>Lien du site</label><input type="url" id="projet-lien-site" maxlength="500"></div>
+              <div class="champ-form"><label>Lien GitHub</label><input type="url" id="projet-lien-github" maxlength="500"></div>
+              <div class="champ-form"><label>Ordre</label><input type="number" id="projet-ordre" value="0"></div>
+              <div class="champ-form pleine-largeur">
+                <label>Image du projet</label>
+                <div class="onglet-source-image">
+                  <button type="button" class="bouton-onglet-image actif" data-cible="projet" data-mode="url">URL</button>
+                  <button type="button" class="bouton-onglet-image" data-cible="projet" data-mode="galerie">Galerie</button>
+                </div>
+                <input type="url" id="projet-image-url" placeholder="https://..." maxlength="500">
+                <div class="zone-upload-image masque" id="projet-zone-upload" onclick="document.getElementById('projet-image-fichier').click()">
+                  Cliquer pour choisir une image (5 Mo max)
+                  <input type="file" id="projet-image-fichier" accept="image/*" style="display:none">
+                  <img id="projet-image-apercu" class="apercu-image-upload masque">
+                </div>
+              </div>
+            </div>
+            <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-ajouter-projet">Ajouter le projet</button></div>
+          </form>
+        </div>
+        <div class="entete-gestion"><h3>Projets enregistrés <span class="compteur-section" id="nb-projets">0</span></h3></div>
+        <div id="liste-projets" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
+      </div>
+    </div>
+
+    <!-- FORMATIONS -->
+    <div id="page-formations" class="page">
+      <div class="contenu-page">
+        <div class="formulaire-ajout">
+          <h4>Ajouter une formation</h4>
+          <form id="form-ajout-formation" novalidate>
+            <div class="grille-champs">
+              <div class="champ-form pleine-largeur"><label>Titre *</label><input type="text" id="form-titre" placeholder="Ex: Licence 2 — Informatique de Gestion" maxlength="200" required></div>
+              <div class="champ-form"><label>École / Établissement</label><input type="text" id="form-ecole" placeholder="Ex: ENEAM, Cotonou" maxlength="200"></div>
+              <div class="champ-form"><label>Période</label><input type="text" id="form-periode" placeholder="Ex: 2025 — Présent" maxlength="100"></div>
+              <div class="champ-form"><label>Statut</label>
+                <select id="form-statut">
+                  <option value="EN_COURS">En cours</option>
+                  <option value="OBTENU" selected>Obtenu</option>
+                </select>
+              </div>
+              <div class="champ-form"><label>Ordre</label><input type="number" id="form-ordre" value="0"></div>
+              <div class="champ-form pleine-largeur"><label>Description</label><textarea id="form-description" maxlength="2000"></textarea></div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--texte-attenue);margin-top:-6px">
+              Une seule formation "En cours" devrait normalement exister à la fois : c'est elle qui s'affiche en avant sur le site public. Les formations "Obtenu" restent repliées sous le bouton "Voir les formations précédentes".
+            </p>
+            <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-ajouter-formation">Ajouter la formation</button></div>
+          </form>
+        </div>
+        <div class="entete-gestion"><h3>Formations enregistrées <span class="compteur-section" id="nb-formations">0</span></h3></div>
+        <div id="liste-formations" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCES -->
+    <div id="page-experiences" class="page">
+      <div class="contenu-page">
+        <div class="formulaire-ajout">
+          <h4>Ajouter une expérience</h4>
+          <form id="form-ajout-experience" novalidate>
+            <div class="grille-champs">
+              <div class="champ-form"><label>Titre *</label><input type="text" id="exp-titre" maxlength="200" required></div>
+              <div class="champ-form"><label>Type</label><input type="text" id="exp-type" maxlength="100"></div>
+              <div class="champ-form"><label>Entreprise / Organisation</label><input type="text" id="exp-entreprise" maxlength="200"></div>
+              <div class="champ-form"><label>Lieu</label><input type="text" id="exp-lieu" maxlength="200"></div>
+              <div class="champ-form"><label>Date de début</label><input type="text" id="exp-date-debut" maxlength="100"></div>
+              <div class="champ-form"><label>Date de fin</label><input type="text" id="exp-date-fin" maxlength="100"></div>
+              <div class="champ-form pleine-largeur"><label>Description</label><textarea id="exp-description" maxlength="2000"></textarea></div>
+              <div class="champ-form"><label>Tags (séparés par virgule)</label><input type="text" id="exp-tags" maxlength="500"></div>
+              <div class="champ-form"><label>Statut</label>
+                <select id="exp-statut">
+                  <option value="TERMINE">Terminé</option>
+                  <option value="EN_COURS">En cours</option>
+                  <option value="PREVU">Prévu</option>
+                  <option value="RECHERCHE">En recherche</option>
+                </select>
+              </div>
+              <div class="champ-form"><label>Ordre</label><input type="number" id="exp-ordre" value="0"></div>
+            </div>
+            <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-ajouter-experience">Ajouter l'expérience</button></div>
+          </form>
+        </div>
+        <div class="entete-gestion"><h3>Expériences enregistrées <span class="compteur-section" id="nb-experiences">0</span></h3></div>
+        <div id="liste-experiences" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
+      </div>
+    </div>
+
+    <!-- COMPETENCES -->
+    <div id="page-competences" class="page">
+      <div class="contenu-page">
+        <div class="formulaire-ajout">
+          <h4>Ajouter une compétence</h4>
+          <form id="form-ajout-competence" novalidate>
+            <div class="grille-champs trois-colonnes">
+              <div class="champ-form"><label>Nom *</label><input type="text" id="comp-nom" placeholder="Ex: React" maxlength="100" required></div>
+              <div class="champ-form"><label>Icône Iconify *</label><input type="text" id="comp-icone" placeholder="logos:react" maxlength="255" required></div>
+              <div class="champ-form"><label>Catégorie *</label>
+                <select id="comp-categorie" required>
+                  <option value="FRONTEND">Front-end</option>
+                  <option value="BACKEND">Back-end</option>
+                  <option value="MOBILE">Mobile</option>
+                  <option value="RESEAUX_INFRA">Réseaux et infrastructure</option>
+                  <option value="MARKETING_DIGITAL">Marketing digital</option>
+                  <option value="DESIGN_CONTENU">Design et création de contenu</option>
+                  <option value="AUTRE">Autre</option>
+                </select>
+              </div>
+            </div>
+            <div class="grille-champs">
+              <div class="champ-form"><label>Ordre</label><input type="number" id="comp-ordre" value="0"></div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--texte-attenue);margin-top:-6px">
+              Les icônes viennent d'Iconify (iconify.design), ex. logos:react, logos:php, logos:tiktok-icon.
+            </p>
+            <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-ajouter-competence">Ajouter la compétence</button></div>
+          </form>
+        </div>
+        <div class="entete-gestion"><h3>Compétences enregistrées <span class="compteur-section" id="nb-competences">0</span></h3></div>
+        <div id="liste-competences" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="page-analytics" class="page">
+      <div class="contenu-page">
+        <div class="grille-stats">
+          <div class="carte-stat"><span class="libelle-stat">En direct</span><span class="chiffre-stat" id="an-nb-direct">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Total visiteurs</span><span class="chiffre-stat" id="an-total">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Aujourd'hui</span><span class="chiffre-stat" id="an-aujourd">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">30 derniers jours</span><span class="chiffre-stat" id="an-30j">0</span></div>
+          <div class="carte-stat"><span class="libelle-stat">Durée moy.</span><span class="chiffre-stat" id="an-duree">—</span></div>
+        </div>
+        <div class="grille-graphiques">
+          <div class="carte-graphique"><h3>Visites — 14 derniers jours</h3><canvas id="an-chart-jours"></canvas></div>
+          <div class="carte-graphique"><h3>Pages les plus visitées</h3><div id="an-pages-pop"><div class="chargement-liste">Chargement...</div></div></div>
+        </div>
+        <div class="bloc-messages-recents">
+          <div class="entete-section"><h3>Visiteurs par pays</h3></div>
+          <div id="an-par-pays"><div class="chargement-liste">Chargement...</div></div>
+        </div>
+        <div class="bloc-messages-recents">
+          <div class="entete-section"><h3>Activité récente</h3></div>
+          <div id="an-flux-live"><div class="chargement-liste">Chargement...</div></div>
+        </div>
+        <div class="bloc-messages-recents">
+          <div class="entete-section"><h3>Dernières sessions</h3></div>
+          <div id="an-sessions"><div class="chargement-liste">Chargement...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMETRES -->
+    <div id="page-parametres" class="page">
+      <div class="contenu-page">
+        <div class="bloc-parametres">
+          <h3>Compte administrateur</h3>
+          <form id="formulaire-mdp" class="formulaire-parametres">
+            <div class="groupe-champ"><label for="mdp-actuel">Mot de passe actuel</label><input type="password" id="mdp-actuel" maxlength="128"></div>
+            <div class="groupe-champ"><label for="nouveau-mdp">Nouveau mot de passe</label><input type="password" id="nouveau-mdp" maxlength="128"></div>
+            <div class="groupe-champ"><label for="confirmer-mdp">Confirmer le mot de passe</label><input type="password" id="confirmer-mdp" maxlength="128"></div>
+            <button type="submit" class="bouton-principal">Modifier le mot de passe</button>
+          </form>
+          <p id="message-mdp" style="margin-top:12px"></p>
+        </div>
+        <div class="bloc-parametres zone-danger">
+          <h3>Zone dangereuse</h3>
+          <p>Les actions suivantes sont irréversibles.</p>
+          <button class="bouton-danger" id="btn-supprimer-tout">Supprimer tous les messages</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="fenetre-message" class="fenetre-modale">
+  <div class="contenu-modale">
+    <div class="entete-modale">
+      <h3>Détails du message</h3>
+      <button class="bouton-fermer-modale" id="btn-fermer-fenetre-message">&times;</button>
+    </div>
+    <div class="corps-modale" id="corps-modale"></div>
+    <div class="pied-modale">
+      <button class="bouton-secondaire" id="btn-fermer-message">Fermer</button>
+      <button class="bouton-danger" id="btn-supprimer-message">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

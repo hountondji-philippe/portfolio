@@ -1,0 +1,206 @@
+// prisma/schema.prisma
+// Schéma Prisma — portfolio Philippe Hountondji
+// Base : Neon (PostgreSQL), driver serverless pour Vercel
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── ADMIN ──────────────────────────────────────────────────────────────────
+// Un seul compte admin, accès total (pas de rôles multiples : inutile ici)
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique @db.VarChar(254)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
+}
+
+// Tokens JWT révoqués (déconnexion / changement de mot de passe)
+model RevokedToken {
+  jti       String   @id @db.VarChar(128)
+  expiresAt DateTime @map("expires_at")
+  revokedAt DateTime @default(now()) @map("revoked_at")
+
+  @@index([expiresAt])
+  @@map("revoked_tokens")
+}
+
+// ── MESSAGES (formulaire de contact) ────────────────────────────────────────
+model Message {
+  id         String    @id @default(uuid())
+  name       String    @db.VarChar(100)
+  email      String    @db.VarChar(254)
+  phone      String?   @db.VarChar(20)
+  message    String    @db.Text
+  ipAddress  String?   @map("ip_address") @db.VarChar(45)
+  isRead     Boolean   @default(false) @map("is_read")
+  repliedAt  DateTime? @map("replied_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([isRead])
+  @@map("messages")
+}
+
+// ── COMPÉTENCES ──────────────────────────────────────────────────────────
+// Une "Skill" = un logo dans une catégorie (ex: React dans "Front-end")
+enum CategorieCompetence {
+  FRONTEND
+  BACKEND
+  MOBILE
+  RESEAUX_INFRA
+  MARKETING_DIGITAL
+  DESIGN_CONTENU
+  AUTRE
+}
+
+model Skill {
+  id         String              @id @default(uuid())
+  nom        String              @db.VarChar(100)   // ex: "React"
+  icone      String              @db.VarChar(255)    // ex: "logos:react" (iconify) ou URL
+  categorie  CategorieCompetence
+  ordre      Int                 @default(0)
+  createdAt  DateTime            @default(now()) @map("created_at")
+  updatedAt  DateTime            @updatedAt @map("updated_at")
+
+  @@index([categorie, ordre])
+  @@map("skills")
+}
+
+// ── PROJETS ──────────────────────────────────────────────────────────────
+enum TypeProjet {
+  ACADEMIQUE
+  PROFESSIONNEL
+}
+
+enum StatutProjet {
+  TERMINE
+  EN_COURS
+  PREVU
+}
+
+// ── FORMATION ──────────────────────────────────────────────────────────
+// Timeline académique affichée sur la page d'accueil (section Formation).
+// Une seule entrée EN_COURS doit normalement exister à la fois : c'est
+// celle-là qui s'affiche en avant sur le site, les OBTENU restent repliées
+// sous le bouton "Voir les formations précédentes".
+enum StatutFormation {
+  EN_COURS
+  OBTENU
+}
+
+model Formation {
+  id          String          @id @default(uuid())
+  titre       String          @db.VarChar(200)   // ex: "Licence 2 — Informatique de Gestion"
+  ecole       String?         @db.VarChar(200)   // ex: "ENEAM, Université d'Abomey-Calavi, Cotonou"
+  periode     String?         @db.VarChar(100)   // ex: "2025 — Présent" ou "2024"
+  description String?         @db.Text
+  statut      StatutFormation @default(OBTENU)
+  ordre       Int             @default(0)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@index([statut, ordre])
+  @@map("formations")
+}
+
+// ── EXPÉRIENCES ──────────────────────────────────────────────────────────
+enum StatutExperience {
+  TERMINE
+  EN_COURS
+  PREVU
+  RECHERCHE
+}
+
+model Experience {
+  id           String           @id @default(uuid())
+  titre        String           @db.VarChar(200)
+  typeExp      String?          @map("type_exp") @db.VarChar(100)
+  entreprise   String?          @db.VarChar(200)
+  lieu         String?          @db.VarChar(200)
+  dateDebut    String?          @map("date_debut") @db.VarChar(100)
+  dateFin      String?          @map("date_fin") @db.VarChar(100)
+  description  String?          @db.Text
+  tags         String?          @db.VarChar(500)
+  statut       StatutExperience @default(TERMINE)
+  ordre        Int              @default(0)
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+
+  @@index([ordre])
+  @@map("experiences")
+}
+
+// ── ANALYTICS ────────────────────────────────────────────────────────────
+// Tracking anonyme des visites. ipHash = IP hachée (jamais stockée en clair).
+model VisitorSession {
+  sessionId    String   @id @map("session_id") @db.VarChar(64)
+  premiereVue  DateTime @default(now()) @map("premiere_vue")
+  derniereVue  DateTime @default(now()) @map("derniere_vue")
+  nbPages      Int      @default(1) @map("nb_pages")
+  nbActions    Int      @default(0) @map("nb_actions")
+  userAgent    String?  @map("user_agent") @db.Text
+  ipHash       String?  @map("ip_hash") @db.VarChar(64)
+  pays         String?  @db.VarChar(100)
+  ville        String?  @db.VarChar(100)
+
+  @@index([derniereVue])
+  @@map("visitor_sessions")
+}
+
+model Visit {
+  id          String    @id @default(uuid())
+  sessionId   String    @map("session_id") @db.VarChar(64)
+  page        String    @db.VarChar(255)
+  referrer    String?   @db.Text
+  userAgent   String?   @map("user_agent") @db.Text
+  ipHash      String?   @map("ip_hash") @db.VarChar(64)
+  pays        String?   @db.VarChar(100)
+  ville       String?   @db.VarChar(100)
+  dureeSec    Int       @default(0) @map("duree_sec")
+  entreeAt    DateTime  @default(now()) @map("entree_at")
+  sortieAt    DateTime? @map("sortie_at")
+
+  @@index([entreeAt])
+  @@index([sessionId])
+  @@map("visits")
+}
+
+model VisitorAction {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id") @db.VarChar(64)
+  typeAction  String   @map("type_action") @db.VarChar(64)
+  cible       String?  @db.VarChar(255)
+  page        String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("visitor_actions")
+}
+
+model Project {
+  id            String       @id @default(uuid())
+  titre         String       @db.VarChar(200)
+  description   String       @db.Text
+  technologies  String?      @db.VarChar(500)   // liste séparée par virgules
+  lienSite      String?      @map("lien_site") @db.VarChar(500)
+  lienGithub    String?      @map("lien_github") @db.VarChar(500)
+  imageUrl      String?      @map("image_url") @db.Text  // URL externe (Blob/Cloudinary), pas de base64 en DB
+  type          TypeProjet
+  statut        StatutProjet @default(TERMINE)
+  ordre         Int          @default(0)
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  @@index([type, ordre])
+  @@map("projects")
+}

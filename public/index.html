@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philippe Hountondji | Développeur Web & Administrateur Réseau</title>
+<meta name="description" content="Philippe Hountondji — Développeur web full-stack & administrateur réseau basé au Bénin. Étudiant L2 ENEAM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;1,800;1,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+<body>
+
+<nav class="barre-navigation">
+  <a href="#presentation" class="logo-nav">
+    <span class="pastille-logo">PH</span>
+    Philippe H.
+  </a>
+
+  <ul class="liste-liens-nav" id="listeLiensNav">
+    <li><a href="#a-propos">À propos</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#mon-cv">CV</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="zone-recherche-nav">
+    <input type="text" id="champRecherche" class="champ-recherche-nav" placeholder="Rechercher..." autocomplete="off">
+    <kbd class="raccourci-recherche">Ctrl K</kbd>
+    <ul class="liste-resultats-recherche" id="listeResultatsRecherche"></ul>
+  </div>
+
+  <div class="groupe-actions-nav">
+    <button class="bascule-theme" id="basculeTheme" aria-label="Changer de thème">
+      <span class="icone-soleil">☀</span>
+      <span class="icone-lune">☾</span>
+    </button>
+    <a href="#contact" class="bouton-nav-cta">Me contacter</a>
+    <button class="bouton-menu-mobile" id="boutonMenuMobile" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header id="presentation" class="ecran-accueil ecran-accueil-sombre">
+  <div class="anneau-decoratif"></div>
+  <div class="voile-hero-sombre"></div>
+
+  <div class="contenu-accueil">
+    <span class="badge-pilule badge-pilule-sombre">Basé à Porto-Novo, Bénin</span>
+
+    <h1 class="titre-accueil titre-accueil-sombre">
+      Je code des solutions.<br>
+      <span class="titre-souligne">Je sécurise des réseaux.</span>
+    </h1>
+
+    <p class="sous-titre-accueil sous-titre-accueil-sombre">
+      Étudiant en Informatique de Gestion à l'ENEAM, développeur full-stack
+      (Laravel, React, Node.js, Flutter) et passionné de réseaux.
+      Je construis des plateformes pensées pour le marché béninois.
+    </p>
+
+    <div class="groupe-boutons-accueil">
+      <a href="#projets" class="bouton-principal">Voir mes projets →</a>
+      <a href="cv/CV_philippe_hountondji.pdf" class="bouton-secondaire bouton-secondaire-sombre" target="_blank">Télécharger mon CV</a>
+    </div>
+
+    <div class="rangee-stats-accueil">
+      <div class="pastille-stat">
+        <span class="chiffre-stat-accueil">5+</span>
+        <span class="libelle-stat-accueil">Projets</span>
+      </div>
+      <div class="pastille-stat">
+        <span class="chiffre-stat-accueil">2+</span>
+        <span class="libelle-stat-accueil">Ans d'expérience</span>
+      </div>
+      <div class="pastille-stat">
+        <span class="chiffre-stat-accueil">8+</span>
+        <span class="libelle-stat-accueil">Technologies</span>
+      </div>
+      <div class="pastille-stat pastille-stat-accent">
+        <span class="chiffre-stat-accueil">100%</span>
+        <span class="libelle-stat-accueil">Disponible</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="apercu-bento-accueil">
+    <article class="carte-bento carte-bento-large">
+      <span class="etiquette-carte-bento">Développement web</span>
+      <h3>Laravel, React &amp; Next.js</h3>
+      <p>NEXTMUX, RestoDirect, VBG — des plateformes réelles, pas des maquettes.</p>
+    </article>
+    <article class="carte-bento">
+      <span class="etiquette-carte-bento">Réseaux</span>
+      <h3>Administration &amp; sécurité</h3>
+      <p>Subnetting, protocoles, architecture réseau.</p>
+    </article>
+    <article class="carte-bento">
+      <span class="etiquette-carte-bento">Mobile</span>
+      <h3>Flutter</h3>
+      <p>Applications P2P, transfert de fichiers.</p>
+    </article>
+  </div>
+</header>
+
+<section id="a-propos" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Qui suis-je</span>
+    <h2 class="titre-section">À propos</h2>
+  </div>
+  <div class="bloc-apropos">
+    <div class="texte-apropos">
+      <p>Étudiant en Licence 2 Informatique de Gestion à l'ENEAM (Université d'Abomey-Calavi), je me spécialise dans le développement web full-stack et l'administration réseau.</p>
+      <p>Je construis des applications qui résolvent de vrais problèmes — pas juste des maquettes — en combinant rigueur technique et sens du design.</p>
+      <div class="liste-valeurs-apropos">
+        <div class="valeur-apropos">
+          <span class="pastille-valeur">P</span>
+          <span>Performance — code propre et optimisé</span>
+        </div>
+        <div class="valeur-apropos">
+          <span class="pastille-valeur">S</span>
+          <span>Sécurité — applications sûres dès la conception</span>
+        </div>
+        <div class="valeur-apropos">
+          <span class="pastille-valeur">I</span>
+          <span>Impact — des solutions pour de vrais utilisateurs</span>
+        </div>
+      </div>
+    </div>
+    <div class="carte-bento" style="padding:32px">
+      <span class="etiquette-carte-bento">Formation</span>
+      <h3>ENEAM — Licence 2</h3>
+      <p>Informatique de Gestion, Université d'Abomey-Calavi, Bénin.</p>
+    </div>
+  </div>
+</section>
+
+<section id="formation" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Parcours</span>
+    <h2 class="titre-section">Formation</h2>
+    <p class="sous-titre-section">Mon parcours académique et mes diplômes obtenus.</p>
+  </div>
+  <div class="timeline-formation" id="timelineFormation">
+    <div class="etat-vide-liste">Chargement...</div>
+  </div>
+</section>
+
+<section id="experience" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Parcours pro</span>
+    <h2 class="titre-section">Expérience</h2>
+    <p class="sous-titre-section">Mon parcours professionnel et mes expériences pratiques.</p>
+  </div>
+  <div class="grille-experience" id="grilleExperience">
+    <div class="etat-vide-liste">Chargement...</div>
+  </div>
+</section>
+
+<section id="competences" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Stack technique</span>
+    <h2 class="titre-section">Compétences</h2>
+    <p class="sous-titre-section">Cliquez sur une catégorie pour voir les outils associés.</p>
+  </div>
+  <div class="liste-accordeon-competences" id="listeAccordeonCompetences"></div>
+</section>
+
+<section id="projets" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Réalisations</span>
+    <h2 class="titre-section">Projets</h2>
+    <p class="sous-titre-section">Deux univers distincts : ce que j'ai construit à l'école, et ce que j'ai construit par moi-même.</p>
+  </div>
+  <div class="deux-blocs-projets">
+    <a href="projets-academiques.html" class="bloc-type-projet">
+      <span class="fleche-bloc-projet">↗</span>
+      <div class="icone-bloc-projet">A</div>
+      <h3>Projets académiques</h3>
+      <p>Travaux réalisés dans le cadre de mes études à l'ENEAM.</p>
+      <span class="compteur-bloc-projet" id="compteurProjetsAcademiques">Chargement...</span>
+    </a>
+    <a href="projets-professionnels.html" class="bloc-type-projet">
+      <span class="fleche-bloc-projet">↗</span>
+      <div class="icone-bloc-projet">P</div>
+      <h3>Projets personnels &amp; professionnels</h3>
+      <p>Applications construites en autonomie, en dehors du cadre scolaire.</p>
+      <span class="compteur-bloc-projet" id="compteurProjetsPro">Chargement...</span>
+    </a>
+  </div>
+</section>
+
+<section id="mon-cv" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Document</span>
+    <h2 class="titre-section">Mon CV</h2>
+    <p class="sous-titre-section">Consultez ou téléchargez mon CV professionnel.</p>
+  </div>
+  <div class="carte-cv">
+    <div class="icone-carte-cv">CV</div>
+    <div class="info-carte-cv">
+      <h3>Hountondji Philippe Jésussédè</h3>
+      <p>Développeur Web Full-Stack &amp; Administrateur Réseau — Porto-Novo, Bénin</p>
+      <div class="badges-carte-cv">
+        <span>ENEAM — Licence 2</span>
+        <span>Informatique de Gestion</span>
+        <span>Disponible pour stage</span>
+      </div>
+    </div>
+    <div class="actions-carte-cv">
+      <a href="cv/CV_philippe_hountondji.pdf" download="CV_Philippe_Hountondji.pdf" class="bouton-principal">Télécharger</a>
+      <a href="cv/CV_philippe_hountondji.pdf" target="_blank" rel="noopener noreferrer" class="bouton-secondaire">Aperçu</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section-generale">
+  <div class="entete-section">
+    <span class="etiquette-section">Discutons</span>
+    <h2 class="titre-section">Contact</h2>
+    <p class="sous-titre-section">Une question, un stage à proposer, un projet en tête ? Écrivez-moi.</p>
+  </div>
+  <div class="disposition-contact">
+    <div>
+      <div class="onglets-contact">
+        <button type="button" class="onglet-contact actif" id="ongletEmailBtn" onclick="basculerOngletContact('email')">Email</button>
+        <button type="button" class="onglet-contact" id="ongletWhatsappBtn" onclick="basculerOngletContact('whatsapp')">WhatsApp</button>
+      </div>
+
+      <form id="formulaireContact">
+        <div class="champ-formulaire">
+          <label for="champNom">Nom complet</label>
+          <input type="text" id="champNom" required minlength="2" maxlength="100">
+        </div>
+        <div class="champ-formulaire">
+          <label for="champEmail">Email</label>
+          <input type="email" id="champEmail" required maxlength="254">
+        </div>
+        <div class="champ-formulaire">
+          <label for="champTelephone">Téléphone (optionnel)</label>
+          <input type="tel" id="champTelephone" maxlength="20">
+        </div>
+        <div class="champ-formulaire">
+          <label for="champMessage">Message</label>
+          <textarea id="champMessage" required minlength="10" maxlength="2000"></textarea>
+        </div>
+        <button type="submit" class="bouton-principal bouton-envoi-message">
+          <iconify-icon icon="mdi:send-outline"></iconify-icon>
+          Envoyer le message
+        </button>
+        <p id="retourFormulaire" class="retour-formulaire"></p>
+      </form>
+
+      <div id="formulaireWhatsapp" style="display:none">
+        <div class="champ-formulaire">
+          <label for="waNom">Nom complet</label>
+          <input type="text" id="waNom" maxlength="100">
+        </div>
+        <div class="champ-formulaire">
+          <label for="waNumero">Numéro WhatsApp</label>
+          <input type="tel" id="waNumero" placeholder="+229 00 00 00 00" maxlength="25">
+        </div>
+        <div class="champ-formulaire">
+          <label for="waMessage">Message</label>
+          <textarea id="waMessage" maxlength="2000"></textarea>
+        </div>
+        <button type="button" class="bouton-principal bouton-envoi-message" onclick="envoyerViaWhatsapp()">
+          <iconify-icon icon="mdi:whatsapp"></iconify-icon>
+          Ouvrir WhatsApp
+        </button>
+        <p id="retourWhatsapp" class="retour-formulaire"></p>
+      </div>
+    </div>
+    <div class="liste-coordonnees">
+      <a href="https://wa.me/22958156930" target="_blank" rel="noopener noreferrer" class="item-coordonnee">
+        <span class="icone-coordonnee"><iconify-icon icon="mdi:whatsapp"></iconify-icon></span>
+        <span class="texte-coordonnee">
+          <strong>WhatsApp</strong>
+          <span>+229 01 58 15 69 30</span>
+        </span>
+      </a>
+      <a href="mailto:hountondjiphilippe58@gmail.com" class="item-coordonnee">
+        <span class="icone-coordonnee"><iconify-icon icon="mdi:email-outline"></iconify-icon></span>
+        <span class="texte-coordonnee">
+          <strong>Email</strong>
+          <span>hountondjiphilippe58@gmail.com</span>
+        </span>
+      </a>
+      <a href="https://www.linkedin.com/in/philippe-hountondji-200ba73a6" target="_blank" rel="noopener noreferrer" class="item-coordonnee">
+        <span class="icone-coordonnee"><iconify-icon icon="mdi:linkedin"></iconify-icon></span>
+        <span class="texte-coordonnee">
+          <strong>LinkedIn</strong>
+          <span>Philippe Hountondji</span>
+        </span>
+      </a>
+      <a href="https://github.com/Philippe554-del" target="_blank" rel="noopener noreferrer" class="item-coordonnee">
+        <span class="icone-coordonnee"><iconify-icon icon="mdi:github"></iconify-icon></span>
+        <span class="texte-coordonnee">
+          <strong>GitHub</strong>
+          <span>Philippe554-del</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="pied-de-page">
+  <div class="conteneur-footer">
+    <div class="colonne-footer colonne-footer-marque">
+      <a href="#presentation" class="logo-nav logo-footer">
+        <span class="pastille-logo">PH</span>
+        Philippe H.
+      </a>
+      <p class="tagline-footer">Développeur web full-stack &amp; administrateur réseau, basé à Porto-Novo, Bénin. Disponible pour un stage de Licence 2.</p>
+      <div class="reseaux-footer">
+        <a href="https://wa.me/22958156930" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+        <a href="mailto:hountondjiphilippe58@gmail.com" aria-label="Email"><iconify-icon icon="mdi:email-outline"></iconify-icon></a>
+        <a href="https://www.linkedin.com/in/philippe-hountondji-200ba73a6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><iconify-icon icon="mdi:linkedin"></iconify-icon></a>
+        <a href="https://github.com/hountondji-philippe" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><iconify-icon icon="mdi:github"></iconify-icon></a>
+      </div>
+    </div>
+
+    <div class="colonne-footer">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#presentation">Accueil</a></li>
+        <li><a href="#a-propos">À propos</a></li>
+        <li><a href="#competences">Compétences</a></li>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="colonne-footer">
+      <h4>Ressources</h4>
+      <ul>
+        <li><a href="#experience">Expérience</a></li>
+        <li><a href="#formation">Formation</a></li>
+        <li><a href="#mon-cv">Mon CV</a></li>
+      </ul>
+    </div>
+
+    <div class="colonne-footer colonne-footer-newsletter">
+      <h4>Newsletter</h4>
+      <p>Recevez un email lors de l'ajout d'un nouveau projet.</p>
+      <form id="formulaireNewsletter" class="form-newsletter">
+        <input type="email" id="emailNewsletter" placeholder="votre@email.com" required maxlength="254">
+        <button type="submit">S'abonner</button>
+      </form>
+      <p id="retourNewsletter" class="retour-formulaire"></p>
+    </div>
+  </div>
+
+  <div class="bas-footer">
+    <p>&copy; 2026 Philippe Hountondji — Porto-Novo, Bénin</p>
+  </div>
+</footer>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
