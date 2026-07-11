@@ -6,7 +6,7 @@ const { getPrismaClient } = require('../lib/db');
 const { verifierCsrf } = require('../lib/auth');
 
 function sanitize(val, max) {
-  return validator.escape(String(val || '').trim()).slice(0, max);
+  return String(val || '').trim().slice(0, max);
 }
 
 function clientIP(req) {
