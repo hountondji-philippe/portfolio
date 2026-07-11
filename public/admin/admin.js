@@ -203,7 +203,7 @@ function chargerDonnees(page) {
 async function chargerParametresCV() {
   const info = document.getElementById('cv-actuel-info');
   try {
-    const d = await req('GET', '/settings');
+    const d = await req('GET', '/formations?resource=settings');
     if (d.success && d.settings.cvUrl) {
       info.innerHTML = 'CV actuel : <a href="' + echapper(d.settings.cvUrl) + '" target="_blank" rel="noopener noreferrer">' + echapper(d.settings.cvUrl.split('/').pop()) + '</a>';
     } else {
@@ -237,7 +237,7 @@ function bindUploadCV() {
       const dUpload = await req('POST', '/admin/account', { action: 'upload-cv', pdfBase64: base64, nomFichier: f.name });
       if (!dUpload.success) throw new Error(dUpload.error || "Échec de l'upload.");
 
-      const dSettings = await req('PUT', '/settings', { cvUrl: dUpload.url });
+      const dSettings = await req('PUT', '/formations?resource=settings', { cvUrl: dUpload.url });
       if (!dSettings.success) throw new Error(dSettings.error || 'Échec de l\'enregistrement.');
 
       toast('CV mis à jour', 'succes');
