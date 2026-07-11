@@ -1,10 +1,11 @@
 // api/admin/account.js
 // Regroupe toutes les actions admin secondaires dans un seul fichier pour
 // rester sous la limite de fonctions serverless du plan Vercel Hobby :
-// logout, change-password, stats, send-reply (email Gmail), upload-image.
+// logout, change-password, stats, send-reply (email Gmail), upload-image,
+// upload-cv.
 //
 // GET  ?action=stats
-// POST body.action = 'logout' | 'change-password' | 'send-reply' | 'upload-image'
+// POST body.action = 'logout' | 'change-password' | 'send-reply' | 'upload-image' | 'upload-cv'
 
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -14,6 +15,7 @@ const { getPrismaClient } = require('../../lib/db');
 const { requireAuth, revoquerToken } = require('../../lib/auth');
 
 const TAILLE_MAX_IMAGE = 5 * 1024 * 1024;
+const TAILLE_MAX_CV = 10 * 1024 * 1024;
 
 function genererEmailHTML({ nomDestinataire, reponse, messageOriginal, dateMessage }) {
   function echapper(s) {
@@ -107,11 +109,9 @@ async function actionSendReply(req, res, prisma) {
 }
 
 async function actionUploadImage(req, res) {
-  // Vérification explicite du token Vercel Blob : c'est la cause la plus
-  // fréquente d'un 500 générique sur cette action.
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    console.error('[account upload-image] BLOB_READ_WRITE_TOKEN manquant dans les variables d\'environnement Vercel.');
-    return res.status(500).json({ error: "Stockage d'image non configuré (token Vercel Blob manquant). Voir Vercel → Storage → Blob." });
+    console.error('[account upload-image] BLOB_READ_WRITE_TOKEN manquant.');
+    return res.status(500).json({ error: "Stockage d'image non configuré (token Vercel Blob manquant)." });
   }
 
   const { imageBase64, nomFichier } = req.body || {};
@@ -131,10 +131,38 @@ async function actionUploadImage(req, res) {
     const blob = await put(nom, donnees, { access: 'public', contentType: 'image/' + extension });
     return res.status(200).json({ success: true, url: blob.url });
   } catch (err) {
-    // On log la vraie erreur côté serveur (visible dans Vercel → Logs)
     console.error('[account upload-image] Échec put() Vercel Blob :', err);
-    // Et on la renvoie temporairement au client pour diagnostiquer plus vite.
-    // À retirer une fois le problème résolu si tu préfères un message générique.
+    return res.status(500).json({ error: 'Échec upload: ' + (err.message || 'erreur inconnue du stockage.') });
+  }
+}
+
+async function actionUploadCV(req, res) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error('[account upload-cv] BLOB_READ_WRITE_TOKEN manquant.');
+    return res.status(500).json({ error: "Stockage non configuré (token Vercel Blob manquant)." });
+  }
+
+  const { pdfBase64, nomFichier } = req.body || {};
+  if (!pdfBase64 || !pdfBase64.startsWith('data:application/pdf;base64,')) {
+    return res.status(400).json({ error: 'Le fichier doit être un PDF.' });
+  }
+
+  const donnees = Buffer.from(pdfBase64.slice('data:application/pdf;base64,'.length), 'base64');
+  if (donnees.length > TAILLE_MAX_CV) return res.status(400).json({ error: 'Fichier trop lourd (max 10 Mo).' });
+
+  // En-tête %PDF vérifiée en plus du type MIME déclaré par le navigateur,
+  // pour éviter qu'un fichier renommé en .pdf ne soit accepté à tort.
+  if (donnees.slice(0, 4).toString('ascii') !== '%PDF') {
+    return res.status(400).json({ error: 'Fichier PDF invalide.' });
+  }
+
+  const nom = 'cv/' + Date.now() + '-' + (nomFichier || 'cv').replace(/[^a-zA-Z0-9.-]/g, '') + '.pdf';
+
+  try {
+    const blob = await put(nom, donnees, { access: 'public', contentType: 'application/pdf' });
+    return res.status(200).json({ success: true, url: blob.url });
+  } catch (err) {
+    console.error('[account upload-cv] Échec put() Vercel Blob :', err);
     return res.status(500).json({ error: 'Échec upload: ' + (err.message || 'erreur inconnue du stockage.') });
   }
 }
@@ -150,9 +178,10 @@ async function handler(req, res) {
   if (req.method === 'POST') {
     const action = req.body.action;
 
-    // upload-image gère déjà son propre try/catch en interne (pour
-    // renvoyer un message précis) : on ne veut pas l'écraser ici.
+    // upload-image et upload-cv gèrent déjà leur propre try/catch en
+    // interne (pour renvoyer un message précis) : on ne l'écrase pas ici.
     if (action === 'upload-image') return actionUploadImage(req, res);
+    if (action === 'upload-cv') return actionUploadCV(req, res);
 
     try {
       if (action === 'logout') return await actionLogout(req, res, req.admin);

@@ -187,6 +187,17 @@ model VisitorAction {
   @@map("visitor_actions")
 }
 
+// ── PARAMETRES DU SITE ────────────────────────────────────────────────────
+// Ligne unique ("main") : stocke des réglages globaux modifiables depuis
+// l'admin sans redéploiement. Pour l'instant : l'URL du CV téléversé.
+model SiteSettings {
+  id        String   @id @default("main") @db.VarChar(20)
+  cvUrl     String?  @map("cv_url") @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
+
 model Project {
   id            String       @id @default(uuid())
   titre         String       @db.VarChar(200)

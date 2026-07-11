@@ -87,6 +87,7 @@ function init() {
   bindActionsRapides();
   bindOngletsImage();
   bindModaleMessage();
+  bindUploadCV();
 }
 
 // ===================== CONNEXION =====================
@@ -195,6 +196,59 @@ function chargerDonnees(page) {
   if (page === 'experiences') chargerExperiences();
   if (page === 'competences') chargerCompetences();
   if (page === 'analytics') chargerAnalytics();
+  if (page === 'parametres') chargerParametresCV();
+}
+
+// ===================== CV (Paramètres) =====================
+async function chargerParametresCV() {
+  const info = document.getElementById('cv-actuel-info');
+  try {
+    const d = await req('GET', '/settings');
+    if (d.success && d.settings.cvUrl) {
+      info.innerHTML = 'CV actuel : <a href="' + echapper(d.settings.cvUrl) + '" target="_blank" rel="noopener noreferrer">' + echapper(d.settings.cvUrl.split('/').pop()) + '</a>';
+    } else {
+      info.textContent = 'Aucun CV téléversé pour le moment (le site utilise le fichier par défaut du dépôt).';
+    }
+  } catch (err) {
+    info.textContent = 'Impossible de vérifier le CV actuel.';
+  }
+}
+
+function bindUploadCV() {
+  const fichier = document.getElementById('cv-fichier');
+  if (!fichier) return;
+  fichier.addEventListener('change', async () => {
+    const f = fichier.files[0];
+    if (!f) return;
+    if (f.type !== 'application/pdf') { toast('Le fichier doit être un PDF.', 'erreur'); fichier.value = ''; return; }
+    if (f.size > 10 * 1024 * 1024) { toast('Fichier trop lourd (max 10 Mo).', 'erreur'); fichier.value = ''; return; }
+
+    const info = document.getElementById('cv-actuel-info');
+    info.textContent = 'Envoi en cours...';
+
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const lecteur = new FileReader();
+        lecteur.onload = (e) => resolve(e.target.result);
+        lecteur.onerror = reject;
+        lecteur.readAsDataURL(f);
+      });
+
+      const dUpload = await req('POST', '/admin/account', { action: 'upload-cv', pdfBase64: base64, nomFichier: f.name });
+      if (!dUpload.success) throw new Error(dUpload.error || "Échec de l'upload.");
+
+      const dSettings = await req('PUT', '/settings', { cvUrl: dUpload.url });
+      if (!dSettings.success) throw new Error(dSettings.error || 'Échec de l\'enregistrement.');
+
+      toast('CV mis à jour', 'succes');
+      chargerParametresCV();
+    } catch (err) {
+      toast(err.message, 'erreur');
+      chargerParametresCV();
+    } finally {
+      fichier.value = '';
+    }
+  });
 }
 
 async function chargerCompteurMessages() {

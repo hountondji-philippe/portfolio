@@ -299,6 +299,15 @@
     <div id="page-parametres" class="page">
       <div class="contenu-page">
         <div class="bloc-parametres">
+          <h3>CV téléchargeable</h3>
+          <p id="cv-actuel-info" style="font-size:0.85rem;color:var(--texte-attenue);margin-bottom:14px">Chargement...</p>
+          <div class="onglet-source-image" style="margin-bottom:0">
+            <button type="button" class="bouton-onglet-image actif" id="btn-choisir-cv" onclick="document.getElementById('cv-fichier').click()">Choisir un fichier PDF</button>
+          </div>
+          <input type="file" id="cv-fichier" accept="application/pdf" style="display:none">
+          <p style="font-size:0.78rem;color:var(--texte-attenue);margin-top:8px">Format PDF uniquement, 10 Mo maximum. Remplace le CV actuellement téléchargeable sur le site.</p>
+        </div>
+        <div class="bloc-parametres">
           <h3>Compte administrateur</h3>
           <form id="formulaire-mdp" class="formulaire-parametres">
             <div class="groupe-champ"><label for="mdp-actuel">Mot de passe actuel</label><input type="password" id="mdp-actuel" maxlength="128"></div>

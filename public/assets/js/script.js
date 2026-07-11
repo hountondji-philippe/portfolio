@@ -108,6 +108,23 @@ if (champRecherche) {
   });
 }
 
+// ===================== CV (URL dynamique si téléversé depuis l'admin) =====================
+async function appliquerLienCV() {
+  const liens = document.querySelectorAll('.lien-cv');
+  if (!liens.length) return;
+  try {
+    const reponse = await fetch('/api/settings');
+    const data = await reponse.json();
+    if (data.success && data.settings.cvUrl) {
+      liens.forEach((lien) => { lien.href = data.settings.cvUrl; });
+    }
+    // Si aucun CV n'a encore été téléversé, on garde le lien par défaut
+    // déjà présent dans le HTML (cv/CV_philippe_hountondji.pdf).
+  } catch (err) {
+    console.error('Erreur chargement CV', err);
+  }
+}
+
 // ===================== FORMATION (chargée depuis l'API, une seule "En cours" mise en avant) =====================
 function echapperTexte(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -495,6 +512,7 @@ chargerCompetences();
 chargerCompteursProjets();
 chargerFormations();
 chargerExperiencesPubliques();
+appliquerLienCV();
 
 const typePage = document.body.dataset.typeProjets;
 if (typePage) chargerListeProjets(typePage);
