@@ -113,7 +113,7 @@ async function appliquerLienCV() {
   const liens = document.querySelectorAll('.lien-cv');
   if (!liens.length) return;
   try {
-    const reponse = await fetch('/api/settings');
+    const reponse = await fetch('/api/formations?resource=settings');
     const data = await reponse.json();
     if (data.success && data.settings.cvUrl) {
       liens.forEach((lien) => { lien.href = data.settings.cvUrl; });

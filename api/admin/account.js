@@ -17,6 +17,8 @@ const { requireAuth, revoquerToken } = require('../../lib/auth');
 const TAILLE_MAX_IMAGE = 5 * 1024 * 1024;
 const TAILLE_MAX_CV = 10 * 1024 * 1024;
 
+const URL_SITE = 'https://portfolio-seven-delta-21jq5u35et.vercel.app';
+
 function genererEmailHTML({ nomDestinataire, reponse, messageOriginal, dateMessage }) {
   function echapper(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -36,7 +38,21 @@ function genererEmailHTML({ nomDestinataire, reponse, messageOriginal, dateMessa
 <div style="background:#f6f7f3;border-left:3px solid #9aa0a6;padding:14px 16px;margin-bottom:20px;font-style:italic;color:#475569;">${messageFmt}</div>
 <p style="margin:0 0 8px;font-size:12px;color:#62b808;text-transform:uppercase;">Ma reponse</p>
 <div style="background:#eaf6d9;border-left:3px solid #62b808;padding:14px 16px;">${reponseFmt}</div>
-</td></tr></table></td></tr></table></body></html>`;
+<table cellpadding="0" cellspacing="0" style="margin:28px auto 0;">
+<tr><td style="border-radius:100px;background:#E4241D;">
+<a href="${URL_SITE}" style="display:inline-block;padding:12px 28px;color:#ffffff;font-weight:bold;font-size:14px;text-decoration:none;border-radius:100px;">Voir mon portfolio</a>
+</td></tr></table>
+</td></tr>
+<tr><td style="background:#fdf2f2;padding:24px 32px;text-align:center;border-top:1px solid #f3d9d9;">
+<p style="margin:0 0 12px;font-size:13px;">
+<a href="${URL_SITE}" style="color:#E4241D;text-decoration:none;font-weight:600;">Accueil</a> &middot;
+<a href="${URL_SITE}#projets" style="color:#E4241D;text-decoration:none;font-weight:600;">Projets</a> &middot;
+<a href="${URL_SITE}#contact" style="color:#E4241D;text-decoration:none;font-weight:600;">Contact</a> &middot;
+<a href="${URL_SITE}#mon-cv" style="color:#E4241D;text-decoration:none;font-weight:600;">CV</a>
+</p>
+<p style="margin:0;font-size:12px;color:#9aa0a6;">&copy; 2026 Philippe Hountondji &mdash; Porto-Novo, Benin</p>
+</td></tr>
+</table></td></tr></table></body></html>`;
 }
 
 async function actionStats(req, res, prisma) {
