@@ -8,7 +8,7 @@
 html, body { overflow-x: hidden; width: 100%; }
 body { background: var(--fond-secondaire); }
 
-/* ===================== CONNEXION ===================== */
+/*CONNEXION*/
 .zone-connexion {
   min-height: 100vh;
   display: flex;
@@ -141,7 +141,7 @@ body { background: var(--fond-secondaire); }
   75% { transform: translateX(6px); }
 }
 
-/* ===================== LAYOUT DASHBOARD ===================== */
+/*LAYOUT DASHBOARD*/
 .masque { display: none !important; }
 
 .tableau-bord { display: flex; min-height: 100vh; max-width: 100%; }
@@ -248,7 +248,7 @@ body { background: var(--fond-secondaire); }
 
 .contenu-page { max-width: 1100px; }
 
-/* ===================== STATS ===================== */
+/*STATS*/
 .grille-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
@@ -295,7 +295,7 @@ body { background: var(--fond-secondaire); }
 }
 .carte-action:hover { border-color: var(--vert-accent); }
 
-/* ===================== FORMULAIRES ADMIN ===================== */
+/*FORMULAIRES ADMIN*/
 .formulaire-ajout {
   background: var(--fond-carte);
   border: 1px solid var(--ligne-discrete);
@@ -365,7 +365,7 @@ body { background: var(--fond-secondaire); }
 .zone-upload-image:hover { border-color: var(--vert-accent); }
 .apercu-image-upload { max-height: 100px; border-radius: 8px; margin-top: 8px; }
 
-/* ===================== LISTES D'ELEMENTS ===================== */
+/*LISTES D'ELEMENTS*/
 .entete-gestion { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
 .entete-gestion h3 { font-family: var(--police-titre); font-size: 1rem; display: flex; align-items: center; gap: 10px; }
 .compteur-section { font-size: 0.76rem; background: var(--vert-pastel); color: var(--vert-accent); padding: 3px 10px; border-radius: 100px; font-weight: 700; }
@@ -409,7 +409,7 @@ body { background: var(--fond-secondaire); }
 
 .chargement-liste, .etat-vide-liste, .etat-vide { text-align: center; padding: 30px; color: var(--texte-attenue); font-size: 0.88rem; }
 
-/* ===================== MESSAGES ===================== */
+/*MESSAGES*/
 .barre-outils { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
 .champ-recherche input {
   padding: 10px 14px;
@@ -457,7 +457,7 @@ body { background: var(--fond-secondaire); }
 .bouton-petit.rouge { background: #fdeaea; border-color: #f3c8c8; color: #b23a3a; }
 .badge-repondu { font-size: 0.72rem; background: var(--vert-pastel); color: var(--vert-accent); padding: 4px 10px; border-radius: 100px; font-weight: 700; }
 
-/* ===================== MODALES ===================== */
+/*MODALES*/
 .fenetre-modale {
   display: none;
   position: fixed; inset: 0;
@@ -531,7 +531,7 @@ body { background: var(--fond-secondaire); }
 .grille-champs-modif { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .grille-champs-modif .champ-form.pleine-largeur { grid-column: 1 / -1; }
 
-/* ===================== PARAMETRES ===================== */
+/*PARAMETRES*/
 .formulaire-parametres { max-width: 380px; }
 .liste-options { display: flex; flex-direction: column; gap: 12px; }
 .option-case { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; }
@@ -539,7 +539,7 @@ body { background: var(--fond-secondaire); }
 .zone-danger h3 { color: #b23a3a; }
 .zone-danger p { font-size: 0.85rem; color: var(--texte-attenue); margin-bottom: 12px; }
 
-/* ===================== ANALYTICS (onglet Visiteurs) ===================== */
+/*ANALYTICS (onglet Visiteurs)*/
 .grille-graphiques {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
@@ -597,7 +597,7 @@ body { background: var(--fond-secondaire); }
 .bouton-supprimer-analytics:hover { background: #f8d4d4; }
 .bouton-supprimer-analytics:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ===================== TOAST ===================== */
+/*TOAST*/
 .toast {
   position: fixed;
   top: -100px; right: 20px;
@@ -619,7 +619,7 @@ body { background: var(--fond-secondaire); }
 .toast-info { border-left: 3px solid #1a6fc9; }
 .toast-avert { border-left: 3px solid #a1780a; }
 
-/* ===================== BANNIERE SERVEUR ===================== */
+/*BANNIERE SERVEUR*/
 #barre-serveur {
   display: none;
   position: fixed; top: 0; left: 0; right: 0;
@@ -635,7 +635,7 @@ body { background: var(--fond-secondaire); }
   gap: 10px;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/*RESPONSIVE*/
 @media (max-width: 992px) {
   .barre-laterale { transform: translateX(-100%); }
   .barre-laterale.ouverte { transform: translateX(0); box-shadow: 0 0 0 2000px rgba(0,0,0,0.35); }

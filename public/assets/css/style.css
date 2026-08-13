@@ -1,4 +1,4 @@
-/* ===================== TOKENS DE DESIGN ===================== */
+/*TOKENS DE DESIGN*/
 :root {
   --fond-principal: #FFFFFF;
   --fond-secondaire: #F6F7F3;
@@ -71,7 +71,7 @@ a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 ::selection { background: var(--vert-accent); color: #fff; }
 
-/* ===================== NAVIGATION ===================== */
+/*NAVIGATION*/
 .barre-navigation {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -275,7 +275,7 @@ html[data-theme="sombre"] .icone-lune { opacity: 1; transform: scale(1); }
   border-radius: 2px;
 }
 
-/* ===================== HERO / ACCUEIL ===================== */
+/*HERO / ACCUEIL*/
 .ecran-accueil {
   position: relative;
   padding: clamp(120px, 16vw, 170px) clamp(20px, 8vw, 90px) 80px;
@@ -383,7 +383,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   100% { box-shadow: 0 0 0 0 rgba(98, 184, 8, 0); }
 }
 
-/* ===================== HERO SOMBRE (style FreeSurf) ===================== */
+/*HERO SOMBRE (style FreeSurf)*/
 .ecran-accueil-sombre {
   background: linear-gradient(160deg, #1A0B09 0%, #2B0F0C 45%, #1A0B09 100%);
   overflow: hidden;
@@ -476,7 +476,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   .anneau-decoratif { animation: none; }
 }
 
-/* ===================== BENTO GRID (APERCU) ===================== */
+/*BENTO GRID (APERCU)*/
 .apercu-bento-accueil {
   position: relative;
   margin-top: 60px;
@@ -519,7 +519,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   color: var(--texte-attenue);
 }
 
-/* ===================== RESPONSIVE ===================== */
+/*RESPONSIVE*/
 @media (max-width: 900px) {
   .apercu-bento-accueil { grid-template-columns: 1fr; }
 }
@@ -548,7 +548,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   .puce-statut { animation: none; }
 }
 
-/* ===================== SECTIONS COMMUNES ===================== */
+/*SECTIONS COMMUNES*/
 .section-generale {
   padding: 90px clamp(20px, 8vw, 90px);
   max-width: 1200px;
@@ -597,7 +597,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   max-width: 560px;
 }
 
-/* ===================== A PROPOS ===================== */
+/*A PROPOS*/
 .bloc-apropos {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -638,7 +638,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   flex-shrink: 0;
 }
 
-/* ===================== COMPETENCES : ACCORDEON ===================== */
+/*COMPETENCES : ACCORDEON*/
 /* Toutes les couleurs ci-dessous utilisent désormais les variables de thème
    (--fond-carte, --ligne-discrete, --gradient-competence-*, etc.) au lieu
    de couleurs figées en dur : la section s'adapte donc au mode sombre. */
@@ -725,7 +725,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   display: block;
 }
 
-/* ===================== PROJETS : DEUX BLOCS ===================== */
+/*PROJETS : DEUX BLOCS*/
 .deux-blocs-projets {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -788,7 +788,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   color: var(--vert-accent);
 }
 
-/* ===================== LISTE DE PROJETS (pages dediees) ===================== */
+/*LISTE DE PROJETS (pages dediees)*/
 .fil-ariane {
   display: flex;
   align-items: center;
@@ -886,7 +886,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   color: var(--vert-accent);
 }
 
-/* ===================== CONTACT ===================== */
+/*CONTACT*/
 .disposition-contact {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -1008,7 +1008,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   white-space: nowrap;
 }
 
-/* ===================== FOOTER ===================== */
+/*FOOTER*/
 /* Le footer reste volontairement sombre, comme le hero, quel que soit le
    thème clair/sombre choisi : effet "bookend" qui referme visuellement
    la page et évite qu'elle ne se termine à plat sur du blanc. */
@@ -1164,7 +1164,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   .tagline-footer { max-width: 100%; }
 }
 
-/* ===================== RESPONSIVE AJOUTS ===================== */
+/*RESPONSIVE AJOUTS*/
 @media (max-width: 900px) {
   .bloc-apropos,
   .deux-blocs-projets,
@@ -1173,7 +1173,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   }
 }
 
-/* ===================== FORMATION : TIMELINE ===================== */
+/*FORMATION : TIMELINE*/
 .timeline-formation {
   position: relative;
   max-width: 760px;
@@ -1293,7 +1293,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   max-height: 1200px;
 }
 
-/* ===================== EXPERIENCE ===================== */
+/*EXPERIENCE*/
 .grille-experience {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
@@ -1328,7 +1328,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   font-size: 0.9rem;
 }
 
-/* ===================== ONGLETS CONTACT ===================== */
+/*ONGLETS CONTACT*/
 .onglets-contact {
   display: flex;
   gap: 4px;
@@ -1357,7 +1357,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   color: #fff;
 }
 
-/* ===================== CV ===================== */
+/*CV*/
 .carte-cv {
   background: var(--fond-carte);
   border: 1px solid var(--ligne-discrete);

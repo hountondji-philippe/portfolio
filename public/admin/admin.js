@@ -5,7 +5,7 @@ let TOKEN = localStorage.getItem('admin_token') || sessionStorage.getItem('admin
 let messageActuel = null;
 let graphiqueJours = null;
 
-// ===================== REQUETES =====================
+//REQUETES//
 function req(method, url, body) {
   const opts = {
     method,
@@ -23,7 +23,7 @@ function req(method, url, body) {
   });
 }
 
-// ===================== TOAST =====================
+//TOAST//
 function toast(msg, type) {
   type = type || 'info';
   const box = document.createElement('div');
@@ -51,7 +51,7 @@ function echapper(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// ===================== THEME CLAIR / SOMBRE =====================
+//THEME CLAIR / SOMBRE//
 // Même clé localStorage ('theme-portfolio') que sur le site public, pour
 // que le choix de thème soit cohérent entre l'admin et l'accueil.
 function bindBasculeTheme() {
@@ -72,7 +72,7 @@ function bindBasculeTheme() {
   }
 }
 
-// ===================== INIT =====================
+//INIT//
 function init() {
   bindBasculeTheme();
   if (TOKEN) afficherTableau();
@@ -90,7 +90,7 @@ function init() {
   bindUploadCV();
 }
 
-// ===================== CONNEXION =====================
+//CONNEXION//
 function bindConnexion() {
   const form = document.getElementById('formulaire-connexion');
   const btnVoir = document.querySelector('.bouton-voir-mdp');
@@ -155,7 +155,7 @@ function bindDeconnexion() {
   });
 }
 
-// ===================== NAVIGATION =====================
+//NAVIGATION//
 function bindNavigation() {
   document.querySelectorAll('.element-nav').forEach((el) => {
     el.addEventListener('click', (e) => {
@@ -195,23 +195,9 @@ function chargerDonnees(page) {
   if (page === 'formations') chargerFormations();
   if (page === 'experiences') chargerExperiences();
   if (page === 'competences') chargerCompetences();
+  if (page === 'profil-cv') chargerProfilCV();
+  if (page === 'langues') chargerLangues();
   if (page === 'analytics') chargerAnalytics();
-  if (page === 'parametres') chargerParametresCV();
-}
-
-// ===================== CV (Paramètres) =====================
-async function chargerParametresCV() {
-  const info = document.getElementById('cv-actuel-info');
-  try {
-    const d = await req('GET', '/formations?resource=settings');
-    if (d.success && d.settings.cvUrl) {
-      info.innerHTML = 'CV actuel : <a href="' + echapper(d.settings.cvUrl) + '" target="_blank" rel="noopener noreferrer">' + echapper(d.settings.cvUrl.split('/').pop()) + '</a>';
-    } else {
-      info.textContent = 'Aucun CV téléversé pour le moment (le site utilise le fichier par défaut du dépôt).';
-    }
-  } catch (err) {
-    info.textContent = 'Impossible de vérifier le CV actuel.';
-  }
 }
 
 function bindUploadCV() {
@@ -266,7 +252,7 @@ window.verifierServeurBtn = function () {
   document.getElementById('barre-serveur').style.display = 'none';
 };
 
-// ===================== VUE D'ENSEMBLE =====================
+//VUE D'ENSEMBLE//
 async function chargerVueEnsemble() {
   try {
     const d = await req('GET', '/admin/account?action=stats');
@@ -345,7 +331,7 @@ async function exporterMessages() {
   } catch (err) { toast(err.message, 'erreur'); }
 }
 
-// ===================== MESSAGES =====================
+//MESSAGES//
 let filtreMsgs = 'all';
 
 async function chargerMessages() {
@@ -464,7 +450,7 @@ function bindModaleMessage() {
   });
 }
 
-// ===================== ONGLETS SOURCE IMAGE (URL / GALERIE) =====================
+//ONGLETS SOURCE IMAGE (URL / GALERIE)//
 function bindOngletsImage() {
   document.querySelectorAll('.bouton-onglet-image').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -492,6 +478,23 @@ function bindOngletsImage() {
   });
 }
 
+const fichierCV = document.getElementById('cv-photo-fichier');
+  if (fichierCV) {
+    fichierCV.addEventListener('change', () => {
+      const f = fichierCV.files[0];
+      if (!f) return;
+      if (f.size > 5 * 1024 * 1024) return toast('Image trop lourde (max 5 Mo).', 'erreur');
+      const lecteur = new FileReader();
+      lecteur.onload = (e) => {
+        const apercu = document.getElementById('cv-photo-fichier-apercu');
+        apercu.src = e.target.result;
+        apercu.classList.remove('masque');
+      };
+      lecteur.readAsDataURL(f);
+    });
+  }
+
+
 async function resoudreImageProjet() {
   const modeGalerie = document.querySelector('.bouton-onglet-image[data-cible="projet"].actif').dataset.mode === 'galerie';
   if (!modeGalerie) return document.getElementById('projet-image-url').value.trim();
@@ -511,7 +514,7 @@ async function resoudreImageProjet() {
   return d.url;
 }
 
-// ===================== PROJETS =====================
+//PROJETS//
 const LABELS_STATUT_PROJET = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
 const LABELS_TYPE_PROJET = { ACADEMIQUE: 'Académique', PROFESSIONNEL: 'Professionnel' };
 
@@ -549,7 +552,7 @@ function renderProjet(p) {
     '</div></div>';
 }
 
-// ===================== FORMATIONS =====================
+//FORMATIONS//
 const LABELS_STATUT_FORMATION = { EN_COURS: 'En cours', OBTENU: 'Obtenu' };
 
 async function chargerFormations() {
@@ -579,7 +582,7 @@ function renderFormation(f) {
     '</div></div>';
 }
 
-// ===================== EXPERIENCES =====================
+//EXPERIENCES//
 const LABELS_STATUT_EXP = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu', RECHERCHE: 'En recherche' };
 
 async function chargerExperiences() {
@@ -611,7 +614,7 @@ function renderExperience(exp) {
     '</div></div>';
 }
 
-// ===================== COMPETENCES =====================
+//COMPETENCES//
 const LABELS_CATEGORIE_COMP = {
   FRONTEND: 'Front-end', BACKEND: 'Back-end', MOBILE: 'Mobile',
   RESEAUX_INFRA: 'Réseaux', MARKETING_DIGITAL: 'Marketing digital',
@@ -630,6 +633,121 @@ async function chargerCompetences() {
   } catch (err) { liste.innerHTML = '<div class="etat-vide-liste">' + echapper(err.message) + '</div>'; }
 }
 
+//PROFIL CV//
+async function chargerProfilCV() {
+  try {
+    const d = await req('GET', '/formations?resource=settings');
+    if (d.success && d.settings) {
+      const s = d.settings;
+      document.getElementById('cv-titre-pro').value = s.titrePro || '';
+      document.getElementById('cv-bio').value = s.bio || '';
+      document.getElementById('cv-telephone').value = s.telephone || '';
+      document.getElementById('cv-email-public').value = s.emailPublic || '';
+      document.getElementById('cv-localisation').value = s.localisation || '';
+      document.getElementById('cv-qualites').value = s.qualites || '';
+      document.getElementById('cv-photo-url').value = s.photoUrl || '';
+      const apercu = document.getElementById('cv-photo-apercu');
+      if (s.photoUrl) { apercu.src = s.photoUrl; apercu.classList.remove('masque'); }
+      else apercu.classList.add('masque');
+    }
+  } catch (err) { toast(err.message, 'erreur'); }
+}
+
+async function resoudreImageProfilCV() {
+  const modeGalerie = document.querySelector('.bouton-onglet-image[data-cible="cv"].actif').dataset.mode === 'galerie';
+  if (!modeGalerie) return document.getElementById('cv-photo-url').value.trim();
+
+  const fichier = document.getElementById('cv-photo-fichier').files[0];
+  if (!fichier) return document.getElementById('cv-photo-url').value.trim();
+
+  const base64 = await new Promise((resolve, reject) => {
+    const lecteur = new FileReader();
+    lecteur.onload = (e) => resolve(e.target.result);
+    lecteur.onerror = reject;
+    lecteur.readAsDataURL(fichier);
+  });
+
+  const d = await req('POST', '/admin/account', { action: 'upload-image', imageBase64: base64, nomFichier: fichier.name });
+  if (!d.success) throw new Error(d.error || "Échec de l'upload.");
+  return d.url;
+}
+
+//LANGUES//
+async function chargerLangues() {
+  const liste = document.getElementById('liste-langues');
+  liste.innerHTML = '<div class="chargement-liste">Chargement...</div>';
+  try {
+    const d = await req('GET', '/formations?resource=languages');
+    const languages = d.languages || [];
+    document.getElementById('nb-langues').textContent = languages.length;
+    liste.innerHTML = languages.length ? languages.map(renderLangue).join('') : '<div class="etat-vide-liste">Aucune langue</div>';
+    bindListeLangues();
+  } catch (err) { liste.innerHTML = '<div class="etat-vide-liste">' + echapper(err.message) + '</div>'; }
+}
+
+function renderLangue(l) {
+  return '<div class="element-liste" data-id="' + l.id + '">' +
+    '<div class="element-liste-info">' +
+    '<div class="element-liste-titre">' + echapper(l.nom) + '<span class="tag-petit">' + echapper(l.niveau) + '</span></div>' +
+    '</div>' +
+    '<div style="display:flex;gap:6px;flex-shrink:0">' +
+    '<button class="bouton-modifier-element" data-id="' + l.id + '">Modifier</button>' +
+    '<button class="bouton-supprimer-element" data-id="' + l.id + '">Supprimer</button>' +
+    '</div></div>';
+}
+
+function bindListeLangues() {
+  const liste = document.getElementById('liste-langues');
+  liste.querySelectorAll('.bouton-supprimer-element').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Supprimer cette langue ?')) return;
+      try {
+        await req('DELETE', '/formations?resource=languages&id=' + btn.dataset.id);
+        toast('Supprimée', 'succes');
+        chargerLangues();
+      } catch (err) { toast(err.message, 'erreur'); }
+    });
+  });
+  liste.querySelectorAll('.bouton-modifier-element').forEach((btn) => {
+    btn.addEventListener('click', () => ouvrirModifierLangue(btn.dataset.id));
+  });
+}
+
+async function ouvrirModifierLangue(id) {
+  let item;
+  try {
+    const d = await req('GET', '/formations?resource=languages');
+    item = (d.languages || []).find((l) => String(l.id) === String(id));
+  } catch (err) { return toast(err.message, 'erreur'); }
+  if (!item) return toast('Langue introuvable.', 'erreur');
+
+  const corps = '<div class="grille-champs-modif">' +
+    champModif('Nom', 'ml-nom', item.nom, 'text', 100) +
+    champModif('Niveau', 'ml-niveau', item.niveau, 'text', 50) +
+    champModif('Ordre', 'ml-ordre', item.ordre, 'number') +
+    '</div>';
+
+  ouvrirModale('Modifier la langue', corps, [{
+    texte: 'Enregistrer',
+    fn: async () => {
+      const boutonSauver = document.querySelector('#mg .bouton-principal');
+      boutonSauver.disabled = true;
+      boutonSauver.textContent = 'Enregistrement...';
+      try {
+        const d = await req('PUT', '/formations?resource=languages&id=' + id, {
+          nom: val('ml-nom'), niveau: val('ml-niveau'), ordre: parseInt(val('ml-ordre'), 10) || 0,
+        });
+        if (d.success) {
+          toast('Langue modifiée', 'succes');
+          document.getElementById('mg').classList.remove('active');
+          chargerLangues();
+        } else toast(d.error || 'Erreur.', 'erreur');
+      } catch (err) { toast(err.message, 'erreur'); }
+      finally { boutonSauver.disabled = false; boutonSauver.textContent = 'Enregistrer'; }
+    },
+  }]);
+}
+
 function renderCompetence(c) {
   return '<div class="element-liste" data-id="' + c.id + '">' +
     '<div class="element-liste-info">' +
@@ -644,7 +762,7 @@ function renderCompetence(c) {
     '</div></div>';
 }
 
-// ===================== BINDING GENERIQUE DES LISTES =====================
+//BINDING GENERIQUE DES LISTES//
 const ROUTES_TYPE = { projects: '/projects', formations: '/formations', experiences: '/experiences', skills: '/skills' };
 const LISTE_TYPE = { projects: '/projects', formations: '/formations', experiences: '/experiences', skills: '/skills' };
 
@@ -667,7 +785,7 @@ function bindListe(idListe, type, rechargerFn) {
   });
 }
 
-// ===================== MODALE DE MODIFICATION =====================
+//MODALE DE MODIFICATION//
 function ouvrirModale(titre, corps, boutons) {
   let m = document.getElementById('mg');
   if (!m) {
@@ -877,7 +995,7 @@ async function sauvegarderModif(id, type, rechargerFn) {
   }
 }
 
-// ===================== FORMULAIRES D'AJOUT =====================
+//FORMULAIRES D'AJOUT//
 function bindFormulaires() {
   // --- Ajout projet ---
   document.getElementById('form-ajout-projet').addEventListener('submit', async (e) => {
@@ -987,6 +1105,42 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Ajouter la compétence'; }
   });
 
+  // --- Profil CV ---
+  document.getElementById('form-profil-cv').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-enregistrer-profil-cv');
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement...';
+    try {
+      const photoUrl = await resoudreImageProfilCV();
+      const body = {
+        titrePro: val('cv-titre-pro'), bio: val('cv-bio'),
+        telephone: val('cv-telephone'), emailPublic: val('cv-email-public'),
+        localisation: val('cv-localisation'), qualites: val('cv-qualites'),
+        photoUrl,
+      };
+      const d = await req('PUT', '/formations?resource=settings', body);
+      if (d.success) { toast('Profil CV enregistré', 'succes'); chargerProfilCV(); }
+      else toast(d.error || 'Erreur.', 'erreur');
+    } catch (err) { toast(err.message, 'erreur'); }
+    finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
+  });
+
+  // --- Ajout langue ---
+  document.getElementById('form-ajout-langue').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-ajouter-langue');
+    btn.disabled = true;
+    btn.textContent = 'Ajout...';
+    try {
+      const body = { nom: val('langue-nom'), niveau: val('langue-niveau'), ordre: parseInt(val('langue-ordre'), 10) || 0 };
+      const d = await req('POST', '/formations?resource=languages', body);
+      if (d.success) { toast('Langue ajoutée', 'succes'); e.target.reset(); chargerLangues(); }
+      else toast(d.error || 'Erreur.', 'erreur');
+    } catch (err) { toast(err.message, 'erreur'); }
+    finally { btn.disabled = false; btn.textContent = 'Ajouter la langue'; }
+  });
+
   // --- Changement de mot de passe ---
   document.getElementById('formulaire-mdp').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1017,7 +1171,7 @@ function bindFormulaires() {
   });
 }
 
-// ===================== ANALYTICS =====================
+//ANALYTICS//
 async function chargerAnalytics() {
   try {
     const d = await req('GET', '/analytics?view=resume');

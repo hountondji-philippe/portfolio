@@ -11,7 +11,7 @@ const LABELS_CATEGORIES = {
   AUTRE: 'Autres compétences',
 };
 
-// ===================== BASCULE CLAIR / SOMBRE =====================
+//BASCULE CLAIR / SOMBRE//
 const racineHtml = document.documentElement;
 const basculeTheme = document.getElementById('basculeTheme');
 
@@ -27,7 +27,7 @@ if (basculeTheme) {
   });
 }
 
-// ===================== MENU MOBILE =====================
+//MENU MOBILE//
 const boutonMenuMobile = document.getElementById('boutonMenuMobile');
 const listeLiensNav = document.getElementById('listeLiensNav');
 if (boutonMenuMobile && listeLiensNav) {
@@ -39,7 +39,7 @@ if (boutonMenuMobile && listeLiensNav) {
   });
 }
 
-// ===================== RECHERCHE =====================
+//RECHERCHE//
 const indexRecherche = [
   { titre: 'À propos', categorie: 'Section', cible: '#a-propos', motsClefs: 'profil parcours eneam' },
   { titre: 'Compétences', categorie: 'Section', cible: '#competences', motsClefs: 'laravel react node flutter php' },
@@ -108,7 +108,7 @@ if (champRecherche) {
   });
 }
 
-// ===================== CV (URL dynamique si téléversé depuis l'admin) =====================
+//CV (URL dynamique si téléversé depuis l'admin)//
 async function appliquerLienCV() {
   const liens = document.querySelectorAll('.lien-cv');
   if (!liens.length) return;
@@ -125,7 +125,7 @@ async function appliquerLienCV() {
   }
 }
 
-// ===================== FORMATION (chargée depuis l'API, une seule "En cours" mise en avant) =====================
+//FORMATION (chargée depuis l'API, une seule "En cours" mise en avant)//
 function echapperTexte(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -197,7 +197,7 @@ async function chargerFormations() {
   }
 }
 
-// ===================== EXPERIENCE (chargée depuis l'API) =====================
+//EXPERIENCE (chargée depuis l'API)//
 const LABELS_STATUT_EXP_PUBLIC = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu', RECHERCHE: 'En recherche active' };
 
 async function chargerExperiencesPubliques() {
@@ -230,7 +230,7 @@ async function chargerExperiencesPubliques() {
   }
 }
 
-// ===================== COMPETENCES (accordeon dynamique) =====================
+//COMPETENCES (accordeon dynamique)//
 async function chargerCompetences() {
   const conteneur = document.getElementById('listeAccordeonCompetences');
   if (!conteneur) return;
@@ -275,7 +275,7 @@ async function chargerCompetences() {
   }
 }
 
-// ===================== PROJETS (compteurs sur la page d'accueil) =====================
+//PROJETS (compteurs sur la page d'accueil)//
 async function chargerCompteursProjets() {
   const compteurAcademique = document.getElementById('compteurProjetsAcademiques');
   const compteurPro = document.getElementById('compteurProjetsPro');
@@ -295,7 +295,7 @@ async function chargerCompteursProjets() {
   }
 }
 
-// ===================== PROJETS (liste complete sur les pages dediees) =====================
+//PROJETS (liste complete sur les pages dediees)//
 const LABELS_STATUT = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
 
 async function chargerListeProjets(type) {
@@ -337,7 +337,7 @@ async function chargerListeProjets(type) {
   }
 }
 
-// ===================== ONGLETS CONTACT (EMAIL / WHATSAPP) =====================
+//ONGLETS CONTACT (EMAIL / WHATSAPP)//
 const NUMERO_WHATSAPP_PHILIPPE = '22958156930';
 
 function basculerOngletContact(onglet) {
@@ -382,7 +382,12 @@ function envoyerViaWhatsapp() {
 }
 window.envoyerViaWhatsapp = envoyerViaWhatsapp;
 
-// ===================== FORMULAIRE DE CONTACT =====================
+document.getElementById('lien-telecharger-cv')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  window.open('/cv.html?print=1', '_blank');
+});
+
+//FORMULAIRE DE CONTACT//
 const formulaireContact = document.getElementById('formulaireContact');
 if (formulaireContact) {
   formulaireContact.addEventListener('submit', async (e) => {
@@ -430,7 +435,7 @@ if (formulaireContact) {
   });
 }
 
-// ===================== NEWSLETTER (FOOTER) =====================
+//NEWSLETTER (FOOTER)//
 const formulaireNewsletter = document.getElementById('formulaireNewsletter');
 if (formulaireNewsletter) {
   formulaireNewsletter.addEventListener('submit', async (e) => {
@@ -471,7 +476,7 @@ if (formulaireNewsletter) {
   });
 }
 
-// ===================== TRACKING (VISITEURS) =====================
+//TRACKING (VISITEURS)//
 function envoyerEvenementTracker(payload) {
   fetch('/api/tracker', {
     method: 'POST',
@@ -507,7 +512,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ===================== INITIALISATION =====================
+//INITIALISATION//
 chargerCompetences();
 chargerCompteursProjets();
 chargerFormations();

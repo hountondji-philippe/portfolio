@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — Hountondji Philippe</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/cv.css">
+</head>
+<body>
+
+<div class="barre-outils no-print">
+  <a href="/index.html" class="lien-retour">&larr; Retour au portfolio</a>
+  <button id="btn-imprimer" class="bouton-imprimer">Télécharger le CV (PDF)</button>
+</div>
+
+<main class="feuille-cv" id="feuille-cv">
+
+  <aside class="colonne-laterale">
+    <div class="bloc-photo">
+      <img id="cv-photo" src="" alt="Photo de profil" class="masque">
+      <div id="cv-photo-vide" class="photo-vide">HP</div>
+    </div>
+
+    <section class="bloc-lateral">
+      <h2 class="titre-lateral">Contact</h2>
+      <ul class="liste-contact" id="cv-contacts"></ul>
+    </section>
+
+    <section class="bloc-lateral">
+      <h2 class="titre-lateral">Compétences</h2>
+      <div id="cv-competences" class="groupes-competences"></div>
+    </section>
+
+    <section class="bloc-lateral">
+      <h2 class="titre-lateral">Langues</h2>
+      <ul class="liste-langues" id="cv-langues"></ul>
+    </section>
+
+    <section class="bloc-lateral" id="section-qualites">
+      <h2 class="titre-lateral">Qualités</h2>
+      <ul class="liste-qualites" id="cv-qualites"></ul>
+    </section>
+  </aside>
+
+  <section class="colonne-principale">
+    <header class="entete-principale">
+      <h1 id="cv-nom">Hountondji Philippe</h1>
+      <p class="titre-pro" id="cv-titre-pro">Développeur Web Junior</p>
+    </header>
+
+    <section class="bloc-principal" id="section-bio">
+      <h2 class="titre-section">À propos</h2>
+      <p id="cv-bio" class="texte-bio"></p>
+    </section>
+
+    <section class="bloc-principal">
+      <h2 class="titre-section">Expériences</h2>
+      <div id="cv-experiences" class="chronologie"></div>
+    </section>
+
+    <section class="bloc-principal">
+      <h2 class="titre-section">Formation</h2>
+      <div id="cv-formations" class="chronologie"></div>
+    </section>
+
+    <section class="bloc-principal">
+      <h2 class="titre-section">Projets</h2>
+      <div id="cv-projets" class="grille-projets"></div>
+    </section>
+  </section>
+
+</main>
+
+<script src="/assets/js/cv.js"></script>
+</body>
+</html>

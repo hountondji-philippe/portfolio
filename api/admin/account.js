@@ -1,11 +1,3 @@
-// api/admin/account.js
-// Regroupe toutes les actions admin secondaires dans un seul fichier pour
-// rester sous la limite de fonctions serverless du plan Vercel Hobby :
-// logout, change-password, stats, send-reply (email Gmail), upload-image,
-// upload-cv.
-//
-// GET  ?action=stats
-// POST body.action = 'logout' | 'change-password' | 'send-reply' | 'upload-image' | 'upload-cv'
 
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -15,7 +7,6 @@ const { getPrismaClient } = require('../../lib/db');
 const { requireAuth, revoquerToken } = require('../../lib/auth');
 
 const TAILLE_MAX_IMAGE = 5 * 1024 * 1024;
-const TAILLE_MAX_CV = 10 * 1024 * 1024;
 
 const URL_SITE = 'https://portfolio-seven-delta-21jq5u35et.vercel.app';
 
@@ -152,36 +143,6 @@ async function actionUploadImage(req, res) {
   }
 }
 
-async function actionUploadCV(req, res) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    console.error('[account upload-cv] BLOB_READ_WRITE_TOKEN manquant.');
-    return res.status(500).json({ error: "Stockage non configuré (token Vercel Blob manquant)." });
-  }
-
-  const { pdfBase64, nomFichier } = req.body || {};
-  if (!pdfBase64 || !pdfBase64.startsWith('data:application/pdf;base64,')) {
-    return res.status(400).json({ error: 'Le fichier doit être un PDF.' });
-  }
-
-  const donnees = Buffer.from(pdfBase64.slice('data:application/pdf;base64,'.length), 'base64');
-  if (donnees.length > TAILLE_MAX_CV) return res.status(400).json({ error: 'Fichier trop lourd (max 10 Mo).' });
-
-  // En-tête %PDF vérifiée en plus du type MIME déclaré par le navigateur,
-  // pour éviter qu'un fichier renommé en .pdf ne soit accepté à tort.
-  if (donnees.slice(0, 4).toString('ascii') !== '%PDF') {
-    return res.status(400).json({ error: 'Fichier PDF invalide.' });
-  }
-
-  const nom = 'cv/' + Date.now() + '-' + (nomFichier || 'cv').replace(/[^a-zA-Z0-9.-]/g, '') + '.pdf';
-
-  try {
-    const blob = await put(nom, donnees, { access: 'public', contentType: 'application/pdf' });
-    return res.status(200).json({ success: true, url: blob.url });
-  } catch (err) {
-    console.error('[account upload-cv] Échec put() Vercel Blob :', err);
-    return res.status(500).json({ error: 'Échec upload: ' + (err.message || 'erreur inconnue du stockage.') });
-  }
-}
 
 async function handler(req, res) {
   const prisma = getPrismaClient();
@@ -197,7 +158,6 @@ async function handler(req, res) {
     // upload-image et upload-cv gèrent déjà leur propre try/catch en
     // interne (pour renvoyer un message précis) : on ne l'écrase pas ici.
     if (action === 'upload-image') return actionUploadImage(req, res);
-    if (action === 'upload-cv') return actionUploadCV(req, res);
 
     try {
       if (action === 'logout') return await actionLogout(req, res, req.admin);

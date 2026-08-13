@@ -59,6 +59,8 @@
       <a href="#" class="element-nav" data-page="formations">Formation</a>
       <a href="#" class="element-nav" data-page="experiences">Expériences</a>
       <a href="#" class="element-nav" data-page="competences">Compétences</a>
+      <a href="#" class="element-nav" data-page="profil-cv">Profil CV</a>
+<a href="#" class="element-nav" data-page="langues">Langues</a>
       <a href="#" class="element-nav" data-page="analytics">Visiteurs</a>
       <a href="#" class="element-nav" data-page="parametres">Paramètres</a>
     </nav>
@@ -267,6 +269,61 @@
         <div id="liste-competences" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
       </div>
     </div>
+    
+
+    <!-- PROFIL CV -->
+<div id="page-profil-cv" class="page">
+  <div class="contenu-page">
+    <div class="formulaire-ajout">
+      <h4>Profil affiché sur le CV</h4>
+      <form id="form-profil-cv" novalidate>
+        <div class="grille-champs">
+          <div class="champ-form"><label>Titre professionnel</label><input type="text" id="cv-titre-pro" maxlength="150"></div>
+          <div class="champ-form"><label>Téléphone</label><input type="text" id="cv-telephone" maxlength="30"></div>
+          <div class="champ-form"><label>Email public</label><input type="email" id="cv-email-public" maxlength="254"></div>
+          <div class="champ-form"><label>Localisation</label><input type="text" id="cv-localisation" maxlength="150"></div>
+          <div class="champ-form pleine-largeur"><label>Bio / à propos</label><textarea id="cv-bio" maxlength="3000"></textarea></div>
+          <div class="champ-form pleine-largeur"><label>Qualités (séparées par virgule)</label><input type="text" id="cv-qualites" maxlength="500"></div>
+          <div class="champ-form pleine-largeur">
+            <label>Photo de profil</label>
+            <img id="cv-photo-apercu" class="apercu-image-existante masque" alt="">
+            <div class="onglet-source-image">
+              <button type="button" class="bouton-onglet-image actif" data-cible="cv" data-mode="url">URL</button>
+              <button type="button" class="bouton-onglet-image" data-cible="cv" data-mode="galerie">Galerie</button>
+            </div>
+            <input type="url" id="cv-photo-url" placeholder="https://..." maxlength="500">
+            <div class="zone-upload-image masque" id="cv-zone-upload" onclick="document.getElementById('cv-photo-fichier').click()">
+              Cliquer pour choisir une photo (5 Mo max)
+              <input type="file" id="cv-photo-fichier" accept="image/*" style="display:none">
+              <img id="cv-photo-fichier-apercu" class="apercu-image-upload masque">
+            </div>
+          </div>
+        </div>
+        <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-enregistrer-profil-cv">Enregistrer</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- LANGUES -->
+<div id="page-langues" class="page">
+  <div class="contenu-page">
+    <div class="formulaire-ajout">
+      <h4>Ajouter une langue</h4>
+      <form id="form-ajout-langue" novalidate>
+        <div class="grille-champs trois-colonnes">
+          <div class="champ-form"><label>Langue *</label><input type="text" id="langue-nom" placeholder="Ex: Anglais" maxlength="100" required></div>
+          <div class="champ-form"><label>Niveau *</label><input type="text" id="langue-niveau" placeholder="Ex: Courant" maxlength="50" required></div>
+          <div class="champ-form"><label>Ordre</label><input type="number" id="langue-ordre" value="0"></div>
+        </div>
+        <div class="pied-formulaire"><button type="submit" class="bouton-ajouter" id="btn-ajouter-langue">Ajouter la langue</button></div>
+      </form>
+    </div>
+    <div class="entete-gestion"><h3>Langues enregistrées <span class="compteur-section" id="nb-langues">0</span></h3></div>
+    <div id="liste-langues" class="liste-elements"><div class="chargement-liste">Chargement...</div></div>
+  </div>
+</div>
+
 
     <!-- ANALYTICS -->
     <div id="page-analytics" class="page">
@@ -300,15 +357,6 @@
     <!-- PARAMETRES -->
     <div id="page-parametres" class="page">
       <div class="contenu-page">
-        <div class="bloc-parametres">
-          <h3>CV téléchargeable</h3>
-          <p id="cv-actuel-info" style="font-size:0.85rem;color:var(--texte-attenue);margin-bottom:14px">Chargement...</p>
-          <div class="onglet-source-image" style="margin-bottom:0">
-            <button type="button" class="bouton-onglet-image actif" id="btn-choisir-cv" onclick="document.getElementById('cv-fichier').click()">Choisir un fichier PDF</button>
-          </div>
-          <input type="file" id="cv-fichier" accept="application/pdf" style="display:none">
-          <p style="font-size:0.78rem;color:var(--texte-attenue);margin-top:8px">Format PDF uniquement, 10 Mo maximum. Remplace le CV actuellement téléchargeable sur le site.</p>
-        </div>
         <div class="bloc-parametres">
           <h3>Compte administrateur</h3>
           <form id="formulaire-mdp" class="formulaire-parametres">

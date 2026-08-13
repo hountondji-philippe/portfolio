@@ -76,6 +76,20 @@ model Skill {
   @@map("skills")
 }
 
+// ── LANGUES ──────────────────────────────────────────────────────────────
+// Affichées sur le CV, section "Langues". Niveau libre (ex: "C1", "Natif").
+model Langue {
+  id        String   @id @default(uuid())
+  nom       String   @db.VarChar(100)   // ex: "Anglais"
+  niveau    String   @db.VarChar(50)    // ex: "C1", "Natif", "Intermédiaire"
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([ordre])
+  @@map("langues")
+}
+
 // ── PROJETS ──────────────────────────────────────────────────────────────
 enum TypeProjet {
   ACADEMIQUE
@@ -187,13 +201,20 @@ model VisitorAction {
   @@map("visitor_actions")
 }
 
-// ── PARAMETRES DU SITE ────────────────────────────────────────────────────
-// Ligne unique ("main") : stocke des réglages globaux modifiables depuis
-// l'admin sans redéploiement. Pour l'instant : l'URL du CV téléversé.
+// ── PARAMETRES DU SITE / PROFIL CV ────────────────────────────────────────
+// Ligne unique ("main") : réglages globaux modifiables depuis l'admin sans
+// redéploiement. Sert désormais de source pour l'en-tête du CV dynamique
+// (le PDF statique n'existe plus — cvUrl est supprimé).
 model SiteSettings {
-  id        String   @id @default("main") @db.VarChar(20)
-  cvUrl     String?  @map("cv_url") @db.Text
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            String   @id @default("main") @db.VarChar(20)
+  titrePro      String?  @map("titre_pro") @db.VarChar(150)   // ex: "Développeur Web Junior"
+  bio           String?  @db.Text                              // "À propos de moi"
+  photoUrl      String?  @map("photo_url") @db.Text
+  telephone     String?  @db.VarChar(30)
+  emailPublic   String?  @map("email_public") @db.VarChar(254)
+  localisation  String?  @db.VarChar(150)                       // ex: "Gegamey, Bénin"
+  qualites      String?  @db.VarChar(500)                       // liste séparée par virgules
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("site_settings")
 }
