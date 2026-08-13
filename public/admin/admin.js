@@ -645,7 +645,7 @@ async function chargerProfilCV() {
       document.getElementById('cv-email-public').value = s.emailPublic || '';
       document.getElementById('cv-localisation').value = s.localisation || '';
       document.getElementById('cv-qualites').value = s.qualites || '';
-      document.getElementById('cv-photo-url').value = s.photoUrl || '';
+      document.getElementById('cv-image-url').value = s.photoUrl || ''
       const apercu = document.getElementById('cv-photo-apercu');
       if (s.photoUrl) { apercu.src = s.photoUrl; apercu.classList.remove('masque'); }
       else apercu.classList.add('masque');
@@ -655,10 +655,10 @@ async function chargerProfilCV() {
 
 async function resoudreImageProfilCV() {
   const modeGalerie = document.querySelector('.bouton-onglet-image[data-cible="cv"].actif').dataset.mode === 'galerie';
-  if (!modeGalerie) return document.getElementById('cv-photo-url').value.trim();
+  if (!modeGalerie) return document.getElementById('cv-image-url').value.trim()
 
   const fichier = document.getElementById('cv-photo-fichier').files[0];
-  if (!fichier) return document.getElementById('cv-photo-url').value.trim();
+  if (!fichier) return document.getElementById('cv-image-url').value.trim();
 
   const base64 = await new Promise((resolve, reject) => {
     const lecteur = new FileReader();

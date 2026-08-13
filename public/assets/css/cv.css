@@ -266,9 +266,12 @@ body {
   .item-chrono, .carte-projet-cv { break-inside: avoid; }
 }
 
-/* ── Petits écrans (aperçu, pas d'impression) ─────────────────────────── */
+/* ── Petits écrans : montrer la feuille entière réduite, comme un PDF ──── */
+body { overflow-x: hidden; }
+
 @media screen and (max-width: 720px) {
-  .feuille-cv { grid-template-columns: 1fr; margin: 0; }
-  .colonne-laterale { padding: 28px 22px; }
-  .colonne-principale { padding: 28px 22px; }
+  .feuille-cv {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

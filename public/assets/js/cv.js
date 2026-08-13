@@ -157,6 +157,28 @@ function renderProjets(data) {
   }).join('');
 }
 
+// ── Mise à l'échelle mobile (affichage type "page PDF") ───────────────────
+function ajusterEchelleMobile() {
+  const feuille = document.querySelector('.feuille-cv');
+  if (!feuille) return;
+
+  feuille.style.transform = '';
+  feuille.style.marginBottom = '';
+
+  if (window.innerWidth >= 720) return;
+
+  const largeurNaturelle = feuille.offsetWidth;
+  const hauteurNaturelle = feuille.offsetHeight;
+  const echelle = (window.innerWidth - 24) / largeurNaturelle;
+
+  feuille.style.transformOrigin = 'top center';
+  feuille.style.transform = 'scale(' + echelle + ')';
+  feuille.style.marginBottom = (hauteurNaturelle * echelle - hauteurNaturelle) + 'px';
+}
+
+window.addEventListener('resize', ajusterEchelleMobile);
+
+
 // ── Init ──────────────────────────────────────────────────────────────────
 async function init() {
   const [settings, skills, langues, experiences, formations, projets] = await Promise.all([
@@ -168,17 +190,18 @@ async function init() {
     recuperer('/api/projects'),
   ]);
 
-  renderProfil(settings);
+renderProfil(settings);
   renderCompetences(skills);
   renderLangues(langues);
   renderExperiences(experiences);
   renderFormations(formations);
   renderProjets(projets);
 
+  ajusterEchelleMobile();
+
   if (new URLSearchParams(window.location.search).get('print') === '1') {
     setTimeout(() => window.print(), 100);
   }
-}
 
 document.getElementById('btn-imprimer').addEventListener('click', () => window.print());
 
