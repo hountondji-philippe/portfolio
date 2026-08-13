@@ -67,7 +67,7 @@ body {
 
 /* ── Colonne latérale ──────────────────────────────────────────────────── */
 .colonne-laterale {
-  background: linear-gradient(180deg, var(--bleu-nuit) 0%, var(--bleu-profond) 100%);
+  background: linear-gradient(180deg, var(--bleu-profond) 0%, var(--bleu-nuit) 100%);
   color: #eaf1fc;
   padding: 40px 28px;
 }

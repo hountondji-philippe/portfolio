@@ -57,7 +57,7 @@ function renderProfil(settings) {
 
   const qualitesBox = document.getElementById('section-qualites');
   if (s.qualites) {
-    const items = s.qualites.split(',').map((q) => q.trim()).filter(Boolean);
+    const items = s.qualites.split(/[,•;]+/).map((q) => q.trim()).filter(Boolean);
     document.getElementById('cv-qualites').innerHTML = items.map((q) => '<li>' + echapper(q) + '</li>').join('');
   } else {
     qualitesBox.classList.add('masque');
@@ -141,10 +141,7 @@ function renderProjets(data) {
   if (!projets.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucun projet renseigné</p>'; return; }
 
   cont.innerHTML = projets.map((p) => {
-    const liens = [];
-    if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener noreferrer">Voir le site</a>');
-    if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener noreferrer">GitHub</a>');
-
+    const texteLien = p.lienSite ? p.lienSite.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
     return '<div class="carte-projet-cv">' +
       '<div class="carte-projet-cv-entete">' +
       '<span class="carte-projet-cv-titre">' + echapper(p.titre) + '</span>' +
@@ -152,7 +149,7 @@ function renderProjets(data) {
       '</div>' +
       '<p class="carte-projet-cv-desc">' + echapper(p.description) + '</p>' +
       (p.technologies ? '<div class="carte-projet-cv-tech">' + echapper(p.technologies) + '</div>' : '') +
-      (liens.length ? '<div class="carte-projet-cv-liens">' + liens.join(' · ') + '</div>' : '') +
+      (p.lienSite ? '<div class="carte-projet-cv-liens"><a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener noreferrer">' + echapper(texteLien) + '</a></div>' : '') +
       '</div>';
   }).join('');
 }
