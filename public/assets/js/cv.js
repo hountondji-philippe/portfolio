@@ -140,16 +140,21 @@ function renderProjets(data) {
   const cont = document.getElementById('cv-projets');
   if (!projets.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucun projet renseigné</p>'; return; }
 
-  cont.innerHTML = projets.map((p) =>
-    '<div class="carte-projet-cv">' +
-    '<div class="carte-projet-cv-entete">' +
-    '<span class="carte-projet-cv-titre">' + echapper(p.titre) + '</span>' +
-    '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type) + '</span>' +
-    '</div>' +
-    '<p class="carte-projet-cv-desc">' + echapper(p.description) + '</p>' +
-    (p.technologies ? '<div class="carte-projet-cv-tech">' + echapper(p.technologies) + '</div>' : '') +
-    '</div>'
-  ).join('');
+  cont.innerHTML = projets.map((p) => {
+    const liens = [];
+    if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener noreferrer">Voir le site</a>');
+    if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener noreferrer">GitHub</a>');
+
+    return '<div class="carte-projet-cv">' +
+      '<div class="carte-projet-cv-entete">' +
+      '<span class="carte-projet-cv-titre">' + echapper(p.titre) + '</span>' +
+      '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type) + '</span>' +
+      '</div>' +
+      '<p class="carte-projet-cv-desc">' + echapper(p.description) + '</p>' +
+      (p.technologies ? '<div class="carte-projet-cv-tech">' + echapper(p.technologies) + '</div>' : '') +
+      (liens.length ? '<div class="carte-projet-cv-liens">' + liens.join(' · ') + '</div>' : '') +
+      '</div>';
+  }).join('');
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────

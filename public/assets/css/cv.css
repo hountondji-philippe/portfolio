@@ -235,6 +235,18 @@ body {
 .carte-projet-cv-tech { font-size: 11.5px; color: var(--bleu-profond); margin-top: 6px; font-weight: 600; }
 
 .etat-vide-cv { font-size: 13px; color: var(--gris-texte); font-style: italic; }
+.carte-projet-cv-liens {
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+.carte-projet-cv-liens a {
+  color: var(--couleur-accent, #1a56db);
+  text-decoration: none;
+  font-weight: 600;
+}
+.carte-projet-cv-liens a:hover {
+  text-decoration: underline;
+}
 
 /* ── Impression ────────────────────────────────────────────────────────── */
 @media print {
