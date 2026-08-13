@@ -178,7 +178,6 @@ function ajusterEchelleMobile() {
 
 window.addEventListener('resize', ajusterEchelleMobile);
 
-
 // ── Init ──────────────────────────────────────────────────────────────────
 async function init() {
   const [settings, skills, langues, experiences, formations, projets] = await Promise.all([
@@ -190,7 +189,7 @@ async function init() {
     recuperer('/api/projects'),
   ]);
 
-renderProfil(settings);
+  renderProfil(settings);
   renderCompetences(skills);
   renderLangues(langues);
   renderExperiences(experiences);
@@ -202,6 +201,7 @@ renderProfil(settings);
   if (new URLSearchParams(window.location.search).get('print') === '1') {
     setTimeout(() => window.print(), 100);
   }
+}
 
 document.getElementById('btn-imprimer').addEventListener('click', () => window.print());
 
