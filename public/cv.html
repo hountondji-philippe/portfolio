@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="clair">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CV — Hountondji Philippe | Développeur Web & Administrateur Réseau</title>
 <meta name="description" content="Curriculum Vitae de Philippe Hountondji — Développeur Web Full-Stack et Administrateur Réseau.">
-<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="favicon.ico" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/cv.css">
+<!-- Librairie pour générer directement le vrai fichier PDF au clic -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body>
 
+<!-- BARRE D'ACTION SUPÉRIEURE (NON IMPRIMÉE) -->
 <header class="barre-outils no-print">
   <div class="groupe-gauche-outils">
     <a href="index.html" class="bouton-outil bouton-outil-retour">
@@ -23,232 +26,153 @@
   </div>
 
   <div class="groupe-droite-outils">
-    <button type="button" id="btn-theme-cv" class="bouton-outil bouton-outil-secondaire" aria-label="Changer de thème">
-      <span class="icone-theme-soleil">☀ Thème clair</span>
-      <span class="icone-theme-lune">☾ Thème sombre</span>
-    </button>
-    <a href="cv/CV_philippe_hountondji.pdf" download="CV_Hountondji_Philippe.pdf" class="bouton-outil bouton-outil-secondaire" title="Télécharger le document PDF original">
+    <button type="button" id="btn-telecharger-pdf" class="bouton-outil bouton-outil-primaire">
       <iconify-icon icon="mdi:file-download-outline"></iconify-icon>
-      <span>PDF Original</span>
-    </a>
-    <button type="button" id="btn-imprimer" class="bouton-outil bouton-outil-primaire">
+      <span>Télécharger le PDF</span>
+    </button>
+    <button type="button" id="btn-imprimer" class="bouton-outil bouton-outil-secondaire">
       <iconify-icon icon="mdi:printer-outline"></iconify-icon>
-      <span>Imprimer / Exporter PDF</span>
+      <span>Imprimer</span>
     </button>
   </div>
 </header>
 
+<!-- ZONE DU DOCUMENT CV (FORMAT A4 RÉEL) -->
 <div class="enveloppe-cv">
-  <main class="feuille-cv" id="feuille-cv">
+  
+  <div class="feuille-cv" id="feuille-cv">
+    
+    <!-- BANDEAU BLEU HAUT DROIT -->
+    <div class="bandeau-bleu-haut">
+      <div class="contenu-bandeau">
+        <h1 class="nom-candidat" id="cv-nom">
+          <span>HOUNTONDJI</span>
+          <span>PHILIPPE</span>
+        </h1>
+        <p class="titre-candidat" id="cv-titre-pro">Développeur Web &amp; Administrateur Réseau</p>
+      </div>
+    </div>
 
-    <!-- COLONNE GAUCHE (CARTE ENCADRÉE AVEC ARCHE PHOTO) -->
-    <aside class="colonne-gauche">
+    <!-- GRILLE CORPS CV -->
+    <div class="corps-cv-grid">
       
-      <div class="zone-arche-photo">
-        <div class="cadre-arche">
-          <img id="cv-photo" src="images/philippe.jpeg" alt="Philippe Hountondji" class="photo-profil" onerror="this.style.display='none'; document.getElementById('cv-photo-vide').classList.remove('masque');">
+      <!-- COLONNE GAUCHE AVEC ARCHE ENCADRÉE INTÉGRALE -->
+      <aside class="colonne-gauche-cadre">
+        
+        <!-- Arche de la photo -->
+        <div class="arche-photo-haut">
+          <img id="cv-photo" src="images/philippe.jpeg" alt="Philippe Hountondji" class="photo-arche" onerror="this.style.display='none'; document.getElementById('cv-photo-vide').classList.remove('masque');">
           <div id="cv-photo-vide" class="photo-vide masque">PH</div>
         </div>
-      </div>
 
-      <div class="boite-sections-gauche">
-        
-        <section class="section-gauche">
-          <h2 class="titre-gauche">Coordonnées</h2>
-          <ul class="liste-details-gauche" id="cv-contacts">
-            <li>
-              <iconify-icon icon="mdi:map-marker-outline" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">Localisation</span>
-                <span id="cv-loc">Porto-Novo, Bénin</span>
-              </div>
-            </li>
-            <li>
-              <iconify-icon icon="mdi:email-outline" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">Email</span>
-                <a href="mailto:hountondjiphilippe58@gmail.com" id="cv-mail">hountondjiphilippe58@gmail.com</a>
-              </div>
-            </li>
-            <li>
-              <iconify-icon icon="mdi:phone-outline" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">Téléphone</span>
-                <a href="tel:+2290158156930" id="cv-tel">+229 01 58 15 69 30</a>
-              </div>
-            </li>
-            <li>
-              <iconify-icon icon="mdi:whatsapp" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">WhatsApp</span>
-                <a href="https://wa.me/22958156930" target="_blank" rel="noopener noreferrer">+229 58 15 69 30</a>
-              </div>
-            </li>
-            <li>
-              <iconify-icon icon="mdi:github" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">GitHub</span>
-                <a href="https://github.com/hountondji-philippe" target="_blank" rel="noopener noreferrer">hountondji-philippe</a>
-              </div>
-            </li>
-            <li>
-              <iconify-icon icon="mdi:linkedin" class="icone-gauche"></iconify-icon>
-              <div>
-                <span class="etiquette-contact">LinkedIn</span>
-                <a href="https://www.linkedin.com/in/philippe-hountondji-200ba73a6" target="_blank" rel="noopener noreferrer">Philippe Hountondji</a>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <section class="section-gauche">
-          <h2 class="titre-gauche">Langues</h2>
-          <ul class="liste-langues-gauche" id="cv-langues">
-            <li>
-              <span class="nom-langue">Français</span>
-              <span class="niveau-langue">Langue maternelle / Courant</span>
-            </li>
-            <li>
-              <span class="nom-langue">Anglais</span>
-              <span class="niveau-langue">Technique &amp; Professionnel</span>
-            </li>
-          </ul>
-        </section>
-
-        <section class="section-gauche">
-          <h2 class="titre-gauche">Compétences</h2>
-          <div class="groupes-competences-gauche" id="cv-competences">
-            <!-- Rempli dynamiquement avec fallback -->
-            <div class="sous-groupe-competence">
-              <span class="titre-sous-groupe">Développement Web :</span>
-              <p>Laravel, React, Node.js, PHP, JavaScript, TypeScript, HTML5 / CSS3, Tailwind CSS</p>
-            </div>
-            <div class="sous-groupe-competence">
-              <span class="titre-sous-groupe">Mobile &amp; Logiciel :</span>
-              <p>Flutter, Dart, C, Python</p>
-            </div>
-            <div class="sous-groupe-competence">
-              <span class="titre-sous-groupe">Réseaux &amp; Systèmes :</span>
-              <p>Cisco Packet Tracer, Architecture TCP/IP, Subnetting IPv4/IPv6, Sécurité réseau, Linux, Windows</p>
-            </div>
-            <div class="sous-groupe-competence">
-              <span class="titre-sous-groupe">Bases de données &amp; Outils :</span>
-              <p>PostgreSQL, MySQL, Prisma ORM, Git / GitHub, Vercel, Postman</p>
+        <!-- Sections internes du cadre gauche -->
+        <div class="sections-gauche">
+          
+          <div class="groupe-section-gauche">
+            <h2 class="titre-section-gauche">COORDONNÉES</h2>
+            <div class="texte-section-gauche" id="cv-contacts">
+              <p id="cv-loc">Porto-Novo, Bénin</p>
+              <p><a href="mailto:hountondjiphilippe58@gmail.com" id="cv-mail">hountondjiphilippe58@gmail.com</a></p>
+              <p><a href="tel:+2290158156930" id="cv-tel">+229 01 58 15 69 30</a></p>
+              <p><a href="https://wa.me/22958156930" target="_blank">WhatsApp : +229 58 15 69 30</a></p>
+              <p><a href="https://github.com/hountondji-philippe" target="_blank">github.com/hountondji-philippe</a></p>
+              <p><a href="https://www.linkedin.com/in/philippe-hountondji-200ba73a6" target="_blank">linkedin.com/in/philippe-hountondji</a></p>
             </div>
           </div>
-        </section>
 
-        <section class="section-gauche" id="section-qualites">
-          <h2 class="titre-gauche">Centres d'intérêt &amp; Atouts</h2>
-          <ul class="liste-puces-gauche" id="cv-qualites">
-            <li>Cybersécurité &amp; Veille technologique</li>
-            <li>Architecture logicielle &amp; Clean Code</li>
-            <li>Résolution de problèmes complexes</li>
-            <li>Esprit d'équipe &amp; Rigueur méthodologique</li>
-          </ul>
-        </section>
+          <div class="groupe-section-gauche">
+            <h2 class="titre-section-gauche">LANGUES</h2>
+            <div class="texte-section-gauche" id="cv-langues">
+              <p>Français — courant</p>
+              <p>Anglais — intermédiaire / technique</p>
+            </div>
+          </div>
 
-      </div>
-    </aside>
+          <div class="groupe-section-gauche">
+            <h2 class="titre-section-gauche">COMPÉTENCES</h2>
+            <div class="texte-section-gauche" id="cv-competences">
+              <p><strong>Web :</strong> Laravel, React, Node.js, PHP, Tailwind CSS</p>
+              <p><strong>Mobile :</strong> Flutter, Dart</p>
+              <p><strong>Réseaux :</strong> Cisco, Subnetting, TCP/IP, Linux</p>
+              <p><strong>BDD &amp; Outils :</strong> PostgreSQL, MySQL, Prisma, Git</p>
+            </div>
+          </div>
 
-    <!-- COLONNE DROITE (BANDEAU HEADER + EXPÉRIENCES + FORMATIONS + PROJETS) -->
-    <section class="colonne-droite">
-      
-      <!-- BANDEAU BLEU ROYALE EN-TÊTE -->
-      <header class="bandeau-nom">
-        <h1 id="cv-nom" class="nom-candidat">HOUNTONDJI PHILIPPE</h1>
-        <p id="cv-titre-pro" class="titre-candidat">Développeur Web Full-Stack &amp; Administrateur Réseau</p>
-      </header>
+          <div class="groupe-section-gauche" id="section-qualites">
+            <h2 class="titre-section-gauche">CENTRE D'INTÉRÊT</h2>
+            <div class="texte-section-gauche" id="cv-qualites">
+              <p>Cybersécurité &amp; Réseaux</p>
+              <p>Veille technologique</p>
+              <p>Clean Code &amp; Logiciel</p>
+              <p>Résolution de problèmes</p>
+            </div>
+          </div>
 
-      <div class="corps-principal">
+        </div>
+
+      </aside>
+
+      <!-- COLONNE DROITE : EXPÉRIENCES & FORMATIONS -->
+      <main class="colonne-droite-contenu">
         
-        <section class="section-principale" id="section-bio" style="display:none;">
-          <h2 class="titre-principal">Profil Professionnel</h2>
-          <p id="cv-bio" class="texte-bio"></p>
-        </section>
-
-        <section class="section-principale">
-          <h2 class="titre-principal">Expériences Professionnelles</h2>
-          <div class="liste-chronologique" id="cv-experiences">
+        <section class="bloc-section-droite">
+          <h2 class="titre-section-droite">EXPÉRIENCES PROFESSIONNELLES</h2>
+          <div class="liste-droite" id="cv-experiences">
             
-            <article class="bloc-experience">
-              <div class="ligne-titre-experience">
-                <h3 class="poste-experience">Stage de Licence 2 — Développeur Web Full-Stack</h3>
-              </div>
-              <p class="contexte-experience">NextMux · Bénin <span class="separateur-meta">|</span> <span class="date-experience">Juin 2026 — Présent</span></p>
-              <ul class="puces-experience">
-                <li>Développement d'architectures web complètes et évolutives en environnement de production.</li>
-                <li>Conception d'APIs REST performantes et sécurisées avec Laravel et Node.js.</li>
-                <li>Intégration d'interfaces utilisateurs dynamiques et réactives avec React.js.</li>
-                <li>Collaboration au sein d'une équipe technique en respectant les standards de qualité et de sécurité.</li>
+            <article class="element-cv">
+              <h3 class="poste-titre">Stage Développeur Web Full-Stack</h3>
+              <p class="contexte-ligne">NextMux, Bénin | Juin 2026 — Présent</p>
+              <ul class="puces-cv">
+                <li>Conception et développement d'applications web full-stack avec Laravel et React.</li>
+                <li>Développement et sécurisation d'APIs REST performantes en environnement de production.</li>
+                <li>Optimisation des bases de données et intégration d'interfaces utilisateur réactives.</li>
+                <li>Collaboration en équipe agile dans le respect des standards de sécurité informatique.</li>
               </ul>
             </article>
 
-            <article class="bloc-experience">
-              <div class="ligne-titre-experience">
-                <h3 class="poste-experience">Développeur Web &amp; Administrateur Réseau — Projets Personnels</h3>
-              </div>
-              <p class="contexte-experience">Indépendant · Porto-Novo, Bénin <span class="separateur-meta">|</span> <span class="date-experience">2024 — Présent</span></p>
-              <ul class="puces-experience">
-                <li>Conception et déploiement de la plateforme sécurisée de signalement des Violences Basées sur le Genre (VBG).</li>
-                <li>Réalisation d'applications web de restauration et commande en ligne (RestoDirect &amp; NEXTMUX).</li>
-                <li>Mise en œuvre d'infrastructures réseaux, segmentation VLAN, plans d'adressage et sécurisation d'accès.</li>
+            <article class="element-cv">
+              <h3 class="poste-titre">Développeur Web &amp; Administrateur Réseau — Projets Personnels</h3>
+              <p class="contexte-ligne">Indépendant, Porto-Novo, Bénin | 2024 — Présent</p>
+              <ul class="puces-cv">
+                <li>Conception et déploiement de la plateforme citoyenne sécurisée VBG Bénin.</li>
+                <li>Création des plateformes RestoDirect &amp; NEXTMUX (commandes et gestion de restaurants).</li>
+                <li>Mise en œuvre d'infrastructures réseaux, segmentation VLAN, plans d'adressage et sécurité système.</li>
               </ul>
             </article>
 
           </div>
         </section>
 
-        <section class="section-principale">
-          <h2 class="titre-principal">Formations</h2>
-          <div class="liste-chronologique" id="cv-formations">
+        <section class="bloc-section-droite">
+          <h2 class="titre-section-droite">FORMATIONS</h2>
+          <div class="liste-droite" id="cv-formations">
 
-            <article class="bloc-formation">
-              <div class="ligne-titre-formation">
-                <h3 class="diplome-formation">Licence en Informatique de Gestion (L2 en cours)</h3>
-              </div>
-              <p class="contexte-formation">ENEAM — Université d'Abomey-Calavi, Cotonou <span class="separateur-meta">|</span> <span class="date-formation">2025 — Présent</span></p>
-              <p class="desc-formation">Spécialisation en développement logiciel, administration des réseaux et systèmes d'exploitation, bases de données relationnelles et sécurité informatique.</p>
+            <article class="element-cv">
+              <h3 class="poste-titre">Licence en Informatique de Gestion (L2 en cours)</h3>
+              <p class="contexte-ligne">ENEAM, Université d'Abomey-Calavi, Cotonou | 2025 — Présent</p>
+              <p class="desc-simple">Approfondissement en développement logiciel, administration des réseaux et systèmes, sécurité informatique et bases de données relationnelles.</p>
             </article>
 
-            <article class="bloc-formation">
-              <div class="ligne-titre-formation">
-                <h3 class="diplome-formation">Licence 1 — Informatique de Gestion</h3>
-              </div>
-              <p class="contexte-formation">ENEAM, Cotonou <span class="separateur-meta">|</span> <span class="date-formation">2024 — 2025</span></p>
-              <p class="desc-formation">Validation des fondamentaux de l'algorithmique, structures de données, architectures matérielles et réseaux locaux.</p>
+            <article class="element-cv">
+              <h3 class="poste-titre">Licence 1 — Informatique de Gestion</h3>
+              <p class="contexte-ligne">ENEAM, Cotonou | 2024 — 2025</p>
+              <p class="desc-simple">Validation des fondamentaux en programmation, structures de données, algorithmique et réseaux locaux.</p>
             </article>
 
-            <article class="bloc-formation">
-              <div class="ligne-titre-formation">
-                <h3 class="diplome-formation">Baccalauréat</h3>
-              </div>
-              <p class="contexte-formation">CEG Danto, Porto-Novo, Bénin <span class="separateur-meta">|</span> <span class="date-formation">2024</span></p>
+            <article class="element-cv">
+              <h3 class="poste-titre">Baccalauréat</h3>
+              <p class="contexte-ligne">CEG Danto, Porto-Novo, Bénin | 2024</p>
             </article>
 
           </div>
         </section>
 
-        <section class="section-principale" id="section-projets-cv">
-          <h2 class="titre-principal">Projets Notables</h2>
-          <div class="grille-projets-cv" id="cv-projets">
-            <div class="item-projet-cv">
-              <span class="nom-projet-cv">Plateforme VBG Bénin</span>
-              <p class="desc-projet-cv">Plateforme citoyenne sécurisée de signalement et accompagnement des victimes de violences.</p>
-              <span class="tech-projet-cv">Laravel · PostgreSQL · Sécurité</span>
-            </div>
-            <div class="item-projet-cv">
-              <span class="nom-projet-cv">NEXTMUX &amp; RestoDirect</span>
-              <p class="desc-projet-cv">Solutions complètes de commande et gestion pour établissements de restauration.</p>
-              <span class="tech-projet-cv">React · Node.js · Express · API</span>
-            </div>
-          </div>
-        </section>
+      </main>
 
-      </div>
-    </section>
+    </div>
 
-  </main>
+  </div>
+
 </div>
 
 <script src="assets/js/cv.js"></script>
