@@ -1,208 +1,212 @@
+// assets/js/cv.js
+// Logique dynamique de la page CV : chargement API, fallback local, thème et impression
+
 (function () {
-'use strict';
+  'use strict';
 
-const LABELS_CATEGORIE = {
-  FRONTEND: 'Front-end', BACKEND: 'Back-end', MOBILE: 'Mobile',
-  RESEAUX_INFRA: 'Réseaux', MARKETING_DIGITAL: 'Marketing digital',
-  DESIGN_CONTENU: 'Design', AUTRE: 'Autre',
-};
-const LABELS_TYPE_PROJET = { ACADEMIQUE: 'Académique', PROFESSIONNEL: 'Professionnel' };
-const ORDRE_CATEGORIES = ['FRONTEND', 'BACKEND', 'MOBILE', 'RESEAUX_INFRA', 'MARKETING_DIGITAL', 'DESIGN_CONTENU', 'AUTRE'];
+  // ── GESTION DU THÈME (CLAIR / SOMBRE) ───────────────────────────────────
+  const racineHtml = document.documentElement;
+  const btnThemeCv = document.getElementById('btn-theme-cv');
 
-function echapper(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+  const themeInitial = localStorage.getItem('theme-portfolio') || 'clair';
+  racineHtml.setAttribute('data-theme', themeInitial);
 
-async function recuperer(url) {
-  try {
-    const r = await fetch(url);
-    if (!r.ok) return null;
-    return await r.json();
-  } catch {
-    return null;
-  }
-}
-
-function periodeStr(debut, fin) {
-  if (debut && fin) return echapper(debut) + ' — ' + echapper(fin);
-  if (debut) return echapper(debut) + ' — Présent';
-  return fin ? echapper(fin) : '';
-}
-
-// ── Profil / en-tête ─────────────────────────────────────────────────────
-function renderProfil(settings) {
-  const s = (settings && settings.settings) || {};
-
-  if (s.titrePro) document.getElementById('cv-titre-pro').textContent = s.titrePro;
-  if (s.bio) {
-    document.getElementById('cv-bio').textContent = s.bio;
-  } else {
-    document.getElementById('section-bio').classList.add('masque');
+  if (btnThemeCv) {
+    btnThemeCv.addEventListener('click', () => {
+      const actuel = racineHtml.getAttribute('data-theme');
+      const nouveau = actuel === 'sombre' ? 'clair' : 'sombre';
+      racineHtml.setAttribute('data-theme', nouveau);
+      localStorage.setItem('theme-portfolio', nouveau);
+    });
   }
 
-  if (s.photoUrl) {
-    const img = document.getElementById('cv-photo');
-    img.src = s.photoUrl;
-    img.classList.remove('masque');
-    document.getElementById('cv-photo-vide').classList.add('masque');
+  // ── IMPRESSION / EXPORT PDF ─────────────────────────────────────────────
+  const btnImprimer = document.getElementById('btn-imprimer');
+  if (btnImprimer) {
+    btnImprimer.addEventListener('click', () => {
+      window.print();
+    });
   }
-
-  const contacts = [];
-  if (s.telephone) contacts.push(['Téléphone', s.telephone]);
-  if (s.emailPublic) contacts.push(['Email', s.emailPublic]);
-  if (s.localisation) contacts.push(['Localisation', s.localisation]);
-  document.getElementById('cv-contacts').innerHTML = contacts.map(([label, val]) =>
-    '<li><strong>' + echapper(label) + '</strong>' + echapper(val) + '</li>'
-  ).join('') || '<li class="etat-vide-cv">Aucune information de contact renseignée</li>';
-
-  const qualitesBox = document.getElementById('section-qualites');
-  if (s.qualites) {
-    const items = s.qualites.split(/[,•;]+/).map((q) => q.trim()).filter(Boolean);
-    document.getElementById('cv-qualites').innerHTML = items.map((q) => '<li>' + echapper(q) + '</li>').join('');
-  } else {
-    qualitesBox.classList.add('masque');
-  }
-}
-
-// ── Compétences ──────────────────────────────────────────────────────────
-function renderCompetences(data) {
-  const skills = (data && data.skills) || [];
-  const cont = document.getElementById('cv-competences');
-  if (!skills.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucune compétence renseignée</p>'; return; }
-
-  const parCategorie = {};
-  skills.forEach((s) => {
-    if (!parCategorie[s.categorie]) parCategorie[s.categorie] = [];
-    parCategorie[s.categorie].push(s);
-  });
-
-  cont.innerHTML = ORDRE_CATEGORIES.filter((cat) => parCategorie[cat]).map((cat) => {
-    const items = parCategorie[cat];
-    return '<div class="groupe-competence"><h3>' + echapper(LABELS_CATEGORIE[cat] || cat) + '</h3>' +
-      '<div class="tags-competence">' +
-      items.map((s) => '<span class="tag-competence">' + echapper(s.nom) + '</span>').join('') +
-      '</div></div>';
-  }).join('');
-}
-
-// ── Langues ──────────────────────────────────────────────────────────────
-function renderLangues(data) {
-  const langues = (data && data.languages) || [];
-  const cont = document.getElementById('cv-langues');
-  if (!langues.length) { cont.innerHTML = '<li class="etat-vide-cv">Aucune langue renseignée</li>'; return; }
-  cont.innerHTML = langues.map((l) =>
-    '<li><span>' + echapper(l.nom) + '</span><span class="niveau-langue">' + echapper(l.niveau) + '</span></li>'
-  ).join('');
-}
-
-// ── Expériences ──────────────────────────────────────────────────────────
-function renderExperiences(data) {
-  const experiences = (data && data.experiences) || [];
-  const cont = document.getElementById('cv-experiences');
-  if (!experiences.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucune expérience renseignée</p>'; return; }
-
-  cont.innerHTML = experiences.map((exp) => {
-    const tags = exp.tags ? exp.tags.split(',').map((t) => '<span>' + echapper(t.trim()) + '</span>').join('') : '';
-    const sousTitre = [exp.entreprise, exp.lieu].filter(Boolean).map(echapper).join(' · ');
-    return '<div class="item-chrono">' +
-      '<div class="item-entete">' +
-      '<span class="item-titre">' + echapper(exp.titre) + '</span>' +
-      '<span class="item-periode">' + periodeStr(exp.dateDebut, exp.dateFin) + '</span>' +
-      '</div>' +
-      (sousTitre ? '<div class="item-sous-titre">' + sousTitre + '</div>' : '') +
-      (exp.description ? '<p class="item-description">' + echapper(exp.description) + '</p>' : '') +
-      (tags ? '<div class="item-tags">' + tags + '</div>' : '') +
-      '</div>';
-  }).join('');
-}
-
-// ── Formations ───────────────────────────────────────────────────────────
-function renderFormations(data) {
-  const formations = (data && data.formations) || [];
-  const cont = document.getElementById('cv-formations');
-  if (!formations.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucune formation renseignée</p>'; return; }
-
-  cont.innerHTML = formations.map((f) =>
-    '<div class="item-chrono">' +
-    '<div class="item-entete">' +
-    '<span class="item-titre">' + echapper(f.titre) + '</span>' +
-    '<span class="item-periode">' + echapper(f.periode || '') + '</span>' +
-    '</div>' +
-    (f.ecole ? '<div class="item-sous-titre">' + echapper(f.ecole) + '</div>' : '') +
-    (f.description ? '<p class="item-description">' + echapper(f.description) + '</p>' : '') +
-    '</div>'
-  ).join('');
-}
-
-// ── Projets (académiques + professionnels fusionnés, sans distinction visuelle forte) ──
-function renderProjets(data) {
-  const projets = (data && data.projects) || [];
-  const cont = document.getElementById('cv-projets');
-  if (!projets.length) { cont.innerHTML = '<p class="etat-vide-cv">Aucun projet renseigné</p>'; return; }
-
-  cont.innerHTML = projets.map((p) => {
-    const texteLien = p.lienSite ? p.lienSite.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
-    return '<div class="carte-projet-cv">' +
-      '<div class="carte-projet-cv-entete">' +
-      '<span class="carte-projet-cv-titre">' + echapper(p.titre) + '</span>' +
-      '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type) + '</span>' +
-      '</div>' +
-      '<p class="carte-projet-cv-desc">' + echapper(p.description) + '</p>' +
-      (p.technologies ? '<div class="carte-projet-cv-tech">' + echapper(p.technologies) + '</div>' : '') +
-      (p.lienSite ? '<div class="carte-projet-cv-liens"><a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener noreferrer">' + echapper(texteLien) + '</a></div>' : '') +
-      '</div>';
-  }).join('');
-}
-
-// ── Mise à l'échelle mobile (affichage type "page PDF") ───────────────────
-function ajusterEchelleMobile() {
-  const feuille = document.querySelector('.feuille-cv');
-  if (!feuille) return;
-
-  feuille.style.transform = '';
-  feuille.style.marginBottom = '';
-
-  if (window.innerWidth >= 720) return;
-
-  const largeurNaturelle = feuille.offsetWidth;
-  const hauteurNaturelle = feuille.offsetHeight;
-  const echelle = (window.innerWidth - 24) / largeurNaturelle;
-
-  feuille.style.transformOrigin = 'top center';
-  feuille.style.transform = 'scale(' + echelle + ')';
-  feuille.style.marginBottom = (hauteurNaturelle * echelle - hauteurNaturelle) + 'px';
-}
-
-window.addEventListener('resize', ajusterEchelleMobile);
-
-// ── Init ──────────────────────────────────────────────────────────────────
-async function init() {
-  const [settings, skills, langues, experiences, formations, projets] = await Promise.all([
-    recuperer('/api/formations?resource=settings'),
-    recuperer('/api/skills'),
-    recuperer('/api/formations?resource=languages'),
-    recuperer('/api/experiences'),
-    recuperer('/api/formations'),
-    recuperer('/api/projects'),
-  ]);
-
-  renderProfil(settings);
-  renderCompetences(skills);
-  renderLangues(langues);
-  renderExperiences(experiences);
-  renderFormations(formations);
-  renderProjets(projets);
-
-  ajusterEchelleMobile();
 
   if (new URLSearchParams(window.location.search).get('print') === '1') {
-    setTimeout(() => window.print(), 100);
+    window.addEventListener('load', () => {
+      setTimeout(() => window.print(), 200);
+    });
   }
-}
 
-document.getElementById('btn-imprimer').addEventListener('click', () => window.print());
+  // ── UTILITAIRES ─────────────────────────────────────────────────────────
+  function echapper(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-else init();
+  async function recuperer(url) {
+    try {
+      const r = await fetch(url);
+      if (!r.ok) return null;
+      return await r.json();
+    } catch {
+      return null;
+    }
+  }
 
+  // ── CHARGEMENT ET RENDU DES DONNÉES ─────────────────────────────────────
+  async function init() {
+    const [settingsData, skillsData, languesData, expData, formData, projData] = await Promise.all([
+      recuperer('/api/formations?resource=settings'),
+      recuperer('/api/skills'),
+      recuperer('/api/formations?resource=languages'),
+      recuperer('/api/experiences'),
+      recuperer('/api/formations'),
+      recuperer('/api/projects'),
+    ]);
+
+    // Profil & Coordonnées
+    if (settingsData && settingsData.settings) {
+      const s = settingsData.settings;
+      if (s.titrePro) {
+        document.getElementById('cv-titre-pro').textContent = s.titrePro;
+      }
+      if (s.photoUrl) {
+        const img = document.getElementById('cv-photo');
+        img.src = s.photoUrl;
+      }
+      if (s.localisation) {
+        const el = document.getElementById('cv-loc');
+        if (el) el.textContent = s.localisation;
+      }
+      if (s.emailPublic) {
+        const el = document.getElementById('cv-mail');
+        if (el) { el.textContent = s.emailPublic; el.href = 'mailto:' + s.emailPublic; }
+      }
+      if (s.telephone) {
+        const el = document.getElementById('cv-tel');
+        if (el) { el.textContent = s.telephone; el.href = 'tel:' + s.telephone.replace(/\s+/g, ''); }
+      }
+      if (s.bio) {
+        const secBio = document.getElementById('section-bio');
+        const textBio = document.getElementById('cv-bio');
+        if (secBio && textBio) {
+          textBio.textContent = s.bio;
+          secBio.style.display = 'block';
+        }
+      }
+      if (s.qualites) {
+        const items = s.qualites.split(/[,•;]+/).map((q) => q.trim()).filter(Boolean);
+        if (items.length) {
+          const listQ = document.getElementById('cv-qualites');
+          if (listQ) listQ.innerHTML = items.map((q) => '<li>' + echapper(q) + '</li>').join('');
+        }
+      }
+    }
+
+    // Compétences
+    if (skillsData && skillsData.skills && skillsData.skills.length > 0) {
+      const parCategorie = {};
+      skillsData.skills.forEach((sk) => {
+        if (!parCategorie[sk.categorie]) parCategorie[sk.categorie] = [];
+        parCategorie[sk.categorie].push(sk.nom);
+      });
+
+      const LABELS_CAT = {
+        FRONTEND: 'Développement Front-End',
+        BACKEND: 'Back-End & Logique Serveur',
+        MOBILE: 'Mobile',
+        RESEAUX_INFRA: 'Réseaux & Infrastructure',
+        MARKETING_DIGITAL: 'Marketing Digital',
+        DESIGN_CONTENU: 'Design & Création',
+        AUTRE: 'Autres Outils',
+      };
+
+      const contCompetences = document.getElementById('cv-competences');
+      if (contCompetences) {
+        contCompetences.innerHTML = Object.entries(parCategorie).map(([cat, noms]) => `
+          <div class="sous-groupe-competence">
+            <span class="titre-sous-groupe">${echapper(LABELS_CAT[cat] || cat)} :</span>
+            <p>${noms.map(echapper).join(', ')}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Langues
+    if (languesData && languesData.languages && languesData.languages.length > 0) {
+      const contLangues = document.getElementById('cv-langues');
+      if (contLangues) {
+        contLangues.innerHTML = languesData.languages.map((l) => `
+          <li>
+            <span class="nom-langue">${echapper(l.nom)}</span>
+            <span class="niveau-langue">${echapper(l.niveau)}</span>
+          </li>
+        `).join('');
+      }
+    }
+
+    // Expériences
+    if (expData && expData.experiences && expData.experiences.length > 0) {
+      const contExp = document.getElementById('cv-experiences');
+      if (contExp) {
+        contExp.innerHTML = expData.experiences.map((exp) => {
+          const periode = [exp.dateDebut, exp.dateFin || (exp.statut === 'EN_COURS' ? 'Présent' : '')].filter(Boolean).join(' — ');
+          const sousTitre = [exp.entreprise, exp.lieu].filter(Boolean).map(echapper).join(' · ');
+          
+          let puces = '';
+          if (exp.description) {
+            const lignes = exp.description.split(/\n|•|- /).map((l) => l.trim()).filter(Boolean);
+            if (lignes.length > 1) {
+              puces = '<ul class="puces-experience">' + lignes.map((l) => '<li>' + echapper(l) + '</li>').join('') + '</ul>';
+            } else {
+              puces = '<p class="desc-formation">' + echapper(exp.description) + '</p>';
+            }
+          }
+
+          return `
+            <article class="bloc-experience">
+              <div class="ligne-titre-experience">
+                <h3 class="poste-experience">${echapper(exp.titre)}</h3>
+              </div>
+              <p class="contexte-experience">${sousTitre} ${periode ? `<span class="separateur-meta">|</span> <span class="date-experience">${echapper(periode)}</span>` : ''}</p>
+              ${puces}
+            </article>
+          `;
+        }).join('');
+      }
+    }
+
+    // Formations
+    if (formData && formData.formations && formData.formations.length > 0) {
+      const contForm = document.getElementById('cv-formations');
+      if (contForm) {
+        contForm.innerHTML = formData.formations.map((f) => `
+          <article class="bloc-formation">
+            <div class="ligne-titre-formation">
+              <h3 class="diplome-formation">${echapper(f.titre)}</h3>
+            </div>
+            <p class="contexte-formation">${echapper(f.ecole || '')} ${f.periode ? `<span class="separateur-meta">|</span> <span class="date-formation">${echapper(f.periode)}</span>` : ''}</p>
+            ${f.description ? `<p class="desc-formation">${echapper(f.description)}</p>` : ''}
+          </article>
+        `).join('');
+      }
+    }
+
+    // Projets Notables
+    if (projData && projData.projects && projData.projects.length > 0) {
+      const contProj = document.getElementById('cv-projets');
+      if (contProj) {
+        const topProjets = projData.projects.slice(0, 4);
+        contProj.innerHTML = topProjets.map((p) => `
+          <div class="item-projet-cv">
+            <span class="nom-projet-cv">${echapper(p.titre)}</span>
+            <p class="desc-projet-cv">${echapper(p.description)}</p>
+            ${p.technologies ? `<span class="tech-projet-cv">${echapper(p.technologies)}</span>` : ''}
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

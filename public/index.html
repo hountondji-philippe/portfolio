@@ -246,26 +246,109 @@
   </div>
 </section>
 
-<section id="mon-cv" class="section-generale">
+<section id="mon-cv" class="section-generale section-cv-vedette">
   <div class="entete-section">
-    <span class="etiquette-section">Document</span>
-    <h2 class="titre-section">Mon CV</h2>
-    <p class="sous-titre-section">Consultez ou téléchargez mon CV professionnel.</p>
+    <span class="etiquette-section">Curriculum Vitae</span>
+    <h2 class="titre-section">Mon Profil &amp; CV</h2>
+    <p class="sous-titre-section">Consultez en ligne mon CV interactif ou téléchargez la version officielle en PDF.</p>
   </div>
-  <div class="carte-cv">
-    <div class="icone-carte-cv">CV</div>
-    <div class="info-carte-cv">
-      <h3>Hountondji Philippe Jésussédè</h3>
-      <p>Développeur Web Full-Stack &amp; Administrateur Réseau — Porto-Novo, Bénin</p>
-      <div class="badges-carte-cv">
-        <span>ENEAM — Licence 2</span>
-        <span>Informatique de Gestion</span>
-        <span>Disponible pour stage</span>
+
+  <div class="vitrine-cv-container">
+    <div class="carte-vitrine-cv">
+      
+      <!-- Aperçu miniature visuel du template CV avec arche -->
+      <div class="apercu-miniature-cv">
+        <a href="cv.html" class="mini-feuille-cv" title="Cliquer pour ouvrir le CV interactif">
+          <div class="mini-colonne-gauche">
+            <div class="mini-arche-photo">
+              <img src="images/philippe.jpeg" alt="Philippe Hountondji">
+            </div>
+            <div class="mini-cadre-gauche">
+              <div class="mini-ligne-titre"></div>
+              <div class="mini-ligne"></div>
+              <div class="mini-ligne courte"></div>
+              <div class="mini-ligne-titre" style="margin-top:6px"></div>
+              <div class="mini-ligne"></div>
+            </div>
+          </div>
+          <div class="mini-colonne-droite">
+            <div class="mini-bandeau-bleu">
+              <span class="mini-nom">HOUNTONDJI PHILIPPE</span>
+              <span class="mini-titre">Développeur Web &amp; Réseau</span>
+            </div>
+            <div class="mini-corps">
+              <div class="mini-ligne-section"></div>
+              <div class="mini-bloc"></div>
+              <div class="mini-bloc"></div>
+              <div class="mini-ligne-section" style="margin-top:6px"></div>
+              <div class="mini-bloc"></div>
+            </div>
+          </div>
+        </a>
+        <span class="badge-miniature-format">Aperçu du modèle A4 interactif</span>
       </div>
-    </div>
-    <div class="actions-carte-cv">
-      <a href="cv.html" class="bouton-principal lien-cv" id="lien-telecharger-cv">Télécharger</a>
-      <a href="cv.html" target="_blank" rel="noopener noreferrer" class="bouton-secondaire lien-cv">Aperçu</a>
+
+      <!-- Détails, points forts et boutons d'action -->
+      <div class="details-vitrine-cv">
+        <div class="badge-disponibilite-cv">
+          <span class="pastille-pulsante"></span>
+          <span>Disponible immédiatement pour stage / opportunités</span>
+        </div>
+
+        <h3 class="nom-vitrine-cv">Hountondji Philippe Jésussédè</h3>
+        <p class="role-vitrine-cv">Développeur Web Full-Stack &amp; Administrateur Réseau</p>
+        <p class="desc-vitrine-cv">
+          Étudiant en Licence 2 Informatique de Gestion à l'ENEAM (UAC). Passionné par le développement d'applications complètes et performantes (Laravel, React, Node.js, Flutter) et l'administration des réseaux informatiques (Cisco, routage, sécurité).
+        </p>
+
+        <div class="grille-points-forts-cv">
+          <div class="point-fort-cv">
+            <iconify-icon icon="mdi:school-outline"></iconify-icon>
+            <div>
+              <strong>Formation</strong>
+              <span>Licence 2 ENEAM (UAC)</span>
+            </div>
+          </div>
+          <div class="point-fort-cv">
+            <iconify-icon icon="mdi:code-tags"></iconify-icon>
+            <div>
+              <strong>Stack Web &amp; Mobile</strong>
+              <span>Laravel · React · Node · Flutter</span>
+            </div>
+          </div>
+          <div class="point-fort-cv">
+            <iconify-icon icon="mdi:server-network"></iconify-icon>
+            <div>
+              <strong>Réseaux &amp; Systèmes</strong>
+              <span>TCP/IP · Cisco · Subnetting · Linux</span>
+            </div>
+          </div>
+          <div class="point-fort-cv">
+            <iconify-icon icon="mdi:map-marker-outline"></iconify-icon>
+            <div>
+              <strong>Localisation</strong>
+              <span>Porto-Novo &amp; Cotonou, Bénin</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-vitrine-cv">
+          <a href="cv.html" class="bouton-principal bouton-action-cv">
+            <iconify-icon icon="mdi:file-eye-outline"></iconify-icon>
+            <span>Consulter le CV interactif</span>
+          </a>
+          <a href="cv/CV_philippe_hountondji.pdf" download="CV_Philippe_Hountondji.pdf" class="bouton-secondaire bouton-action-cv">
+            <iconify-icon icon="mdi:file-pdf-box"></iconify-icon>
+            <span>Télécharger le PDF</span>
+          </a>
+          <a href="cv.html?print=1" target="_blank" rel="noopener noreferrer" class="bouton-secondaire bouton-action-cv" title="Ouvrir la version imprimable / export PDF">
+            <iconify-icon icon="mdi:printer-outline"></iconify-icon>
+            <span>Imprimer</span>
+          </a>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </section>
