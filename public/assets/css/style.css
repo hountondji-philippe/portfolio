@@ -1,50 +1,50 @@
-/* TOKENS DE DESIGN — PALETTE MODERNE (OPTION 4 : ROUGE VIBRANT & SURFACES HAUTE DÉFINITION) */
+/* TOKENS DE DESIGN — PALETTE SIGNATURE « INDIGO PREMIUM » : UNIQUE & PRO */
 :root {
-  --fond-principal: #FFFFFF;
-  --fond-secondaire: #F8FAFC;
+  --fond-principal: #FAFBFF;
+  --fond-secondaire: #F1F3F9;
   --fond-carte: #FFFFFF;
-  --texte-principal: #0F172A;
-  --texte-attenue: #64748B;
-  --vert-accent: #E11D48; /* Rouge rubis moderne */
-  --vert-accent-vif: #F43F5E;
-  --vert-pastel: #FFF1F2;
-  --ligne-discrete: rgba(15, 23, 42, 0.08);
-  --ombre-carte: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-  --ombre-survol: 0 20px 35px -5px rgba(225, 29, 72, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
-  --fond-section-alterne: #F1F5F9;
+  --texte-principal: #0C0E2B;
+  --texte-attenue: #5B6183;
+  --vert-accent: #6C3FF5;
+  --vert-accent-vif: #8B5CF6;
+  --vert-pastel: #EDE9FE;
+  --ligne-discrete: rgba(12, 14, 43, 0.07);
+  --ombre-carte: 0 4px 20px -2px rgba(108, 63, 245, 0.06), 0 2px 6px rgba(12, 14, 43, 0.03);
+  --ombre-survol: 0 20px 40px -5px rgba(108, 63, 245, 0.18), 0 8px 16px -4px rgba(12, 14, 43, 0.04);
+  --fond-section-alterne: #F3F1FA;
 
   --police-titre: "Archivo", sans-serif;
   --police-texte: "Inter", sans-serif;
   --police-mono: "JetBrains Mono", monospace;
 
-  /* Compétences : dégradé + texte de l'en-tête d'accordéon */
-  --gradient-competence-debut: #F8FAFC;
-  --gradient-competence-fin: #F1F5F9;
-  --texte-entete-competence: #0F172A;
-  --fleche-competence: #E11D48;
+  /* Compétences */
+  --gradient-competence-debut: #F5F3FF;
+  --gradient-competence-fin: #EDE9FE;
+  --texte-entete-competence: #0C0E2B;
+  --fleche-competence: #6C3FF5;
 
   color-scheme: light;
 }
 
 html[data-theme="sombre"] {
-  --fond-principal: #0B0F17;
-  --fond-secondaire: #111827;
-  --fond-carte: #141C2E;
-  --texte-principal: #F8FAFC;
-  --texte-attenue: #94A3B8;
-  --vert-accent: #FB7185;
-  --vert-accent-vif: #FDA4AF;
-  --vert-pastel: rgba(225, 29, 72, 0.16);
-  --ligne-discrete: rgba(255, 255, 255, 0.08);
-  --ombre-carte: 0 8px 30px rgba(0, 0, 0, 0.4);
-  --ombre-survol: 0 20px 40px rgba(225, 29, 72, 0.2), 0 0 20px rgba(225, 29, 72, 0.15);
-  --fond-section-alterne: #0E1420;
+  --fond-principal: #08081A;
+  --fond-secondaire: #0E0F28;
+  --fond-carte: #121338;
+  --texte-principal: #EEEEF8;
+  --texte-attenue: #9B9DC0;
+  --vert-accent: #A78BFA;
+  --vert-accent-vif: #C4B5FD;
+  --vert-pastel: rgba(108, 63, 245, 0.18);
+  --ligne-discrete: rgba(255, 255, 255, 0.07);
+  --ombre-carte: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --ombre-survol: 0 20px 40px rgba(108, 63, 245, 0.25), 0 0 24px rgba(167, 139, 250, 0.15);
+  --fond-section-alterne: #0B0C22;
 
   /* Compétences en mode sombre */
-  --gradient-competence-debut: #131B2E;
-  --gradient-competence-fin: #17223B;
-  --texte-entete-competence: #F8FAFC;
-  --fleche-competence: #FB7185;
+  --gradient-competence-debut: #12133A;
+  --gradient-competence-fin: #171849;
+  --texte-entete-competence: #EEEEF8;
+  --fleche-competence: #A78BFA;
 
   color-scheme: dark;
 }
@@ -385,11 +385,11 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   100% { box-shadow: 0 0 0 0 rgba(98, 184, 8, 0); }
 }
 
-/* HERO SOMBRE MODERNE (OPTION 4 : TECH HIGH-END) */
+/* HERO SOMBRE — INDIGO PREMIUM */
 .ecran-accueil-sombre {
-  background: radial-gradient(circle at 18% 22%, rgba(225, 29, 72, 0.22) 0%, transparent 45%),
-              radial-gradient(circle at 82% 78%, rgba(13, 58, 111, 0.28) 0%, transparent 50%),
-              linear-gradient(175deg, #0B0F17 0%, #0F172A 50%, #0A0D14 100%);
+  background: radial-gradient(circle at 20% 20%, rgba(108, 63, 245, 0.25) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
+              linear-gradient(170deg, #08081A 0%, #0E0F28 50%, #06061A 100%);
   overflow: hidden;
   position: relative;
 }
@@ -398,9 +398,9 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 36px 36px;
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
   mask-image: radial-gradient(ellipse 80% 65% at 40% 30%, black 15%, transparent 80%);
   pointer-events: none;
 }
@@ -411,7 +411,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
   left: 28%;
   width: 620px;
   height: 620px;
-  border: 1.5px solid rgba(225, 29, 72, 0.2);
+  border: 1.5px solid rgba(108, 63, 245, 0.22);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -424,29 +424,29 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
 }
 
 .badge-pilule-sombre {
-  background: rgba(255, 255, 255, 0.07);
-  color: #F8FAFC;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(108, 63, 245, 0.12);
+  color: #C4B5FD;
+  border: 1px solid rgba(108, 63, 245, 0.3);
   backdrop-filter: blur(8px);
 }
 
 .titre-accueil-sombre { color: #FFFFFF; }
 .titre-accueil-sombre .titre-souligne { 
   color: var(--vert-accent-vif);
-  text-shadow: 0 0 30px rgba(244, 63, 94, 0.35);
+  text-shadow: 0 0 35px rgba(108, 63, 245, 0.4);
 }
 
-.sous-titre-accueil-sombre { color: rgba(255, 255, 255, 0.75); }
+.sous-titre-accueil-sombre { color: rgba(255, 255, 255, 0.72); }
 
 .bouton-secondaire-sombre {
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(108, 63, 245, 0.08);
   backdrop-filter: blur(10px);
   color: #FFFFFF;
 }
 .bouton-secondaire-sombre:hover { 
-  border-color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(167, 139, 250, 0.6);
+  background: rgba(108, 63, 245, 0.18);
   transform: translateY(-2px);
 }
 
@@ -532,7 +532,7 @@ html[data-theme="sombre"] .badge-pilule { filter: brightness(1.3); }
 }
 .ecran-accueil-sombre .carte-bento:hover {
   border-color: var(--vert-accent);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(225, 29, 72, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(108, 63, 245, 0.3);
 }
 
 .carte-bento-large { grid-column: span 1; }

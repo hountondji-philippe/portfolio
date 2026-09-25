@@ -4,41 +4,52 @@
 (function () {
   'use strict';
 
+  const LABELS_CATEGORIE = {
+    FRONTEND: 'Front-end', BACKEND: 'Back-end', MOBILE: 'Mobile',
+    RESEAUX_INFRA: 'Réseaux', MARKETING_DIGITAL: 'Marketing digital',
+    DESIGN_CONTENU: 'Design', AUTRE: 'Autre',
+  };
+  const ORDRE_CATEGORIES = ['FRONTEND', 'BACKEND', 'MOBILE', 'RESEAUX_INFRA', 'MARKETING_DIGITAL', 'DESIGN_CONTENU', 'AUTRE'];
+  const LABELS_TYPE_PROJET = { ACADEMIQUE: 'Académique', PROFESSIONNEL: 'Professionnel' };
+
   // ── EXPORT PDF DIRECT (TÉLÉCHARGEMENT DU VRAI FICHIER PDF) ──────────────
   const btnTelechargerPdf = document.getElementById('btn-telecharger-pdf');
-  if (btnTelechargerPdf) {
-    btnTelechargerPdf.addEventListener('click', () => {
-      const feuille = document.getElementById('feuille-cv');
-      if (!feuille) return;
 
-      const contenuOriginal = btnTelechargerPdf.innerHTML;
-      btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération...</span>';
-      btnTelechargerPdf.disabled = true;
+  function declencherTelechargementPdf() {
+    const feuille = document.getElementById('feuille-cv');
+    if (!feuille || !btnTelechargerPdf) return;
 
-      const opt = {
-        margin: 0,
-        filename: 'CV_Hountondji_Philippe.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
+    const contenuOriginal = btnTelechargerPdf.innerHTML;
+    btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération...</span>';
+    btnTelechargerPdf.disabled = true;
 
-      if (typeof html2pdf !== 'undefined') {
-        html2pdf().set(opt).from(feuille).save().then(() => {
-          btnTelechargerPdf.innerHTML = contenuOriginal;
-          btnTelechargerPdf.disabled = false;
-        }).catch((err) => {
-          console.warn('Fallback téléchargement direct', err);
-          window.location.href = 'cv/CV_philippe_hountondji.pdf';
-          btnTelechargerPdf.innerHTML = contenuOriginal;
-          btnTelechargerPdf.disabled = false;
-        });
-      } else {
-        window.location.href = 'cv/CV_philippe_hountondji.pdf';
+    const opt = {
+      margin: 0,
+      filename: 'CV_Hountondji_Philippe.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    if (typeof html2pdf !== 'undefined') {
+      html2pdf().set(opt).from(feuille).save().then(() => {
         btnTelechargerPdf.innerHTML = contenuOriginal;
         btnTelechargerPdf.disabled = false;
-      }
-    });
+      }).catch((err) => {
+        console.warn('Échec html2pdf, repli sur impression navigateur', err);
+        window.print();
+        btnTelechargerPdf.innerHTML = contenuOriginal;
+        btnTelechargerPdf.disabled = false;
+      });
+    } else {
+      window.print();
+      btnTelechargerPdf.innerHTML = contenuOriginal;
+      btnTelechargerPdf.disabled = false;
+    }
+  }
+
+  if (btnTelechargerPdf) {
+    btnTelechargerPdf.addEventListener('click', declencherTelechargementPdf);
   }
 
   // ── IMPRESSION A4 DIRECTE ───────────────────────────────────────────────
@@ -49,9 +60,18 @@
     });
   }
 
-  if (new URLSearchParams(window.location.search).get('print') === '1') {
+  // ── DÉCLENCHEURS AUTOMATIQUES VIA PARAMÈTRE D'URL ────────────────────────
+  // cv.html?print=1    -> ouvre la boîte de dialogue d'impression du navigateur
+  // cv.html?download=1 -> lance directement le téléchargement du PDF (html2pdf)
+  const paramsUrl = new URLSearchParams(window.location.search);
+  if (paramsUrl.get('print') === '1') {
     window.addEventListener('load', () => {
       setTimeout(() => window.print(), 300);
+    });
+  }
+  if (paramsUrl.get('download') === '1') {
+    window.addEventListener('load', () => {
+      setTimeout(declencherTelechargementPdf, 500);
     });
   }
 
@@ -70,12 +90,72 @@
     }
   }
 
+  // ── RENDU COMPÉTENCES (groupées par catégorie, remplace le contenu statique) ──
+  function renderCompetences(skills) {
+    const cont = document.getElementById('cv-competences');
+    if (!cont || !skills || !skills.length) return; // garde le contenu statique par défaut si rien en base
+
+    const parCategorie = {};
+    skills.forEach((s) => {
+      if (!parCategorie[s.categorie]) parCategorie[s.categorie] = [];
+      parCategorie[s.categorie].push(s.nom);
+    });
+
+    cont.innerHTML = ORDRE_CATEGORIES.filter((cat) => parCategorie[cat]).map((cat) =>
+      '<p><strong>' + echapper(LABELS_CATEGORIE[cat] || cat) + ' :</strong> ' + parCategorie[cat].map(echapper).join(', ') + '</p>'
+    ).join('');
+  }
+
+  // ── RENDU LANGUES (remplace le contenu statique) ─────────────────────────
+  function renderLangues(langues) {
+    const cont = document.getElementById('cv-langues');
+    if (!cont || !langues || !langues.length) return;
+    cont.innerHTML = langues.map((l) => '<p>' + echapper(l.nom) + ' — ' + echapper(l.niveau) + '</p>').join('');
+  }
+
+  // ── RENDU QUALITÉS / CENTRES D'INTÉRÊT (depuis les réglages) ────────────
+  function renderQualites(qualites) {
+    const cont = document.getElementById('cv-qualites');
+    if (!cont || !qualites) return;
+    const items = qualites.split(',').map((q) => q.trim()).filter(Boolean);
+    if (!items.length) return;
+    cont.innerHTML = items.map((q) => '<p>' + echapper(q) + '</p>').join('');
+  }
+
+  // ── RENDU PROJETS (académiques + professionnels fusionnés, sans distinction de section) ──
+  function renderProjets(projets) {
+    const cont = document.getElementById('cv-projets');
+    if (!cont) return;
+    if (!projets || !projets.length) {
+      cont.innerHTML = '<p class="etat-vide-cv">Aucun projet renseigné pour le moment.</p>';
+      return;
+    }
+
+    cont.innerHTML = projets.map((p) => {
+      const liens = [];
+      if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener">Voir le site</a>');
+      if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener">GitHub</a>');
+
+      return '<article class="element-cv">' +
+        '<h3 class="poste-titre">' + echapper(p.titre) +
+        '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type) + '</span>' +
+        '</h3>' +
+        (p.technologies ? '<p class="contexte-ligne">' + echapper(p.technologies) + '</p>' : '') +
+        '<p class="desc-simple">' + echapper(p.description) + '</p>' +
+        (liens.length ? '<p class="liens-projet">' + liens.join('') + '</p>' : '') +
+        '</article>';
+    }).join('');
+  }
+
   // ── CHARGEMENT DES DONNÉES DEPUIS L'API SI DISPONIBLE ───────────────────
   async function init() {
-    const [settingsData, expData, formData] = await Promise.all([
+    const [settingsData, expData, formData, skillsData, languesData, projetsData] = await Promise.all([
       recuperer('/api/formations?resource=settings'),
       recuperer('/api/experiences'),
       recuperer('/api/formations'),
+      recuperer('/api/skills'),
+      recuperer('/api/formations?resource=languages'),
+      recuperer('/api/projects'),
     ]);
 
     if (settingsData && settingsData.settings) {
@@ -100,7 +180,12 @@
         const el = document.getElementById('cv-tel');
         if (el) { el.textContent = s.telephone; el.href = 'tel:' + s.telephone.replace(/\s+/g, ''); }
       }
+      renderQualites(s.qualites);
     }
+
+    if (skillsData && skillsData.skills) renderCompetences(skillsData.skills);
+    if (languesData && languesData.languages) renderLangues(languesData.languages);
+    renderProjets(projetsData && projetsData.projects);
 
     // Expériences dynamiques (si la base renvoie des données)
     if (expData && expData.experiences && expData.experiences.length > 0) {

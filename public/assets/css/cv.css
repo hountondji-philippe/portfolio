@@ -297,6 +297,10 @@ body {
   font-weight: 700;
   color: var(--bleu-cv);
   margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .contexte-ligne {
@@ -321,6 +325,42 @@ body {
   font-size: 11px;
   line-height: 1.45;
   color: #334155;
+}
+
+/* ── BADGE TYPE DE PROJET (académique / professionnel) ───────────────────── */
+.badge-type-projet {
+  display: inline-block;
+  font-family: var(--police-corps);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--bleu-cv);
+  background: #EBF3FC;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.liens-projet {
+  font-size: 11px;
+  margin-top: 3px;
+}
+.liens-projet a {
+  color: var(--bleu-cv);
+  text-decoration: none;
+  font-weight: 600;
+}
+.liens-projet a:not(:last-child)::after {
+  content: '·';
+  margin: 0 6px;
+  color: var(--texte-gris);
+}
+
+.etat-vide-cv {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--texte-gris);
 }
 
 /* ── RESPONSIVE MOBILE (POUR ÉCRANS ÉTROITS) ─────────────────────────────── */
