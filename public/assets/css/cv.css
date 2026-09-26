@@ -98,7 +98,17 @@ body {
 .enveloppe-cv {
   padding: 24px 16px 48px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 32px; /* espace visuel entre les pages, comme un aperçu Word */
+}
+
+/* Utilisée temporairement pendant la génération du PDF (voir cv.js) pour ne
+   pas capturer le padding/espacement d'affichage en plus des marges PDF. */
+.enveloppe-cv--export {
+  padding: 0 !important;
+  gap: 0 !important;
 }
 
 /* -- FEUILLE CV (LARGEUR A4 FIXE, HAUTEUR LIBRE) ------------------------- */
@@ -221,6 +231,15 @@ body {
 
 .masque {
   display: none !important;
+}
+
+/* CORRECTION : copie du cadre gauche sur une page ajoutée par paginerCV().
+   Sur la page 1, margin-top: -160px sert à remonter le cadre SOUS le bandeau
+   bleu. Sur les pages suivantes il n'y a pas de bandeau, donc ce décalage
+   négatif n'a pas lieu d'être : le cadre doit juste s'aligner normalement en
+   haut de page, avec un petit espace au lieu d'être collé au bord. */
+.colonne-gauche-cadre--suite {
+  margin-top: 14px;
 }
 
 /* Sections internes du cadre gauche */
@@ -488,5 +507,20 @@ body {
   .titre-section-droite,
   .poste-titre {
     color: #0B3B73 !important;
+  }
+
+  /* CORRECTION : chaque page ajoutée par paginerCV() démarre sur une
+     nouvelle feuille physique, sans l'espace d'aperçu écran. */
+  .feuille-cv-suite {
+    break-before: page;
+    page-break-before: always;
+    margin-top: 0 !important;
+  }
+
+  /* Sur ces pages, pas de bandeau bleu à contourner : on annule le
+     décalage négatif de -160px hérité de la règle .colonne-gauche-cadre
+     ci-dessus (la double classe l'emporte car déclarée après). */
+  .colonne-gauche-cadre.colonne-gauche-cadre--suite {
+    margin-top: 14px !important;
   }
 }

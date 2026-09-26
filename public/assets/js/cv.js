@@ -1,3 +1,7 @@
+// assets/js/cv.js
+// Gestion de l'affichage dynamique et de l'export PDF direct (html2pdf & impression)
+// Version corrigee : pagination correcte (plusieurs pages A4 si besoin, sans
+// couper un bloc en deux) pour l'affichage, l'impression et le PDF telecharge.
 
 (function () {
   'use strict';
@@ -10,41 +14,125 @@
   const ORDRE_CATEGORIES = ['FRONTEND', 'BACKEND', 'MOBILE', 'RESEAUX_INFRA', 'MARKETING_DIGITAL', 'DESIGN_CONTENU', 'AUTRE'];
   const LABELS_TYPE_PROJET = { ACADEMIQUE: 'Académique', PROFESSIONNEL: 'Professionnel' };
 
+  // -- PAGINATION MANUELLE (répète le cadre gauche sur chaque page si besoin) --
+  // Avec html2canvas, le CV est capturé comme UNE SEULE image continue, puis
+  // découpée en tranches de 297mm. Le cadre gauche (coordonnées, langues,
+  // compétences...) étant court, il n'apparaît que sur la tranche 1 — rien à
+  // découper pour lui sur la tranche 2. Pour que la page 2 ait aussi son
+  // cadre complet, il faut reconstruire une vraie "page 2" dans le DOM, avec
+  // une copie du cadre gauche, AVANT que la capture ne soit faite. C'est ce
+  // que fait cette fonction : elle répartit les sections (Expériences,
+  // Formations, Projets) entre plusieurs pages selon ce qui tient réellement,
+  // et duplique le cadre gauche sur chaque page ajoutée.
+  function paginerCV() {
+    if (window.innerWidth <= 820) return; // mise en page mobile : pas de pagination A4
+    if (document.body.dataset.cvPagine === '1') return; // déjà fait, ne pas dupliquer deux fois
+
+    const enveloppe = document.querySelector('.enveloppe-cv');
+    const sidebarOriginal = document.querySelector('.colonne-gauche-cadre');
+    const colonneDroite = document.querySelector('.colonne-droite-contenu');
+    const bandeau = document.querySelector('.bandeau-bleu-haut');
+    if (!enveloppe || !sidebarOriginal || !colonneDroite || !bandeau) return;
+
+    const PX_PAR_MM = 3.7795; // conversion mm -> px CSS (96dpi), identique à ce que le navigateur utilise
+    const HAUTEUR_PAGE = 297 * PX_PAR_MM;
+    const MARGE_SECURITE = 40; // évite qu'un bloc arrive pile au bord
+    const dispoPage1 = HAUTEUR_PAGE - bandeau.offsetHeight - MARGE_SECURITE;
+    const dispoPageSuite = HAUTEUR_PAGE - MARGE_SECURITE - 20;
+
+    const blocs = Array.from(colonneDroite.children); // les .bloc-section-droite (Expériences, Formations, Projets)
+    const pages = [[]];
+    let hauteurCumulee = 0;
+    let dispoCourante = dispoPage1;
+
+    blocs.forEach((bloc) => {
+      const h = bloc.offsetHeight + 20; // + l'espace entre sections (gap: 20px)
+      if (hauteurCumulee + h > dispoCourante && pages[pages.length - 1].length > 0) {
+        pages.push([]);
+        hauteurCumulee = 0;
+        dispoCourante = dispoPageSuite;
+      }
+      pages[pages.length - 1].push(bloc);
+      hauteurCumulee += h;
+    });
+
+    document.body.dataset.cvPagine = '1';
+    if (pages.length <= 1) return; // tout tient sur une seule page, rien à changer
+
+    // Page 1 : ne garde que ses propres blocs
+    const colonneDroitePage1 = document.createElement('div');
+    colonneDroitePage1.className = 'colonne-droite-contenu';
+    pages[0].forEach((b) => colonneDroitePage1.appendChild(b));
+    colonneDroite.replaceWith(colonneDroitePage1);
+
+    // Pages suivantes : copie complète du cadre gauche + suite du contenu
+    for (let i = 1; i < pages.length; i++) {
+      const feuilleSuite = document.createElement('div');
+      feuilleSuite.className = 'feuille-cv feuille-cv-suite';
+
+      const grilleSuite = document.createElement('div');
+      grilleSuite.className = 'corps-cv-grid corps-cv-grid-suite';
+
+      const sidebarClone = sidebarOriginal.cloneNode(true);
+      sidebarClone.classList.add('colonne-gauche-cadre--suite');
+      // Retire les id dupliqués (cv-loc, cv-mail...) pour un HTML valide ;
+      // le contenu texte, lui, reste bien copié.
+      sidebarClone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+
+      const colonneDroiteSuite = document.createElement('div');
+      colonneDroiteSuite.className = 'colonne-droite-contenu';
+      pages[i].forEach((b) => colonneDroiteSuite.appendChild(b));
+
+      grilleSuite.appendChild(sidebarClone);
+      grilleSuite.appendChild(colonneDroiteSuite);
+      feuilleSuite.appendChild(grilleSuite);
+      enveloppe.appendChild(feuilleSuite);
+    }
+  }
+
   // -- EXPORT PDF DIRECT (TELECHARGEMENT DU VRAI FICHIER PDF) --------------
   const btnTelechargerPdf = document.getElementById('btn-telecharger-pdf');
 
   function declencherTelechargementPdf() {
-    const feuille = document.getElementById('feuille-cv');
-    if (!feuille || !btnTelechargerPdf) return;
+    paginerCV(); // s'assure que la pagination (cadre gauche répété) est en place avant l'export
+
+    const source = document.querySelector('.enveloppe-cv');
+    if (!source || !btnTelechargerPdf) return;
 
     const contenuOriginal = btnTelechargerPdf.innerHTML;
     btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération...</span>';
     btnTelechargerPdf.disabled = true;
 
+    // Neutralise temporairement le padding/espacement de l'enveloppe (utile
+    // à l'écran pour centrer/espacer les pages) pour que la capture PDF
+    // n'inclue pas cette marge d'affichage en plus des marges PDF ci-dessous.
+    source.classList.add('enveloppe-cv--export');
+
     const opt = {
-      // CORRECTION : marge haut/bas non nulle, identique sur CHAQUE page.
-      // Avant (margin: 0), le contenu qui commençait une page 2 ou 3 était
-      // collé au bord exact du papier (0mm), ce qui donne un rendu "capture
-      // découpée" et risque d'être rogné à l'impression réelle (la plupart
-      // des imprimantes ne savent pas imprimer jusqu'au bord). Gauche/droite
-      // restent à 0 pour ne pas casser le bandeau bleu qui touche le bord
-      // droit sur la page 1 (identité visuelle du template conservée).
+      // Marge haut/bas non nulle, identique sur CHAQUE page (y compris les
+      // pages 2/3 ajoutées par paginerCV()), pour que rien ne touche le bord
+      // du papier. Gauche/droite restent à 0 pour ne pas casser le bandeau
+      // bleu qui touche le bord droit sur la page 1.
       margin: [6, 0, 8, 0], // [haut, gauche, bas, droite] en mm
       filename: 'CV_Hountondji_Philippe.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
+      // CORRECTION : PNG au lieu de JPEG. JPEG compresse avec perte et
+      // adoucit le texte et les couleurs (c'est ce qui donnait l'impression
+      // que le PDF téléchargé était "moins net/moins lumineux" qu'à l'écran).
+      // PNG est sans perte : le rendu du PDF correspond fidèlement à l'écran.
+      image: { type: 'png' },
       html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      // Indique explicitement à html2pdf quels blocs ne doivent jamais être
-      // tranchés entre deux pages (sinon découpage au pixel près, sans se
-      // soucier de la mise en page).
+      // Force un saut de page avant chaque page ajoutée par paginerCV(), et
+      // empêche en plus qu'un bloc individuel soit tranché en deux.
       pagebreak: {
-        mode: ['css', 'legacy'],
+        mode: ['css'],
+        before: '.feuille-cv-suite',
         avoid: ['.element-cv', '.groupe-section-gauche', '.bloc-section-droite', '.colonne-gauche-cadre']
       }
     };
 
     if (typeof html2pdf !== 'undefined') {
-      html2pdf().set(opt).from(feuille).toPdf().get('pdf').then((pdf) => {
+      html2pdf().set(opt).from(source).toPdf().get('pdf').then((pdf) => {
         // CORRECTION : pied de page (nom + numéro de page) sur CHAQUE page
         // du PDF final. C'est ce détail qui distingue un PDF "conçu" d'un
         // simple screenshot découpé en tranches.
@@ -60,15 +148,18 @@
           pdf.text('Page ' + i + ' / ' + totalPages, largeurPage - 8, hauteurPage - 4, { align: 'right' });
         }
       }).save().then(() => {
+        source.classList.remove('enveloppe-cv--export');
         btnTelechargerPdf.innerHTML = contenuOriginal;
         btnTelechargerPdf.disabled = false;
       }).catch((err) => {
         console.warn('Échec html2pdf, repli sur impression navigateur', err);
+        source.classList.remove('enveloppe-cv--export');
         window.print();
         btnTelechargerPdf.innerHTML = contenuOriginal;
         btnTelechargerPdf.disabled = false;
       });
     } else {
+      source.classList.remove('enveloppe-cv--export');
       window.print();
       btnTelechargerPdf.innerHTML = contenuOriginal;
       btnTelechargerPdf.disabled = false;
@@ -255,6 +346,16 @@
           </article>
         `).join('');
       }
+    }
+
+    // Une fois tout le contenu réel en place, on répartit sur plusieurs
+    // pages si besoin. On attend que les polices (Oswald/Inter) soient
+    // chargées pour que les hauteurs mesurées soient exactes (sinon le texte
+    // peut changer légèrement de taille après coup et fausser le calcul).
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(paginerCV));
+    } else {
+      setTimeout(paginerCV, 300);
     }
   }
 
