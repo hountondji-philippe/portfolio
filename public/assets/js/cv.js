@@ -241,6 +241,12 @@
   }
 
   // -- RENDU PROJETS (académiques + professionnels fusionnés, sans distinction de section) --
+  function formaterUrlAffichage(url) {
+    // Retire "https://" et le "/" final pour un affichage propre du lien,
+    // dans le même esprit que les liens GitHub/LinkedIn des coordonnées.
+    return String(url || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+  }
+
   function renderProjets(projets) {
     const cont = document.getElementById('cv-projets');
     if (!cont) return;
@@ -251,8 +257,8 @@
 
     cont.innerHTML = projets.map((p) => {
       const liens = [];
-      if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener">Voir le site</a>');
-      if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener">GitHub</a>');
+      if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener">' + echapper(formaterUrlAffichage(p.lienSite)) + '</a>');
+      if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener">' + echapper(formaterUrlAffichage(p.lienGithub)) + '</a>');
 
       return '<article class="element-cv">' +
         '<h3 class="poste-titre">' + echapper(p.titre) +

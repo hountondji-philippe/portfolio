@@ -385,6 +385,7 @@ body {
 .liens-projet {
   font-size: 11px;
   margin-top: 3px;
+  word-break: break-word;
 }
 .liens-projet a {
   color: var(--bleu-cv);
