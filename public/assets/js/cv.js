@@ -24,8 +24,12 @@
   // que fait cette fonction : elle répartit les sections (Expériences,
   // Formations, Projets) entre plusieurs pages selon ce qui tient réellement,
   // et duplique le cadre gauche sur chaque page ajoutée.
-  function paginerCV() {
-    if (window.innerWidth <= 820) return; // mise en page mobile : pas de pagination A4
+  function paginerCV(forcerDesktop) {
+    // En navigation normale, pas de pagination A4 sur mobile (l'utilisateur
+    // voit le CV en défilement continu, adapté à l'écran). Pendant l'export
+    // PDF, en revanche, on force la mise en page bureau (voir plus bas) donc
+    // ce garde-fou est ignoré : forcerDesktop=true saute cette limite.
+    if (!forcerDesktop && window.innerWidth <= 820) return;
     if (document.body.dataset.cvPagine === '1') return; // déjà fait, ne pas dupliquer deux fois
 
     const enveloppe = document.querySelector('.enveloppe-cv');
@@ -94,8 +98,6 @@
   const btnTelechargerPdf = document.getElementById('btn-telecharger-pdf');
 
   function declencherTelechargementPdf() {
-    paginerCV(); // s'assure que la pagination (cadre gauche répété) est en place avant l'export
-
     const source = document.querySelector('.enveloppe-cv');
     if (!source || !btnTelechargerPdf) return;
 
@@ -103,10 +105,15 @@
     btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération...</span>';
     btnTelechargerPdf.disabled = true;
 
-    // Neutralise temporairement le padding/espacement de l'enveloppe (utile
-    // à l'écran pour centrer/espacer les pages) pour que la capture PDF
-    // n'inclue pas cette marge d'affichage en plus des marges PDF ci-dessous.
+    // CORRECTION IMPORTANTE : on force l'apparence "bureau" (deux colonnes,
+    // dimensions A4) AVANT de mesurer quoi que ce soit. Sans ça, télécharger
+    // depuis un téléphone capturait la mise en page mobile empilée en une
+    // seule colonne (celle du @media max-width:820px), ce qui donnait un PDF
+    // complètement différent et désordonné (cadre gauche seul sur sa page,
+    // sections mal réparties). La classe ci-dessous force les dimensions
+    // bureau quel que soit l'appareil utilisé pour télécharger.
     source.classList.add('enveloppe-cv--export');
+    paginerCV(true); // pagine avec les dimensions bureau désormais forcées
 
     const opt = {
       // Marge haut/bas non nulle, identique sur CHAQUE page (y compris les
@@ -115,11 +122,12 @@
       // bleu qui touche le bord droit sur la page 1.
       margin: [6, 0, 8, 0], // [haut, gauche, bas, droite] en mm
       filename: 'CV_Hountondji_Philippe.pdf',
-      // CORRECTION : PNG au lieu de JPEG. JPEG compresse avec perte et
-      // adoucit le texte et les couleurs (c'est ce qui donnait l'impression
-      // que le PDF téléchargé était "moins net/moins lumineux" qu'à l'écran).
-      // PNG est sans perte : le rendu du PDF correspond fidèlement à l'écran.
-      image: { type: 'png' },
+      // CORRECTION : retour en JPEG mais en qualité maximale (1.0 au lieu de
+      // 0.98). Le PNG (essayé juste avant) donne un fichier illisible en
+      // taille (30+ Mo) dès qu'une vraie photo est présente, car PNG
+      // compresse très mal les photos. JPEG en qualité 1.0 reste net, sans
+      // perte visible, pour un poids de fichier raisonnable.
+      image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       // Force un saut de page avant chaque page ajoutée par paginerCV(), et

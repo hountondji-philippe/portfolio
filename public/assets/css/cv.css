@@ -111,6 +111,93 @@ body {
   gap: 0 !important;
 }
 
+/* CORRECTION IMPORTANTE : ces règles forcent l'apparence "bureau" (deux
+   colonnes, dimensions A4) pendant l'export PDF, MÊME SI le téléchargement
+   est lancé depuis un téléphone. Sans elles, html2canvas capture la mise en
+   page mobile empilée en une seule colonne (@media max-width:820px), ce qui
+   donnait un PDF complètement désordonné. Comme ces règles sont en dehors de
+   toute media query et utilisent !important, elles l'emportent sur les
+   règles mobiles, quelle que soit la largeur réelle de l'écran. */
+.enveloppe-cv--export .feuille-cv {
+  width: 210mm !important;
+  min-height: 297mm !important;
+  box-shadow: none !important;
+}
+
+.enveloppe-cv--export .bandeau-bleu-haut {
+  width: 68% !important;
+  height: 185px !important;
+  margin-left: auto !important;
+  padding: 0 36px !important;
+  text-align: left !important;
+}
+
+.enveloppe-cv--export .nom-candidat {
+  font-size: 44px !important;
+}
+
+.enveloppe-cv--export .titre-candidat {
+  font-size: 15px !important;
+}
+
+.enveloppe-cv--export .corps-cv-grid {
+  grid-template-columns: 215px 1fr !important;
+  padding: 0 34px 28px !important;
+  gap: 34px !important;
+}
+
+.enveloppe-cv--export .colonne-gauche-cadre {
+  width: 215px !important;
+  max-width: 215px !important;
+  margin: -160px 0 0 0 !important;
+}
+
+.enveloppe-cv--export .colonne-gauche-cadre--suite {
+  margin: 14px 0 0 0 !important;
+}
+
+.enveloppe-cv--export .arche-photo-haut {
+  height: 220px !important;
+}
+
+.enveloppe-cv--export .sections-gauche {
+  padding: 16px 14px 18px !important;
+  gap: 16px !important;
+}
+
+.enveloppe-cv--export .titre-section-gauche {
+  font-size: 15px !important;
+}
+
+.enveloppe-cv--export .texte-section-gauche {
+  font-size: 10.5px !important;
+  line-height: 1.45 !important;
+}
+
+.enveloppe-cv--export .colonne-droite-contenu {
+  padding-top: 14px !important;
+  gap: 20px !important;
+}
+
+.enveloppe-cv--export .titre-section-droite {
+  font-size: 19px !important;
+}
+
+.enveloppe-cv--export .liste-droite {
+  gap: 14px !important;
+}
+
+.enveloppe-cv--export .poste-titre {
+  font-size: 13.5px !important;
+}
+
+.enveloppe-cv--export .contexte-ligne,
+.enveloppe-cv--export .puces-cv,
+.enveloppe-cv--export .desc-simple,
+.enveloppe-cv--export .liens-projet {
+  font-size: 11px !important;
+}
+
 /* -- FEUILLE CV (LARGEUR A4 FIXE, HAUTEUR LIBRE) ------------------------- */
 /* CORRECTION : plus de "height: 297mm" ni de "overflow: hidden".
    Avant, tout contenu dépassant une page A4 était invisible ou écrasé.
@@ -406,8 +493,39 @@ body {
 
 /* -- RESPONSIVE MOBILE (POUR ECRANS ETROITS) ------------------------------ */
 @media (max-width: 820px) {
+  /* CORRECTION : la barre d'outils (Retour / Télécharger / Imprimer) passe
+     à la ligne au lieu de déborder de l'écran (le bouton "Imprimer" était
+     coupé à droite). Sur très petit écran, les boutons se centrent. */
+  .barre-outils {
+    flex-wrap: wrap;
+    gap: 10px 8px;
+    padding: 10px 14px;
+  }
+
+  .groupe-gauche-outils,
+  .groupe-droite-outils {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .groupe-gauche-outils {
+    order: 1;
+  }
+
+  .groupe-droite-outils {
+    order: 2;
+    gap: 8px;
+  }
+
+  .bouton-outil {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+
   .enveloppe-cv {
-    padding: 10px 8px 30px;
+    padding: 16px 10px 30px;
+    gap: 20px;
   }
 
   .feuille-cv {
@@ -420,30 +538,84 @@ body {
     width: 100%;
     margin-left: 0;
     height: auto;
-    padding: 24px 20px;
+    padding: 28px 20px;
     text-align: center;
   }
 
   .nom-candidat {
-    font-size: 32px;
+    font-size: 30px;
+  }
+
+  .titre-candidat {
+    font-size: 14px;
   }
 
   .corps-cv-grid {
     grid-template-columns: 1fr;
-    padding: 20px 16px;
-    gap: 24px;
+    padding: 20px 16px 28px;
+    gap: 28px;
   }
 
   .colonne-gauche-cadre {
     width: 100%;
-    max-width: 260px;
-    margin: -40px auto 0;
+    max-width: 320px;
+    margin: -44px auto 0;
+  }
+
+  .colonne-gauche-cadre--suite {
+    margin: 0 auto;
+  }
+
+  .arche-photo-haut {
+    height: 260px;
+  }
+
+  /* CORRECTION : textes du cadre gauche trop petits (10.5px) pour un écran
+     de téléphone, avec peu d'air autour. On agrandit et on espace un peu
+     plus pour un rendu propre et lisible, plutôt que "tassé". */
+  .sections-gauche {
+    padding: 20px 18px 22px;
+    gap: 20px;
+  }
+
+  .titre-section-gauche {
+    font-size: 16px;
+  }
+
+  .texte-section-gauche {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .texte-section-gauche p {
+    margin-bottom: 6px;
   }
 
   .colonne-droite-contenu {
     padding-top: 0;
+    gap: 26px;
+  }
+
+  .titre-section-droite {
+    font-size: 20px;
+  }
+
+  .liste-droite {
+    gap: 18px;
+  }
+
+  .poste-titre {
+    font-size: 15px;
+  }
+
+  .contexte-ligne,
+  .puces-cv,
+  .desc-simple,
+  .liens-projet {
+    font-size: 12.5px;
   }
 }
+
 
 /* -- STYLES D'IMPRESSION & EXPORT PDF (MULTI-PAGE CORRECT) ---------------- */
 @media print {
