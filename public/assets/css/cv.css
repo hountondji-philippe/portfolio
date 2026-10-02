@@ -116,13 +116,14 @@ body {
   overflow: hidden;
 }
 
+/* ── PAGE 1 ── */
 .bandeau-bleu-haut {
   width: 100%;
-  height: 205px;
+  height: 200px;
   background: var(--bleu-cv);
   display: flex;
   align-items: center;
-  padding-left: 285px;
+  padding-left: 280px;
   padding-right: 32px;
   box-sizing: border-box;
 }
@@ -148,7 +149,7 @@ body {
 
 .titre-candidat {
   font-family: var(--police-titres);
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -158,7 +159,7 @@ body {
 
 .corps-cv-grid {
   display: grid;
-  grid-template-columns: 210px 1fr;
+  grid-template-columns: 205px 1fr;
   align-items: start;
   gap: 30px;
   padding: 0 30px 20px;
@@ -166,10 +167,10 @@ body {
 }
 
 .colonne-gauche-cadre {
-  width: 210px;
-  margin-top: -155px;
+  width: 205px;
+  margin-top: -150px;
   border: 2.5px solid var(--bleu-cv);
-  border-radius: 105px 105px 0 0;
+  border-radius: 102px 102px 0 0;
   background: #FFFFFF;
   position: relative;
   z-index: 10;
@@ -188,8 +189,8 @@ body {
 }
 
 .photo-arche {
-  width: 120px;
-  height: 120px;
+  width: 118px;
+  height: 118px;
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
@@ -198,8 +199,8 @@ body {
 }
 
 .photo-vide {
-  width: 120px;
-  height: 120px;
+  width: 118px;
+  height: 118px;
   border-radius: 50%;
   background: var(--couleur-theme-pastel);
   color: var(--couleur-theme);
@@ -324,9 +325,10 @@ body {
   color: #334155;
 }
 
+/* ── PAGE 2 ── */
 .bandeau-page2 {
   width: 100%;
-  height: 70px;
+  height: 68px;
   background: var(--bleu-cv);
   display: flex;
   justify-content: space-between;
@@ -342,7 +344,7 @@ body {
 
 .nom-page2 {
   font-family: var(--police-titres);
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 1.4px;
   color: #FFFFFF;
@@ -462,16 +464,38 @@ body {
   padding-top: 3px;
 }
 
-.enveloppe-cv--export {
-  padding: 0 !important;
+/* ── MODE EXPORT PDF (désactive tout responsive et fige à 210mm) ── */
+body.mode-export-pdf {
+  width: 210mm !important;
+  min-width: 210mm !important;
+  max-width: 210mm !important;
   margin: 0 !important;
+  padding: 0 !important;
+  background: #FFFFFF !important;
+  overflow: visible !important;
+}
+
+body.mode-export-pdf .barre-outils {
+  display: none !important;
+}
+
+body.mode-export-pdf .enveloppe-cv {
+  width: 210mm !important;
+  min-width: 210mm !important;
+  max-width: 210mm !important;
+  margin: 0 !important;
+  padding: 0 !important;
   gap: 0 !important;
   display: block !important;
   background: #FFFFFF !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
 }
 
-.enveloppe-cv--export .feuille-cv {
+body.mode-export-pdf .feuille-cv {
   width: 210mm !important;
+  min-width: 210mm !important;
+  max-width: 210mm !important;
   height: 297mm !important;
   min-height: 297mm !important;
   max-height: 297mm !important;
@@ -482,44 +506,35 @@ body {
   box-sizing: border-box !important;
 }
 
-.enveloppe-cv--export .feuille-cv-page1 {
-  page-break-after: always !important;
-  break-after: page !important;
-}
-
-.enveloppe-cv--export .feuille-cv-page2 {
-  page-break-before: always !important;
-  break-before: page !important;
-}
-
+/* ── RESPONSIVE MOBILE (strictement désactivé pendant l'export PDF) ── */
 @media (max-width: 820px) {
-  .barre-outils {
+  body:not(.mode-export-pdf) .barre-outils {
     flex-wrap: wrap;
     gap: 10px 8px;
     padding: 10px 14px;
   }
 
-  .groupe-gauche-outils,
-  .groupe-droite-outils {
+  body:not(.mode-export-pdf) .groupe-gauche-outils,
+  body:not(.mode-export-pdf) .groupe-droite-outils {
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
   }
 
-  .groupe-gauche-outils { order: 1; }
-  .groupe-droite-outils { order: 2; gap: 8px; }
+  body:not(.mode-export-pdf) .groupe-gauche-outils { order: 1; }
+  body:not(.mode-export-pdf) .groupe-droite-outils { order: 2; gap: 8px; }
 
-  .bouton-outil {
+  body:not(.mode-export-pdf) .bouton-outil {
     padding: 8px 14px;
     font-size: 12.5px;
   }
 
-  .enveloppe-cv {
+  body:not(.mode-export-pdf) .enveloppe-cv {
     padding: 16px 10px 30px;
     gap: 20px;
   }
 
-  .feuille-cv {
+  body:not(.mode-export-pdf) .feuille-cv {
     width: 100%;
     height: auto;
     min-height: auto;
@@ -528,7 +543,7 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
-  .bandeau-bleu-haut {
+  body:not(.mode-export-pdf) .bandeau-bleu-haut {
     width: 100%;
     height: auto;
     min-height: 140px;
@@ -537,44 +552,44 @@ body {
     justify-content: center;
   }
 
-  .nom-candidat { font-size: 32px; }
-  .titre-candidat { font-size: 15px; }
+  body:not(.mode-export-pdf) .nom-candidat { font-size: 32px; }
+  body:not(.mode-export-pdf) .titre-candidat { font-size: 15px; }
 
-  .corps-cv-grid {
+  body:not(.mode-export-pdf) .corps-cv-grid {
     grid-template-columns: 1fr;
     padding: 16px 14px 24px;
     gap: 24px;
   }
 
-  .colonne-gauche-cadre {
+  body:not(.mode-export-pdf) .colonne-gauche-cadre {
     width: 100%;
     max-width: 320px;
     margin: -60px auto 0;
     border-radius: 120px 120px 0 0;
   }
 
-  .arche-photo-haut {
+  body:not(.mode-export-pdf) .arche-photo-haut {
     padding-top: 20px;
     padding-bottom: 12px;
   }
 
-  .photo-arche,
-  .photo-vide {
+  body:not(.mode-export-pdf) .photo-arche,
+  body:not(.mode-export-pdf) .photo-vide {
     width: 120px;
     height: 120px;
   }
 
-  .sections-gauche {
+  body:not(.mode-export-pdf) .sections-gauche {
     padding: 16px 14px 18px;
     gap: 16px;
   }
 
-  .colonne-droite-contenu {
+  body:not(.mode-export-pdf) .colonne-droite-contenu {
     padding-top: 0;
     gap: 20px;
   }
 
-  .bandeau-page2 {
+  body:not(.mode-export-pdf) .bandeau-page2 {
     height: auto;
     padding: 16px;
     flex-direction: column;
@@ -582,26 +597,27 @@ body {
     gap: 8px;
   }
 
-  .entete-page2-droite {
+  body:not(.mode-export-pdf) .entete-page2-droite {
     align-items: center;
   }
 
-  .corps-page2 {
+  body:not(.mode-export-pdf) .corps-page2 {
     padding: 16px 14px 30px;
   }
 
-  .grille-projets-cv {
+  body:not(.mode-export-pdf) .grille-projets-cv {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
-  .pied-page-cv {
+  body:not(.mode-export-pdf) .pied-page-cv {
     position: static;
     margin-top: 16px;
     padding: 8px 14px 12px;
   }
 }
 
+/* ── IMPRESSION A4 NAVIGATEUR (window.print) ── */
 @media print {
   @page {
     size: A4 portrait;

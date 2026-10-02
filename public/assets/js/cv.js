@@ -11,45 +11,61 @@
 
   const btnTelechargerPdf = document.getElementById('btn-telecharger-pdf');
 
-  function declencherTelechargementPdf() {
-    const source = document.getElementById('cv-document');
-    if (!source || !btnTelechargerPdf) return;
+  async function declencherTelechargementPdf() {
+    const page1 = document.getElementById('page-1');
+    const page2 = document.getElementById('page-2');
+    if (!page1 || !page2 || !btnTelechargerPdf) return;
 
     const contenuOriginal = btnTelechargerPdf.innerHTML;
     btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération du PDF...</span>';
     btnTelechargerPdf.disabled = true;
 
-    source.classList.add('enveloppe-cv--export');
+    document.body.classList.add('mode-export-pdf');
+    window.scrollTo(0, 0);
 
-    const opt = {
-      margin: 0,
-      filename: 'CV_Philippe_Hountondji.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
+    await new Promise((r) => setTimeout(r, 150));
+
+    try {
+      const jsPdfClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
+      if (!jsPdfClass || typeof html2canvas === 'undefined') {
+        throw new Error('Bibliothèque PDF manquante');
+      }
+
+      const pdf = new jsPdfClass({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true,
+      });
+
+      const canvas1 = await html2canvas(page1, {
         scale: 2,
         useCORS: true,
         letterRendering: true,
         scrollY: 0,
-        windowWidth: 1024
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'], before: '.feuille-cv-page2' }
-    };
-
-    if (typeof html2pdf !== 'undefined') {
-      html2pdf().set(opt).from(source).save().then(() => {
-        source.classList.remove('enveloppe-cv--export');
-        btnTelechargerPdf.innerHTML = contenuOriginal;
-        btnTelechargerPdf.disabled = false;
-      }).catch(() => {
-        source.classList.remove('enveloppe-cv--export');
-        window.print();
-        btnTelechargerPdf.innerHTML = contenuOriginal;
-        btnTelechargerPdf.disabled = false;
+        scrollX: 0,
+        backgroundColor: '#FFFFFF',
       });
-    } else {
-      source.classList.remove('enveloppe-cv--export');
+      const img1 = canvas1.toDataURL('image/jpeg', 0.98);
+      pdf.addImage(img1, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+      pdf.addPage();
+      const canvas2 = await html2canvas(page2, {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        scrollY: 0,
+        scrollX: 0,
+        backgroundColor: '#FFFFFF',
+      });
+      const img2 = canvas2.toDataURL('image/jpeg', 0.98);
+      pdf.addImage(img2, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+      pdf.save('CV_Philippe_Hountondji.pdf');
+    } catch (err) {
       window.print();
+    } finally {
+      document.body.classList.remove('mode-export-pdf');
       btnTelechargerPdf.innerHTML = contenuOriginal;
       btnTelechargerPdf.disabled = false;
     }
