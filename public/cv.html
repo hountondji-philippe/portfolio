@@ -36,11 +36,11 @@
   </div>
 </header>
 
-<div class="enveloppe-cv">
+<div class="enveloppe-cv" id="cv-document">
 
-  <div class="feuille-cv" id="feuille-cv">
+  <!-- PAGE 1 -->
+  <div class="feuille-cv feuille-cv-page1" id="page-1">
 
-    
     <div class="bandeau-bleu-haut">
       <div class="contenu-bandeau">
         <h1 class="nom-candidat" id="cv-nom">
@@ -51,19 +51,15 @@
       </div>
     </div>
 
-    
     <div class="corps-cv-grid">
 
-      
       <aside class="colonne-gauche-cadre">
 
-        
         <div class="arche-photo-haut">
           <img id="cv-photo" src="images/philippe.jpeg" alt="Philippe Hountondji" class="photo-arche" onerror="this.style.display='none'; document.getElementById('cv-photo-vide').classList.remove('masque');">
           <div id="cv-photo-vide" class="photo-vide masque">PH</div>
         </div>
 
-        
         <div class="sections-gauche">
 
           <div class="groupe-section-gauche">
@@ -110,7 +106,6 @@
 
       </aside>
 
-      
       <main class="colonne-droite-contenu">
 
         <section class="bloc-section-droite">
@@ -165,30 +160,42 @@
           </div>
         </section>
 
-        <section class="bloc-section-droite">
-          <h2 class="titre-section-droite">PROJETS PHARES</h2>
-          <div class="liste-droite" id="cv-projets">
-            <article class="element-cv">
-              <h3 class="poste-titre">NEXTMUX &amp; RestoDirect — Plateformes Full-Stack</h3>
-              <p class="contexte-ligne">Production | Laravel, React, Node.js, PostgreSQL, WebSockets</p>
-              <p class="desc-simple">Conception de plateformes scalables pour le traitement automatisé des flux de données et la gestion de commandes en temps réel.</p>
-            </article>
-            <article class="element-cv">
-              <h3 class="poste-titre">VBG Bénin — Plateforme Citoyenne Chiffrée</h3>
-              <p class="contexte-ligne">Sécurité &amp; Impact Social | Laravel, AES-256, Leaflet</p>
-              <p class="desc-simple">Système hautement sécurisé pour le signalement anonyme et la protection des données sensibles avec géolocalisation.</p>
-            </article>
-            <article class="element-cv">
-              <h3 class="poste-titre">Infrastructure Réseau Campus Multi-Sites</h3>
-              <p class="contexte-ligne">Cisco IOS, Packet Tracer, OSPF, VLANs 802.1Q, ACLs</p>
-              <p class="desc-simple">Architecture réseau d'entreprise complète avec segmentation départementale, routage dynamique et haute disponibilité.</p>
-            </article>
-          </div>
-        </section>
-
       </main>
 
     </div>
+
+    <footer class="pied-page-cv">
+      <span>Hountondji Philippe — Curriculum Vitae</span>
+      <span>Page 1 / 2</span>
+    </footer>
+
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="feuille-cv feuille-cv-page2" id="page-2">
+
+    <div class="bandeau-page2">
+      <div class="entete-page2-gauche">
+        <h2 class="nom-page2">HOUNTONDJI PHILIPPE</h2>
+        <span class="sous-titre-page2">PROJETS PHARES &amp; RÉALISATIONS TECHNIQUES</span>
+      </div>
+      <div class="entete-page2-droite">
+        <span>Porto-Novo, Bénin</span>
+        <span>+229 01 58 15 69 30</span>
+        <span>hountondjiphilippe58@gmail.com</span>
+      </div>
+    </div>
+
+    <div class="corps-page2">
+      <div class="grille-projets-cv" id="cv-projets-grille">
+        <!-- Dynamiquement peuplé par cv.js avec les 7 projets -->
+      </div>
+    </div>
+
+    <footer class="pied-page-cv">
+      <span>Hountondji Philippe — Curriculum Vitae</span>
+      <span>Page 2 / 2</span>
+    </footer>
 
   </div>
 
