@@ -1,6 +1,3 @@
-// assets/js/script.js
-// Logique du site public : thème, menu, recherche, compétences, projets, contact.
-
 const LABELS_CATEGORIES = {
   FRONTEND: 'Front-end',
   BACKEND: 'Back-end et logique serveur',
@@ -11,7 +8,6 @@ const LABELS_CATEGORIES = {
   AUTRE: 'Autres compétences',
 };
 
-//BASCULE CLAIR / SOMBRE//
 const racineHtml = document.documentElement;
 const basculeTheme = document.getElementById('basculeTheme');
 
@@ -27,7 +23,6 @@ if (basculeTheme) {
   });
 }
 
-//MENU MOBILE//
 const boutonMenuMobile = document.getElementById('boutonMenuMobile');
 const listeLiensNav = document.getElementById('listeLiensNav');
 if (boutonMenuMobile && listeLiensNav) {
@@ -39,7 +34,6 @@ if (boutonMenuMobile && listeLiensNav) {
   });
 }
 
-//RECHERCHE//
 const indexRecherche = [
   { titre: 'À propos', categorie: 'Section', cible: '#a-propos', motsClefs: 'profil parcours eneam' },
   { titre: 'Compétences', categorie: 'Section', cible: '#competences', motsClefs: 'laravel react node flutter php' },
@@ -108,7 +102,6 @@ if (champRecherche) {
   });
 }
 
-//CV (URL dynamique si téléversé depuis l'admin)//
 async function appliquerLienCV() {
   const liens = document.querySelectorAll('.lien-cv');
   if (!liens.length) return;
@@ -118,51 +111,83 @@ async function appliquerLienCV() {
     if (data.success && data.settings.cvUrl) {
       liens.forEach((lien) => { lien.href = data.settings.cvUrl; });
     }
-    // Si aucun CV n'a encore été téléversé, on garde le lien par défaut
-    // déjà présent dans le HTML (cv/CV_philippe_hountondji.pdf).
   } catch (err) {
     console.error('Erreur chargement CV', err);
   }
 }
 
-//FORMATION (chargée depuis l'API, une seule "En cours" mise en avant)//
 function echapperTexte(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function renderEtapeFormation(f, active) {
-  const badgeClasse = f.statut === 'EN_COURS' ? 'badge-en-cours' : 'badge-obtenu';
-  const badgeTexte = f.statut === 'EN_COURS' ? 'En cours' : 'Obtenu';
-  return '<div class="etape-timeline' + (active ? ' etape-active' : '') + '">' +
-    '<div class="pastille-timeline"></div>' +
-    '<div class="carte-timeline">' +
-    '<div class="entete-carte-timeline">' +
-    '<span class="badge-timeline ' + badgeClasse + '">' + badgeTexte + '</span>' +
-    (f.periode ? '<span class="annee-timeline">' + echapperTexte(f.periode) + '</span>' : '') +
-    '</div>' +
-    '<h3>' + echapperTexte(f.titre) + '</h3>' +
-    (f.ecole ? '<p class="ecole-timeline">' + echapperTexte(f.ecole) + '</p>' : '') +
-    (f.description ? '<p>' + echapperTexte(f.description) + '</p>' : '') +
-    '</div></div>';
+  const encours = f.statut === 'EN_COURS';
+  const badgeClasse = encours ? 'badge-formation-encours' : 'badge-formation-termine';
+  const badgeTexte = encours ? 'En cours' : 'Obtenu';
+  const annee = f.periode || (f.anneeDebut ? [f.anneeDebut, f.anneeFin].filter(Boolean).join(' — ') : '');
+  const titre = f.titre || f.diplome || '';
+  const ecole = f.ecole || f.etablissement || '';
+  return '<div class="item-formation' + (active ? ' item-en-cours' : '') + '">' +
+    '<span class="badge-statut-formation ' + badgeClasse + '">' +
+    '<span class="dot-statut"></span>' + badgeTexte +
+    '</span>' +
+    (annee ? '<div class="annee-formation">' + echapperTexte(annee) + '</div>' : '') +
+    '<h3 class="titre-formation">' + echapperTexte(titre) + '</h3>' +
+    (ecole ? '<p class="etablissement-formation">' + echapperTexte(ecole) + '</p>' : '') +
+    (f.description ? '<p class="description-formation">' + echapperTexte(f.description) + '</p>' : '') +
+    '</div>';
 }
 
 async function chargerFormations() {
   const conteneur = document.getElementById('timelineFormation');
   if (!conteneur) return;
 
-  try {
-    const reponse = await fetch('/api/formations');
-    const data = await reponse.json();
-    if (!data.success || !data.formations || !data.formations.length) {
-      conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Aucune formation renseignée pour le moment.</p>';
-      return;
+  const FORMATIONS_DEFAUT = [
+    {
+      id: 1,
+      diplome: "Licence 3 — Administration des Réseaux Informatiques",
+      etablissement: "ENEAM (Université d'Abomey-Calavi)",
+      lieu: "Porto-Novo / Cotonou, Bénin",
+      anneeDebut: "2024",
+      anneeFin: "2026",
+      statut: "EN_COURS",
+      description: "Spécialisation avancée en routage dynamique (OSPF, BGP), segmentation réseau (VLANs), cybersécurité, durcissement système et gestion d'infrastructures d'entreprise."
+    },
+    {
+      id: 2,
+      diplome: "Licence 1 & 2 — Informatique de Gestion",
+      etablissement: "ENEAM (Université d'Abomey-Calavi)",
+      lieu: "Bénin",
+      anneeDebut: "2022",
+      anneeFin: "2024",
+      statut: "TERMINE",
+      description: "Algorithmique avancée, architecture des ordinateurs, génie logiciel, modélisation MERISE & UML, bases de données relationnelles et développement web full-stack."
+    },
+    {
+      id: 3,
+      diplome: "Baccalauréat Scientifique — Série C",
+      etablissement: "Enseignement Secondaire Général",
+      lieu: "Bénin",
+      anneeDebut: "2021",
+      anneeFin: "2022",
+      statut: "TERMINE",
+      description: "Formation intensive en mathématiques pures et sciences physiques, rigueur analytique et logique formelle."
     }
+  ];
 
-    const formations = data.formations;
+  try {
+    let formations = [];
+    try {
+      const reponse = await fetch('/api/formations');
+      const data = await reponse.json();
+      if (data.success && data.formations && data.formations.length) {
+        formations = data.formations;
+      }
+    } catch (_) {}
+
+    if (!formations.length) formations = FORMATIONS_DEFAUT;
+
     const enCours = formations.filter((f) => f.statut === 'EN_COURS');
-    const obtenues = formations.filter((f) => f.statut !== 'EN_COURS');
-    // La plus récente "En cours" (ou, à défaut, la première formation) reste
-    // affichée en avant ; le reste se replie derrière le bouton.
     const miseEnAvant = enCours[0] || formations[0];
     const reste = formations.filter((f) => f.id !== miseEnAvant.id);
 
@@ -193,26 +218,58 @@ async function chargerFormations() {
     }
   } catch (err) {
     console.error('Erreur chargement formations', err);
-    conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Impossible de charger les formations.</p>';
   }
 }
 
-//EXPERIENCE (chargée depuis l'API)//
 const LABELS_STATUT_EXP_PUBLIC = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu', RECHERCHE: 'En recherche active' };
 
 async function chargerExperiencesPubliques() {
   const conteneur = document.getElementById('grilleExperience');
   if (!conteneur) return;
 
-  try {
-    const reponse = await fetch('/api/experiences');
-    const data = await reponse.json();
-    if (!data.success || !data.experiences || !data.experiences.length) {
-      conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Aucune expérience renseignée pour le moment.</p>';
-      return;
+  const EXPERIENCES_DEFAUT = [
+    {
+      titre: "Développeur Full-Stack & Administrateur Réseau Indépendant",
+      entreprise: "Projets Clients & Freelance",
+      lieu: "Porto-Novo & Remote",
+      dateDebut: "2023",
+      dateFin: "Présent",
+      statut: "EN_COURS",
+      description: "Conception et déploiement de solutions sur mesure (Laravel, React, Node.js). Mise en place d'architectures réseau sécurisées, sécurisation d'APIs et optimisation des performances."
+    },
+    {
+      titre: "Architecte & Développeur Plateforme VBG Bénin",
+      entreprise: "Projet Citoyen & Impact Social",
+      lieu: "Bénin",
+      dateDebut: "2024",
+      dateFin: "2024",
+      statut: "TERMINE",
+      description: "Création d'un système complet de signalement anonyme et sécurisé. Chiffrement de bout en bout des signalements sensibles, cartographie interactive et tableau de bord de suivi."
+    },
+    {
+      titre: "Conception & Simulation Infrastructure Campus Multi-Sites",
+      entreprise: "Travaux d'Ingénierie Réseau — ENEAM",
+      lieu: "Bénin",
+      dateDebut: "2023",
+      dateFin: "2024",
+      statut: "TERMINE",
+      description: "Modélisation sous Cisco Packet Tracer : segmentation en VLANs 802.1Q, routage inter-VLAN, protocoles OSPF multi-aires, listes de contrôle d'accès (ACL) et redondance passerelle HSRP."
     }
+  ];
 
-    conteneur.innerHTML = data.experiences.map((exp) => {
+  try {
+    let experiences = [];
+    try {
+      const reponse = await fetch('/api/experiences');
+      const data = await reponse.json();
+      if (data.success && data.experiences && data.experiences.length) {
+        experiences = data.experiences;
+      }
+    } catch (_) {}
+
+    if (!experiences.length) experiences = EXPERIENCES_DEFAUT;
+
+    conteneur.innerHTML = experiences.map((exp) => {
       const active = exp.statut === 'RECHERCHE' || exp.statut === 'EN_COURS';
       const meta = [exp.entreprise, exp.lieu, [exp.dateDebut, exp.dateFin].filter(Boolean).join(' — ')]
         .filter(Boolean).map(echapperTexte).join(' · ');
@@ -221,61 +278,103 @@ async function chargerExperiencesPubliques() {
         '<h3>' + echapperTexte(exp.titre) + '</h3>' +
         (meta ? '<p class="meta-experience">' + meta + '</p>' : '') +
         (exp.description ? '<p>' + echapperTexte(exp.description) + '</p>' : '') +
-        (exp.statut === 'RECHERCHE' ? '<a href="#contact" class="bouton-secondaire" style="display:inline-block;margin-top:10px">Me proposer un stage</a>' : '') +
         '</div>';
     }).join('');
   } catch (err) {
     console.error('Erreur chargement expériences', err);
-    conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Impossible de charger les expériences.</p>';
   }
 }
 
-//COMPETENCES (accordeon dynamique)//
 async function chargerCompetences() {
   const conteneur = document.getElementById('listeAccordeonCompetences');
   if (!conteneur) return;
 
-  try {
-    const reponse = await fetch('/api/skills');
-    const data = await reponse.json();
-    if (!data.success || !data.skills || !data.skills.length) return;
+  const ICONES_CATEGORIES = ['mdi:code-braces', 'mdi:lan', 'mdi:server-security', 'mdi:database'];
 
-    const parCategorie = {};
-    data.skills.forEach((skill) => {
-      if (!parCategorie[skill.categorie]) parCategorie[skill.categorie] = [];
-      parCategorie[skill.categorie].push(skill);
-    });
+  const COMPETENCES_DEFAUT = {
+    "Développement Web & APIs": [
+      { nom: "Laravel", icone: "logos:laravel" },
+      { nom: "PHP 8", icone: "logos:php" },
+      { nom: "React.js", icone: "logos:react" },
+      { nom: "Node.js", icone: "logos:nodejs-icon" },
+      { nom: "Next.js", icone: "logos:nextjs-icon" },
+      { nom: "JavaScript", icone: "logos:javascript" },
+      { nom: "TypeScript", icone: "logos:typescript-icon" },
+      { nom: "Flutter", icone: "logos:flutter" },
+      { nom: "HTML5", icone: "logos:html-5" },
+      { nom: "CSS3 / Sass", icone: "logos:css-3" }
+    ],
+    "Réseaux, Télécoms & Protocoles": [
+      { nom: "Cisco IOS", icone: "logos:cisco" },
+      { nom: "Cisco Packet Tracer", icone: "mdi:router-network" },
+      { nom: "Routage OSPF & BGP", icone: "mdi:lan-connect" },
+      { nom: "VLANs & 802.1Q", icone: "mdi:network-outline" },
+      { nom: "Wireshark", icone: "logos:wireshark" },
+      { nom: "DNS & DHCP", icone: "mdi:server" },
+      { nom: "Pare-feu & ACLs", icone: "mdi:firewall" }
+    ],
+    "Systèmes, DevOps & Sécurité": [
+      { nom: "Linux Debian / Ubuntu", icone: "logos:linux-tux" },
+      { nom: "Docker", icone: "logos:docker-icon" },
+      { nom: "Git & GitHub", icone: "logos:git-icon" },
+      { nom: "Nginx", icone: "logos:nginx" },
+      { nom: "Apache", icone: "logos:apache" },
+      { nom: "Sécurité OWASP", icone: "mdi:shield-check" },
+      { nom: "Cryptographie & SSL/TLS", icone: "mdi:lock-check" }
+    ],
+    "Bases de Données & Conception": [
+      { nom: "PostgreSQL", icone: "logos:postgresql" },
+      { nom: "MySQL", icone: "logos:mysql" },
+      { nom: "Redis", icone: "logos:redis" },
+      { nom: "Modélisation MERISE / UML", icone: "mdi:sitemap" },
+      { nom: "RESTful API Architecture", icone: "mdi:api" }
+    ]
+  };
+
+  try {
+    let parCategorie = {};
+    try {
+      const reponse = await fetch('/api/skills');
+      const data = await reponse.json();
+      if (data.success && data.skills && data.skills.length) {
+        data.skills.forEach((skill) => {
+          const cat = LABELS_CATEGORIES[skill.categorie] || skill.categorie;
+          if (!parCategorie[cat]) parCategorie[cat] = [];
+          parCategorie[cat].push(skill);
+        });
+      }
+    } catch (_) {}
+
+    if (!Object.keys(parCategorie).length) {
+      parCategorie = COMPETENCES_DEFAUT;
+    }
 
     conteneur.innerHTML = Object.entries(parCategorie)
       .map(([categorie, skills], index) => `
-        <div class="categorie-competence${index === 0 ? ' ouverte' : ''}">
-          <div class="entete-categorie-competence">
-            <span>${LABELS_CATEGORIES[categorie] || categorie}</span>
-            <span class="fleche-categorie">▲</span>
+        <div class="bloc-categorie-competences">
+          <div class="entete-cat-comp">
+            <span class="pastille-cat-comp">
+              <iconify-icon icon="${ICONES_CATEGORIES[index] || 'mdi:star'}" width="18"></iconify-icon>
+            </span>
+            <h3 class="titre-cat-comp">${categorie}</h3>
+            <span class="nb-outils-comp">${skills.length} outils</span>
           </div>
-          <div class="corps-categorie-competence">
-            <div class="grille-logos-competences">
-              ${skills.map((s) => `
-                <div class="carte-logo-competence" title="${s.nom}">
-                  <iconify-icon icon="${s.icone}" width="42" height="42"></iconify-icon>
-                </div>
-              `).join('')}
-            </div>
+          <div class="rangee-badges-comp">
+            ${skills.map((s) => `
+              <div class="badge-comp-h" title="${s.nom}">
+                <iconify-icon icon="${s.icone}" width="20" height="20"></iconify-icon>
+                <span>${s.nom}</span>
+              </div>
+            `).join('')}
           </div>
         </div>
       `).join('');
 
-    conteneur.querySelectorAll('.entete-categorie-competence').forEach((entete) => {
-      entete.addEventListener('click', () => {
-        entete.closest('.categorie-competence').classList.toggle('ouverte');
-      });
-    });
   } catch (err) {
     console.error('Erreur chargement compétences', err);
   }
 }
 
-//PROJETS (compteurs sur la page d'accueil)//
 async function chargerCompteursProjets() {
   const compteurAcademique = document.getElementById('compteurProjetsAcademiques');
   const compteurPro = document.getElementById('compteurProjetsPro');
@@ -295,24 +394,75 @@ async function chargerCompteursProjets() {
   }
 }
 
-//PROJETS (liste complete sur les pages dediees)//
 const LABELS_STATUT = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
+
+const PROJETS_DEFAUT_FALLBACK = {
+  ACADEMIQUE: [
+    {
+      titre: 'Architecture Réseau Campus Multi-Sites (Cisco IOS)',
+      description: 'Déploiement complet d\'une topologie d\'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage par listes de contrôle d\'accès (ACL).',
+      statut: 'TERMINE',
+      technologies: 'Cisco IOS, OSPF, VLAN 802.1Q, HSRP, ACLs, Wireshark',
+      imageUrl: 'images/projets-3.jpeg',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    },
+    {
+      titre: 'Conception & Modélisation Système d\'Information Bancaire',
+      description: 'Analyse et conception complète d\'un système d\'information de gestion selon la méthode MERISE (MCD, MLD, MPD) et implémentation sur base relationnelle PostgreSQL avec contraintes d\'intégrité strictes.',
+      statut: 'TERMINE',
+      technologies: 'PostgreSQL, MERISE, Modélisation UML, SQL Avancé, Triggers',
+      imageUrl: 'images/apropos.jpeg',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    },
+    {
+      titre: 'Audit de Sécurité Réseau & Analyse de Trames',
+      description: 'Analyse approfondie du trafic réseau via Wireshark, simulation d\'attaques (ARP spoofing, scans de ports) et mise en place de contre-mesures de durcissement sur serveurs Linux Debian/Ubuntu.',
+      statut: 'TERMINE',
+      technologies: 'Wireshark, Linux Debian, Nmap, TCP/IP, Durcissement',
+      imageUrl: 'images/projets-3.jpeg',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    }
+  ],
+  PROFESSIONNEL: [
+    {
+      titre: 'VBG Bénin — Système Sécurisé de Signalement Chiffré',
+      description: 'Plateforme citoyenne à haute exigence de confidentialité pour la collecte et le traitement sécurisé des signalements. Chiffrement de bout en bout des données sensibles et tableaux de bord pour les intervenants.',
+      statut: 'TERMINE',
+      technologies: 'Laravel 11, AES-256, PostgreSQL, Leaflet Maps, Tailwind CSS',
+      imageUrl: 'images/VBG.png',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    },
+    {
+      titre: 'NEXTMUX — Moteur de Multiplexage & Traitement de Flux',
+      description: 'Architecture backend haute performance pour le routage, la transformation et la synchronisation de données multi-sources. Authentification JWT, files d\'attente asynchrones et monitoring en temps réel.',
+      statut: 'TERMINE',
+      technologies: 'Laravel 11, PHP 8.2, MySQL, REST API, JWT, Redis',
+      imageUrl: 'images/apropos.jpeg',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    },
+    {
+      titre: 'RestoDirect — Gestion de Commandes & Flux Temps Réel',
+      description: 'Système SaaS réactif pour la restauration et les services de livraison : suivi bidirectionnel en temps réel via WebSockets, gestion des stocks synchronisée et tableaux de bord interactifs.',
+      statut: 'TERMINE',
+      technologies: 'React.js, Node.js, Socket.io, PostgreSQL, Express',
+      imageUrl: 'images/acceuil.jpeg',
+      lienSite: '',
+      lienGithub: 'https://github.com/hountondji-philippe'
+    }
+  ]
+};
 
 async function chargerListeProjets(type) {
   const conteneur = document.getElementById('grilleCartesProjets');
   if (!conteneur) return;
 
-  try {
-    const reponse = await fetch('/api/projects?type=' + type);
-    const data = await reponse.json();
-    if (!data.success) return;
-
-    if (!data.projects.length) {
-      conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Aucun projet pour le moment.</p>';
-      return;
-    }
-
-    conteneur.innerHTML = data.projects.map((p) => `
+  function renderProjets(liste) {
+    conteneur.innerHTML = liste.map((p) => `
       <div class="carte-projet">
         <div class="image-carte-projet">
           ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}">` : 'Aperçu à venir'}
@@ -332,12 +482,25 @@ async function chargerListeProjets(type) {
         </div>
       </div>
     `).join('');
-  } catch (err) {
-    console.error('Erreur chargement projets', err);
+  }
+
+  try {
+    const reponse = await fetch('/api/projects?type=' + type);
+    const data = await reponse.json();
+    if (data.success && data.projects && data.projects.length) {
+      renderProjets(data.projects);
+      return;
+    }
+  } catch (_) {}
+
+  const fallback = PROJETS_DEFAUT_FALLBACK[type] || [];
+  if (fallback.length) {
+    renderProjets(fallback);
+  } else {
+    conteneur.innerHTML = '<p style="color:var(--texte-attenue)">Aucun projet pour le moment.</p>';
   }
 }
 
-//ONGLETS CONTACT (EMAIL / WHATSAPP)//
 const NUMERO_WHATSAPP_PHILIPPE = '22958156930';
 
 function basculerOngletContact(onglet) {
@@ -387,7 +550,6 @@ document.getElementById('lien-telecharger-cv')?.addEventListener('click', (e) =>
   window.open('/cv.html?print=1', '_blank');
 });
 
-//FORMULAIRE DE CONTACT//
 const formulaireContact = document.getElementById('formulaireContact');
 if (formulaireContact) {
   formulaireContact.addEventListener('submit', async (e) => {
@@ -435,7 +597,6 @@ if (formulaireContact) {
   });
 }
 
-//NEWSLETTER (FOOTER)//
 const formulaireNewsletter = document.getElementById('formulaireNewsletter');
 if (formulaireNewsletter) {
   formulaireNewsletter.addEventListener('submit', async (e) => {
@@ -476,7 +637,6 @@ if (formulaireNewsletter) {
   });
 }
 
-//TRACKING (VISITEURS)//
 function envoyerEvenementTracker(payload) {
   fetch('/api/tracker', {
     method: 'POST',
@@ -512,7 +672,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-//INITIALISATION//
 chargerCompetences();
 chargerCompteursProjets();
 chargerFormations();

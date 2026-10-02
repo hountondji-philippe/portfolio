@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="clair">
+<html lang="fr" data-theme="sombre">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Philippe Hountondji | Développeur Web & Administrateur Réseau</title>
 <meta name="description" content="Philippe Hountondji — Développeur web full-stack & administrateur réseau basé au Bénin. Étudiant L2 ENEAM.">
 
-<!-- Favicon -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
 
-<!-- Open Graph (WhatsApp, Facebook, Messenger, LinkedIn...) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://portfolio-seven-delta-21jq5u35et.vercel.app/">
 <meta property="og:title" content="Philippe Hountondji | Développeur Web & Administrateur Réseau">
@@ -22,15 +20,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="fr_FR">
 
-<!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Philippe Hountondji | Développeur Web & Administrateur Réseau">
 <meta name="twitter:description" content="Développeur web full-stack & administrateur réseau basé au Bénin. Étudiant L2 ENEAM.">
 <meta name="twitter:image" content="https://portfolio-seven-delta-21jq5u35et.vercel.app/assets/img/og-image.png">
 
-<!-- Donnees structurees Schema.org : aide Google a comprendre qu'il s'agit
-     d'une page "Personne", utile pour l'affichage dans les résultats de
-     recherche quand quelqu'un tape le nom. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -57,7 +51,7 @@
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;1,800;1,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
@@ -98,100 +92,146 @@
 </nav>
 
 <header id="presentation" class="ecran-accueil ecran-accueil-sombre">
-  <div class="anneau-decoratif"></div>
-  <div class="voile-hero-sombre"></div>
+  
+  <div class="arriere-plan-hero-interactif">
+    <canvas id="toileReseauHero" class="toile-reseau-hero"></canvas>
+    <div class="grille-perspective-hero"></div>
+    <div class="voile-lumiere-orbe orbe-1"></div>
+    <div class="voile-lumiere-orbe orbe-2"></div>
+    <div class="voile-hero-sombre"></div>
+  </div>
 
-  <div class="contenu-accueil">
-    <span class="badge-pilule badge-pilule-sombre">Basé à Porto-Novo, Bénin</span>
+  <div class="contenu-accueil reveal-on-scroll">
+    <div class="badge-disponibilite-hero">
+      <span class="pulsar-vert"></span>
+      <span>Disponible pour opportunités &amp; projets</span>
+      <span class="badge-separateur">·</span>
+      <span class="badge-lieu">Porto-Novo, Bénin &amp; International</span>
+    </div>
 
     <h1 class="titre-accueil titre-accueil-sombre">
-      Je code des solutions.<br>
-      <span class="titre-souligne">Je sécurise des réseaux.</span>
+      Architecte Logiciel &amp;<br>
+      <span class="titre-souligne-gradient">Infrastructures Réseau</span>
     </h1>
 
     <p class="sous-titre-accueil sous-titre-accueil-sombre">
-      Étudiant en Informatique de Gestion à l'ENEAM, développeur full-stack
-      (Laravel, React, Node.js, Flutter) et passionné de réseaux.
-      Je construis des plateformes pensées pour le marché béninois.
+      Développeur Full-Stack chevronné (Laravel, React, Node.js, Flutter) et Administrateur Réseau certifié (Cisco, routage OSPF, segmentation VLAN, cybersécurité).
+      Je conçois des architectures haute disponibilité, résilientes et sécurisées pour la production.
     </p>
 
     <div class="groupe-boutons-accueil">
-      <a href="#projets" class="bouton-principal">Voir mes projets →</a>
-      <a href="cv.html?download=1" class="bouton-secondaire bouton-secondaire-sombre lien-cv" target="_blank">Télécharger mon CV</a>
+      <a href="#projets" class="bouton-luxe-or">
+        <span>Explorer mes projets</span>
+        <iconify-icon icon="mdi:arrow-right"></iconify-icon>
+      </a>
+      <a href="cv.html" class="bouton-luxe-verre lien-cv">
+        <iconify-icon icon="mdi:file-document-outline"></iconify-icon>
+        <span>Consulter mon CV</span>
+      </a>
     </div>
 
     <div class="rangee-stats-accueil">
-      <div class="pastille-stat">
-        <span class="chiffre-stat-accueil">5+</span>
-        <span class="libelle-stat-accueil">Projets</span>
+      <div class="pastille-stat-luxe" data-stat-cible="5">
+        <span class="chiffre-stat-accueil"><span class="valeur-compteur">5</span>+</span>
+        <span class="libelle-stat-accueil">Projets majeurs déployés</span>
       </div>
-      <div class="pastille-stat">
-        <span class="chiffre-stat-accueil">2+</span>
-        <span class="libelle-stat-accueil">Ans d'expérience</span>
+      <div class="pastille-stat-luxe" data-stat-cible="3">
+        <span class="chiffre-stat-accueil">L<span class="valeur-compteur">3</span></span>
+        <span class="libelle-stat-accueil">ENEAM Réseaux &amp; Systèmes</span>
       </div>
-      <div class="pastille-stat">
-        <span class="chiffre-stat-accueil">8+</span>
-        <span class="libelle-stat-accueil">Technologies</span>
+      <div class="pastille-stat-luxe" data-stat-cible="12">
+        <span class="chiffre-stat-accueil"><span class="valeur-compteur">12</span>+</span>
+        <span class="libelle-stat-accueil">Technologies maîtrisées</span>
       </div>
-      <div class="pastille-stat pastille-stat-accent">
-        <span class="chiffre-stat-accueil">100%</span>
-        <span class="libelle-stat-accueil">Disponible</span>
+      <div class="pastille-stat-luxe pastille-stat-accent-luxe">
+        <span class="chiffre-stat-accueil">99.9%</span>
+        <span class="libelle-stat-accueil">Rigueur &amp; Sécurité OWASP</span>
       </div>
     </div>
   </div>
 
-  <div class="apercu-bento-accueil">
-    <article class="carte-bento carte-bento-large">
-      <span class="etiquette-carte-bento">Développement web</span>
-      <h3>Laravel, React &amp; Next.js</h3>
-      <p>NEXTMUX, RestoDirect, VBG — des plateformes réelles, pas des maquettes.</p>
-    </article>
-    <article class="carte-bento">
-      <span class="etiquette-carte-bento">Réseaux</span>
-      <h3>Administration &amp; sécurité</h3>
-      <p>Subnetting, protocoles, architecture réseau.</p>
-    </article>
-    <article class="carte-bento">
-      <span class="etiquette-carte-bento">Mobile</span>
-      <h3>Flutter</h3>
-      <p>Applications P2P, transfert de fichiers.</p>
-    </article>
+  
+  <div class="terminal-cyber-hero reveal-on-scroll">
+    <div class="en-tete-terminal">
+      <div class="boutons-fenetre-terminal">
+        <span class="bouton-pastille pastille-rouge"></span>
+        <span class="bouton-pastille pastille-jaune"></span>
+        <span class="bouton-pastille pastille-verte"></span>
+      </div>
+      <div class="titre-fenetre-terminal">
+        <iconify-icon icon="mdi:console"></iconify-icon>
+        <span>philippe@sys-admin:~# ./diagnostics.sh</span>
+      </div>
+      <span class="badge-terminal-live">LIVE</span>
+    </div>
+    <div class="corps-terminal">
+      <div class="ligne-terminal"><span class="invite-terminal">&gt;</span> Initializing system diagnostic...</div>
+      <div class="ligne-terminal"><span class="statut-ok">[OK]</span> <span class="terme-cle">Full-Stack Core:</span> Laravel 11 · React 18 · Node.js (Active)</div>
+      <div class="ligne-terminal"><span class="statut-ok">[OK]</span> <span class="terme-cle">Network Engine:</span> Cisco IOS · OSPF Area 0 · VLANs (Converged)</div>
+      <div class="ligne-terminal"><span class="statut-ok">[OK]</span> <span class="terme-cle">Security Shield:</span> Firewall ACLs · JWT · OWASP Hardened</div>
+      <div class="ligne-terminal"><span class="statut-ok">[OK]</span> <span class="terme-cle">Database:</span> PostgreSQL Neon · Redis Cache (Connected)</div>
+      <div class="ligne-terminal-accent">
+        <iconify-icon icon="mdi:check-decagram"></iconify-icon>
+        <span>Ready to architect &amp; deploy enterprise-grade infrastructure.</span>
+      </div>
+    </div>
   </div>
 </header>
 
-<section id="a-propos" class="section-generale">
+<section id="a-propos" class="section-generale reveal-on-scroll">
   <div class="entete-section">
-    <span class="etiquette-section">Qui suis-je</span>
-    <h2 class="titre-section">À propos</h2>
+    <span class="etiquette-section">Profil &amp; Philosophie</span>
+    <h2 class="titre-section">À Propos d'un Ingénieur Passionné</h2>
+    <p class="sous-titre-section">L'alliance rare du développement logiciel full-stack et de la maîtrise approfondie des infrastructures réseau.</p>
   </div>
-  <div class="bloc-apropos">
-    <div class="texte-apropos">
-      <p>Étudiant en Licence 2 Informatique de Gestion à l'ENEAM (Université d'Abomey-Calavi), je me spécialise dans le développement web full-stack et l'administration réseau.</p>
-      <p>Je construis des applications qui résolvent de vrais problèmes — pas juste des maquettes — en combinant rigueur technique et sens du design.</p>
-      <div class="liste-valeurs-apropos">
-        <div class="valeur-apropos">
-          <span class="pastille-valeur">P</span>
-          <span>Performance — code propre et optimisé</span>
-        </div>
-        <div class="valeur-apropos">
-          <span class="pastille-valeur">S</span>
-          <span>Sécurité — applications sûres dès la conception</span>
-        </div>
-        <div class="valeur-apropos">
-          <span class="pastille-valeur">I</span>
-          <span>Impact — des solutions pour de vrais utilisateurs</span>
-        </div>
+  <div class="grille-apropos-architecte">
+    <div class="carte-portrait-apropos">
+      <div class="cadre-photo-portrait">
+        <img src="images/philippe.jpeg" alt="Philippe Hountondji" class="photo-profil-luxe">
+        <div class="halo-or-portrait"></div>
+      </div>
+      <div class="signature-portrait">
+        <h3>Philippe J. Hountondji</h3>
+        <p class="statut-portrait">Licence 3 — Réseaux &amp; Systèmes Informatiques (ENEAM)</p>
       </div>
     </div>
-    <div class="carte-bento" style="padding:32px">
-      <span class="etiquette-carte-bento">Formation</span>
-      <h3>ENEAM — Licence 2</h3>
-      <p>Informatique de Gestion, Université d'Abomey-Calavi, Bénin.</p>
+
+    <div class="contenu-texte-apropos">
+      <h3 class="accroche-apropos">Construire des architectures logicielles pérennes et des réseaux inviolables.</h3>
+      <p class="paragraphe-apropos">
+        Basé à Porto-Novo au Bénin et ouvert aux opportunités internationales, je conçois des systèmes d'information complets. Mon double profil me permet de comprendre les enjeux applicatifs (code, bases de données, UX réactive) tout autant que les couches basses d'infrastructure (routage, segmentation VLAN, protocoles, durcissement serveur).
+      </p>
+
+      <div class="grille-piliers-apropos">
+        <div class="pilier-carte-luxe">
+          <div class="icone-pilier"><iconify-icon icon="mdi:code-tags-check"></iconify-icon></div>
+          <div>
+            <h4>Génie Logiciel Full-Stack</h4>
+            <p>Conception d'APIs RESTful, architecture MVC/Microservices, intégration continue et interfaces fluides (Laravel, React, Node.js).</p>
+          </div>
+        </div>
+
+        <div class="pilier-carte-luxe">
+          <div class="icone-pilier"><iconify-icon icon="mdi:server-network"></iconify-icon></div>
+          <div>
+            <h4>Infrastructures &amp; Réseaux</h4>
+            <p>Configuration Cisco IOS, routage dynamique OSPF/BGP, segmentation 802.1Q, haute disponibilité et analyse de trames Wireshark.</p>
+          </div>
+        </div>
+
+        <div class="pilier-carte-luxe">
+          <div class="icone-pilier"><iconify-icon icon="mdi:shield-check"></iconify-icon></div>
+          <div>
+            <h4>Sécurité &amp; Résilience</h4>
+            <p>Chiffrement fort, respect des normes OWASP, durcissement Linux Debian/Ubuntu et mise en place de politiques de pare-feu strictes.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="formation" class="section-generale">
+<section id="formation" class="section-generale reveal-on-scroll">
   <div class="entete-section">
     <span class="etiquette-section">Parcours</span>
     <h2 class="titre-section">Formation</h2>
@@ -202,7 +242,7 @@
   </div>
 </section>
 
-<section id="experience" class="section-generale">
+<section id="experience" class="section-generale reveal-on-scroll">
   <div class="entete-section">
     <span class="etiquette-section">Parcours pro</span>
     <h2 class="titre-section">Expérience</h2>
@@ -213,36 +253,173 @@
   </div>
 </section>
 
-<section id="competences" class="section-generale">
+<section id="competences" class="section-generale reveal-on-scroll">
   <div class="entete-section">
     <span class="etiquette-section">Stack technique</span>
     <h2 class="titre-section">Compétences</h2>
-    <p class="sous-titre-section">Cliquez sur une catégorie pour voir les outils associés.</p>
+    <p class="sous-titre-section">Mes technologies, outils et protocoles maîtrisés.</p>
   </div>
   <div class="liste-accordeon-competences" id="listeAccordeonCompetences"></div>
 </section>
 
-<section id="projets" class="section-generale">
-  <div class="entete-section">
-    <span class="etiquette-section">Réalisations</span>
-    <h2 class="titre-section">Projets</h2>
-    <p class="sous-titre-section">Deux univers distincts : ce que j'ai construit à l'école, et ce que j'ai construit par moi-même.</p>
+<section id="projets" class="section-generale section-projets-immersive reveal-on-scroll">
+  
+  <div class="arriere-plan-video-projets">
+    <video autoplay loop muted playsinline poster="images/projets-3.jpeg" class="video-fond-projets" id="videoFondProjets">
+      <source src="images/video-reseau.webm" type="video/webm">
+    </video>
+    <canvas id="toileMatrixProjets" class="toile-matrix-projets"></canvas>
+    <div class="voile-teinte-cyber"></div>
+    <div class="scanlines-effet"></div>
   </div>
-  <div class="deux-blocs-projets">
-    <a href="projets-academiques.html" class="bloc-type-projet">
-      <span class="fleche-bloc-projet">↗</span>
-      <div class="icone-bloc-projet">A</div>
-      <h3>Projets académiques</h3>
-      <p>Travaux réalisés dans le cadre de mes études à l'ENEAM.</p>
-      <span class="compteur-bloc-projet" id="compteurProjetsAcademiques">Chargement...</span>
-    </a>
-    <a href="projets-professionnels.html" class="bloc-type-projet">
-      <span class="fleche-bloc-projet">↗</span>
-      <div class="icone-bloc-projet">P</div>
-      <h3>Projets personnels &amp; professionnels</h3>
-      <p>Applications construites en autonomie, en dehors du cadre scolaire.</p>
-      <span class="compteur-bloc-projet" id="compteurProjetsPro">Chargement...</span>
-    </a>
+
+  <div class="contenu-projets-relatif">
+    <div class="entete-section">
+      <span class="etiquette-section">Vitrine d'Ingénierie</span>
+      <h2 class="titre-section">Projets &amp; Réalisations</h2>
+      <p class="sous-titre-section">Des solutions logicielles complètes et des architectures réseau conçues pour des environnements réels.</p>
+    </div>
+
+    
+    <div class="grille-projets-vedettes">
+      
+      <article class="carte-projet-luxe reveal-on-scroll">
+        <div class="visuel-projet-luxe">
+          <img src="images/VBG.png" alt="Plateforme VBG Bénin" loading="lazy">
+          <div class="badge-statut-projet badge-securite">
+            <span class="point-bleu"></span>
+            <span>Sécurité &amp; Chiffrement</span>
+          </div>
+        </div>
+        <div class="corps-projet-luxe">
+          <div class="categorie-projet">Plateforme Citoyenne &amp; Cybersécurité</div>
+          <h3 class="titre-projet-luxe">VBG Bénin — Système Sécurisé de Signalement Chiffré</h3>
+          <p class="description-projet-luxe">
+            Architecture résiliente et confidentielle pour la collecte et le traitement sécurisé des signalements. Chiffrement des données sensibles, tableaux de bord statistiques pour les intervenants et cartographie sécurisée.
+          </p>
+          <div class="tags-technologies-projet">
+            <span class="tag-tech"><iconify-icon icon="logos:laravel"></iconify-icon> Laravel</span>
+            <span class="tag-tech"><iconify-icon icon="mdi:shield-lock"></iconify-icon> AES-256</span>
+            <span class="tag-tech"><iconify-icon icon="logos:postgresql"></iconify-icon> PostgreSQL</span>
+            <span class="tag-tech"><iconify-icon icon="logos:leaflet"></iconify-icon> Leaflet Maps</span>
+          </div>
+          <div class="actions-projet-luxe">
+            <a href="projets-professionnels.html" class="bouton-projet-lien">
+              <span>Étude de cas détaillée</span>
+              <iconify-icon icon="mdi:arrow-top-right"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      
+      <article class="carte-projet-luxe reveal-on-scroll">
+        <div class="visuel-projet-luxe">
+          <img src="images/apropos.jpeg" alt="NEXTMUX Backend & APIs" loading="lazy">
+          <div class="badge-statut-projet badge-production">
+            <span class="point-vert"></span>
+            <span>Production Ready</span>
+          </div>
+        </div>
+        <div class="corps-projet-luxe">
+          <div class="categorie-projet">Architecture Logicielle &amp; API REST</div>
+          <h3 class="titre-projet-luxe">NEXTMUX — Moteur de Multiplexage &amp; Traitement de Flux</h3>
+          <p class="description-projet-luxe">
+            Conception d'une architecture backend haute performance pour le routage, la transformation et la synchronisation de données multi-sources. Authentification JWT, files d'attente asynchrones et monitoring.
+          </p>
+          <div class="tags-technologies-projet">
+            <span class="tag-tech"><iconify-icon icon="logos:laravel"></iconify-icon> Laravel 11</span>
+            <span class="tag-tech"><iconify-icon icon="logos:php"></iconify-icon> PHP 8.2</span>
+            <span class="tag-tech"><iconify-icon icon="logos:mysql"></iconify-icon> MySQL</span>
+            <span class="tag-tech"><iconify-icon icon="mdi:api"></iconify-icon> REST API</span>
+          </div>
+          <div class="actions-projet-luxe">
+            <a href="projets-professionnels.html" class="bouton-projet-lien">
+              <span>Étude de cas détaillée</span>
+              <iconify-icon icon="mdi:arrow-top-right"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      
+      <article class="carte-projet-luxe reveal-on-scroll">
+        <div class="visuel-projet-luxe">
+          <img src="images/projets-3.jpeg" alt="Datacenter & Baies Réseau Cisco" loading="lazy">
+          <div class="badge-statut-projet badge-reseau">
+            <span class="point-or"></span>
+            <span>Infrastructure Cisco</span>
+          </div>
+        </div>
+        <div class="corps-projet-luxe">
+          <div class="categorie-projet">Réseaux &amp; Systèmes Haute Disponibilité</div>
+          <h3 class="titre-projet-luxe">Architecture Campus Multi-Sites — Routage OSPF &amp; VLANs</h3>
+          <p class="description-projet-luxe">
+            Déploiement complet d'une topologie d'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage par listes de contrôle d'accès (ACL).
+          </p>
+          <div class="tags-technologies-projet">
+            <span class="tag-tech"><iconify-icon icon="logos:cisco"></iconify-icon> Cisco IOS</span>
+            <span class="tag-tech"><iconify-icon icon="mdi:router-network"></iconify-icon> OSPF / BGP</span>
+            <span class="tag-tech"><iconify-icon icon="mdi:lan-connect"></iconify-icon> VLANs 802.1Q</span>
+            <span class="tag-tech"><iconify-icon icon="mdi:firewall"></iconify-icon> ACLs &amp; NAT</span>
+          </div>
+          <div class="actions-projet-luxe">
+            <a href="projets-academiques.html" class="bouton-projet-lien">
+              <span>Schéma d'architecture</span>
+              <iconify-icon icon="mdi:arrow-top-right"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      
+      <article class="carte-projet-luxe reveal-on-scroll">
+        <div class="visuel-projet-luxe">
+          <img src="images/acceuil.jpeg" alt="RestoDirect Interface" loading="lazy">
+          <div class="badge-statut-projet badge-temps-reel">
+            <span class="point-or"></span>
+            <span>Full-Stack Temps Réel</span>
+          </div>
+        </div>
+        <div class="corps-projet-luxe">
+          <div class="categorie-projet">Application SaaS &amp; WebSockets</div>
+          <h3 class="titre-projet-luxe">RestoDirect — Gestion de Commandes &amp; Flux Temps Réel</h3>
+          <p class="description-projet-luxe">
+            Système réactif pour la restauration et les services de livraison : suivi bidirectionnel en temps réel via WebSockets, gestion des stocks synchronisée, tableaux de bord interactifs et API découplée.
+          </p>
+          <div class="tags-technologies-projet">
+            <span class="tag-tech"><iconify-icon icon="logos:react"></iconify-icon> React.js</span>
+            <span class="tag-tech"><iconify-icon icon="logos:nodejs-icon"></iconify-icon> Node.js</span>
+            <span class="tag-tech"><iconify-icon icon="logos:postgresql"></iconify-icon> PostgreSQL</span>
+            <span class="tag-tech"><iconify-icon icon="logos:websocket"></iconify-icon> Socket.io</span>
+          </div>
+          <div class="actions-projet-luxe">
+            <a href="projets-professionnels.html" class="bouton-projet-lien">
+              <span>Étude de cas détaillée</span>
+              <iconify-icon icon="mdi:arrow-top-right"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    
+    <div class="deux-blocs-projets" style="margin-top:40px">
+      <a href="projets-academiques.html" class="bloc-type-projet">
+        <span class="fleche-bloc-projet">↗</span>
+        <div class="icone-bloc-projet"><iconify-icon icon="mdi:school"></iconify-icon></div>
+        <h3>Explorer tous les projets académiques</h3>
+        <p>Travaux pratiques, certifications et soutenances réalisés à l'ENEAM.</p>
+        <span class="compteur-bloc-projet" id="compteurProjetsAcademiques">Accéder à l'archive académique →</span>
+      </a>
+      <a href="projets-professionnels.html" class="bloc-type-projet">
+        <span class="fleche-bloc-projet">↗</span>
+        <div class="icone-bloc-projet"><iconify-icon icon="mdi:briefcase-check"></iconify-icon></div>
+        <h3>Explorer les projets personnels &amp; freelance</h3>
+        <p>Applications SaaS, API, bots et architectures réseau déployés en production.</p>
+        <span class="compteur-bloc-projet" id="compteurProjetsPro">Accéder à l'archive professionnelle →</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -256,31 +433,33 @@
   <div class="vitrine-cv-container">
     <div class="carte-vitrine-cv">
 
-      <!-- Aperçu miniature visuel du template CV avec arche -->
+      
       <div class="apercu-miniature-cv">
         <a href="cv.html" class="mini-feuille-cv" title="Cliquer pour ouvrir le CV interactif">
-          <div class="mini-colonne-gauche">
-            <div class="mini-arche-photo">
-              <img src="images/philippe.jpeg" alt="Philippe Hountondji">
-            </div>
-            <div class="mini-cadre-gauche">
-              <div class="mini-ligne-titre"></div>
-              <div class="mini-ligne"></div>
-              <div class="mini-ligne courte"></div>
-              <div class="mini-ligne-titre" style="margin-top:6px"></div>
-              <div class="mini-ligne"></div>
-            </div>
+          
+          <div class="mini-bandeau-bleu-haut">
+            <span class="mini-nom">HOUNTONDJI PHILIPPE</span>
+            <span class="mini-titre">Développeur Web &amp; Réseau</span>
           </div>
-          <div class="mini-colonne-droite">
-            <div class="mini-bandeau-bleu">
-              <span class="mini-nom">HOUNTONDJI PHILIPPE</span>
-              <span class="mini-titre">Développeur Web &amp; Réseau</span>
+          
+          <div class="mini-corps-grille">
+            <div class="mini-colonne-gauche-arche">
+              <div class="mini-arche-photo">
+                <img src="images/philippe.jpeg" alt="Philippe Hountondji">
+              </div>
+              <div class="mini-cadre-gauche">
+                <div class="mini-ligne-titre"></div>
+                <div class="mini-ligne"></div>
+                <div class="mini-ligne courte"></div>
+                <div class="mini-ligne-titre" style="margin-top:4px"></div>
+                <div class="mini-ligne"></div>
+              </div>
             </div>
-            <div class="mini-corps">
+            <div class="mini-colonne-droite-contenu">
               <div class="mini-ligne-section"></div>
               <div class="mini-bloc"></div>
               <div class="mini-bloc"></div>
-              <div class="mini-ligne-section" style="margin-top:6px"></div>
+              <div class="mini-ligne-section" style="margin-top:5px"></div>
               <div class="mini-bloc"></div>
             </div>
           </div>
@@ -288,7 +467,7 @@
         <span class="badge-miniature-format">Aperçu du modèle A4 interactif</span>
       </div>
 
-      <!-- Détails, points forts et boutons d'action -->
+      
       <div class="details-vitrine-cv">
         <div class="badge-disponibilite-cv">
           <span class="pastille-pulsante"></span>
@@ -353,7 +532,7 @@
   </div>
 </section>
 
-<section id="contact" class="section-generale">
+<section id="contact" class="section-generale reveal-on-scroll">
   <div class="entete-section">
     <span class="etiquette-section">Discutons</span>
     <h2 class="titre-section">Contact</h2>
@@ -496,5 +675,6 @@
 </footer>
 
 <script src="assets/js/script.js"></script>
+<script src="assets/js/animations.js"></script>
 </body>
 </html>

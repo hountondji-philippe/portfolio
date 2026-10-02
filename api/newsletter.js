@@ -1,17 +1,34 @@
-// api/newsletter.js
-// Inscription newsletter minimale : ne stocke rien en base (pas de nouveau
-// modèle Prisma nécessaire), envoie simplement un email de notification à
-// Philippe via le compte Gmail déjà configuré (mêmes identifiants que
-// api/admin/account.js pour send-reply).
-//
-// POST { email }
-
 const nodemailer = require('nodemailer');
 const validator = require('validator');
+const { verifierCsrf } = require('../lib/auth');
 
-module.exports = async function handler(req, res) {
+const tentatives = new Map();
+const LIMITE_PAR_HEURE = 5;
+
+function verifierRateLimit(ip) {
+  const maintenant = Date.now();
+  const entree = tentatives.get(ip) || { nb: 0, debut: maintenant };
+
+  if (maintenant - entree.debut > 3600000) {
+    tentatives.set(ip, { nb: 1, debut: maintenant });
+    return true;
+  }
+
+  if (entree.nb >= LIMITE_PAR_HEURE) return false;
+
+  entree.nb++;
+  tentatives.set(ip, entree);
+  return true;
+}
+
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée.' });
+  }
+
+  const ip = String((req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown');
+  if (!verifierRateLimit(ip)) {
+    return res.status(429).json({ error: 'Trop de tentatives. Réessayez dans une heure.' });
   }
 
   const email = String((req.body || {}).email || '').trim().slice(0, 254);
@@ -21,7 +38,6 @@ module.exports = async function handler(req, res) {
   }
 
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    console.error('[newsletter] Configuration Gmail manquante.');
     return res.status(500).json({ error: 'Configuration serveur manquante.' });
   }
 
@@ -41,8 +57,9 @@ module.exports = async function handler(req, res) {
     });
 
     return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('[newsletter]', err.message);
+  } catch {
     return res.status(500).json({ error: "Erreur lors de l'inscription." });
   }
-};
+}
+
+module.exports = verifierCsrf(handler);

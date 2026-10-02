@@ -1,4 +1,3 @@
-
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const validator = require('validator');
@@ -7,8 +6,8 @@ const { getPrismaClient } = require('../../lib/db');
 const { requireAuth, revoquerToken } = require('../../lib/auth');
 
 const TAILLE_MAX_IMAGE = 5 * 1024 * 1024;
-
-const URL_SITE = 'https://portfolio-seven-delta-21jq5u35et.vercel.app';
+const EXTENSIONS_AUTORISEES = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+const URL_SITE = process.env.URL_SITE || '';
 
 function genererEmailHTML({ nomDestinataire, reponse, messageOriginal, dateMessage }) {
   function echapper(s) {
@@ -117,8 +116,7 @@ async function actionSendReply(req, res, prisma) {
 
 async function actionUploadImage(req, res) {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    console.error('[account upload-image] BLOB_READ_WRITE_TOKEN manquant.');
-    return res.status(500).json({ error: "Stockage d'image non configuré (token Vercel Blob manquant)." });
+    return res.status(500).json({ error: "Stockage d'image non configuré." });
   }
 
   const { imageBase64, nomFichier } = req.body || {};
@@ -128,35 +126,36 @@ async function actionUploadImage(req, res) {
   const correspondance = imageBase64.match(/^data:image\/(\w+);base64,(.+)$/);
   if (!correspondance) return res.status(400).json({ error: 'Format image invalide.' });
 
-  const extension = correspondance[1];
+  const extension = correspondance[1].toLowerCase();
+  if (!EXTENSIONS_AUTORISEES.includes(extension)) {
+    return res.status(400).json({ error: 'Format de fichier non autorisé.' });
+  }
+
   const donnees = Buffer.from(correspondance[2], 'base64');
   if (donnees.length > TAILLE_MAX_IMAGE) return res.status(400).json({ error: 'Image trop lourde (max 5 Mo).' });
 
-  const nom = 'projets/' + Date.now() + '-' + (nomFichier || 'image').replace(/[^a-zA-Z0-9.-]/g, '') + '.' + extension;
+  const nomSanitise = (nomFichier || 'image').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 60);
+  const nom = 'projets/' + Date.now() + '-' + nomSanitise + '.' + extension;
 
   try {
     const blob = await put(nom, donnees, { access: 'public', contentType: 'image/' + extension });
     return res.status(200).json({ success: true, url: blob.url });
-  } catch (err) {
-    console.error('[account upload-image] Échec put() Vercel Blob :', err);
-    return res.status(500).json({ error: 'Échec upload: ' + (err.message || 'erreur inconnue du stockage.') });
+  } catch {
+    return res.status(500).json({ error: "Échec de l'upload." });
   }
 }
-
 
 async function handler(req, res) {
   const prisma = getPrismaClient();
 
   if (req.method === 'GET' && req.query.action === 'stats') {
     try { return await actionStats(req, res, prisma); }
-    catch (err) { console.error('[account stats]', err.message); return res.status(500).json({ error: 'Erreur serveur.' }); }
+    catch { return res.status(500).json({ error: 'Erreur serveur.' }); }
   }
 
   if (req.method === 'POST') {
     const action = req.body.action;
 
-    // upload-image et upload-cv gèrent déjà leur propre try/catch en
-    // interne (pour renvoyer un message précis) : on ne l'écrase pas ici.
     if (action === 'upload-image') return actionUploadImage(req, res);
 
     try {
@@ -164,8 +163,7 @@ async function handler(req, res) {
       if (action === 'change-password') return await actionChangePassword(req, res, prisma, req.admin);
       if (action === 'send-reply') return await actionSendReply(req, res, prisma);
       return res.status(400).json({ error: 'Action inconnue.' });
-    } catch (err) {
-      console.error('[account ' + action + ']', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }

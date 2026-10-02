@@ -1,5 +1,3 @@
-// api/messages.js
-// GET/PATCH/DELETE (admin uniquement). ?id= pour PATCH/DELETE.
 
 const { getPrismaClient } = require('../lib/db');
 const { requireAuth } = require('../lib/auth');

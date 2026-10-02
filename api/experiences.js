@@ -1,6 +1,3 @@
-// api/experiences.js
-// GET (public) : liste. POST (admin) : ajout. PUT/DELETE (admin) via ?id=.
-
 const { getPrismaClient } = require('../lib/db');
 const { requireAuth } = require('../lib/auth');
 
@@ -14,14 +11,10 @@ async function handler(req, res) {
     try {
       const experiences = await prisma.experience.findMany({ orderBy: { ordre: 'asc' } });
       return res.status(200).json({ success: true, experiences });
-    } catch (err) {
-      console.error('[experiences GET]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
-
-  const header = req.headers.authorization || '';
-  if (!header.startsWith('Bearer ')) return res.status(401).json({ error: 'Non autorisé.' });
 
   function lireBody() {
     return {
@@ -45,8 +38,7 @@ async function handler(req, res) {
       if (!STATUTS_VALIDES.includes(data.statut)) return res.status(400).json({ error: 'Statut invalide.' });
       const experience = await prisma.experience.create({ data });
       return res.status(201).json({ success: true, experience });
-    } catch (err) {
-      console.error('[experiences POST]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -61,7 +53,6 @@ async function handler(req, res) {
       return res.status(200).json({ success: true, experience });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Expérience introuvable.' });
-      console.error('[experiences PUT]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -73,7 +64,6 @@ async function handler(req, res) {
       return res.status(200).json({ success: true });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Expérience introuvable.' });
-      console.error('[experiences DELETE]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }

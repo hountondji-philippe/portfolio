@@ -5,7 +5,6 @@ let TOKEN = localStorage.getItem('admin_token') || sessionStorage.getItem('admin
 let messageActuel = null;
 let graphiqueJours = null;
 
-//REQUETES//
 function req(method, url, body) {
   const opts = {
     method,
@@ -15,15 +14,11 @@ function req(method, url, body) {
   if (body) opts.body = JSON.stringify(body);
 
   return fetch('/api' + url, opts).then((r) => {
-    // Une session déjà active qui expire renvoie 401 : message générique.
-    // Un échec de connexion (mauvais identifiants) renvoie aussi 401, mais
-    // sans TOKEN préalable : on laisse passer le vrai message du serveur.
     if (r.status === 401 && TOKEN) throw new Error('Session expirée. Reconnectez-vous.');
     return r.json();
   });
 }
 
-//TOAST//
 function toast(msg, type) {
   type = type || 'info';
   const box = document.createElement('div');
@@ -51,9 +46,6 @@ function echapper(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-//THEME CLAIR / SOMBRE//
-// Même clé localStorage ('theme-portfolio') que sur le site public, pour
-// que le choix de thème soit cohérent entre l'admin et l'accueil.
 function bindBasculeTheme() {
   const racineHtml = document.documentElement;
   const bouton = document.getElementById('basculeTheme');
@@ -72,7 +64,6 @@ function bindBasculeTheme() {
   }
 }
 
-//INIT//
 function init() {
   bindBasculeTheme();
   if (TOKEN) afficherTableau();
@@ -90,7 +81,6 @@ function init() {
   bindPhotoProfilCV();
 }
 
-//CONNEXION//
 function bindConnexion() {
   const form = document.getElementById('formulaire-connexion');
   const btnVoir = document.querySelector('.bouton-voir-mdp');
@@ -155,7 +145,6 @@ function bindDeconnexion() {
   });
 }
 
-//NAVIGATION//
 function bindNavigation() {
   document.querySelectorAll('.element-nav').forEach((el) => {
     el.addEventListener('click', (e) => {
@@ -215,7 +204,6 @@ window.verifierServeurBtn = function () {
   document.getElementById('barre-serveur').style.display = 'none';
 };
 
-//VUE D'ENSEMBLE//
 async function chargerVueEnsemble() {
   try {
     const d = await req('GET', '/admin/account?action=stats');
@@ -294,7 +282,6 @@ async function exporterMessages() {
   } catch (err) { toast(err.message, 'erreur'); }
 }
 
-//MESSAGES//
 let filtreMsgs = 'all';
 
 async function chargerMessages() {
@@ -413,7 +400,6 @@ function bindModaleMessage() {
   });
 }
 
-//ONGLETS SOURCE IMAGE (URL / GALERIE)//
 function bindOngletsImage() {
   document.querySelectorAll('.bouton-onglet-image').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -441,7 +427,6 @@ function bindOngletsImage() {
   });
 }
 
-//PHOTO DE PROFIL (page Profil CV)//
 function bindPhotoProfilCV() {
   const fichierCV = document.getElementById('cv-photo-fichier');
   if (!fichierCV) return;
@@ -478,7 +463,6 @@ async function resoudreImageProjet() {
   return d.url;
 }
 
-//PROJETS//
 const LABELS_STATUT_PROJET = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
 const LABELS_TYPE_PROJET = { ACADEMIQUE: 'Académique', PROFESSIONNEL: 'Professionnel' };
 
@@ -516,7 +500,6 @@ function renderProjet(p) {
     '</div></div>';
 }
 
-//FORMATIONS//
 const LABELS_STATUT_FORMATION = { EN_COURS: 'En cours', OBTENU: 'Obtenu' };
 
 async function chargerFormations() {
@@ -546,7 +529,6 @@ function renderFormation(f) {
     '</div></div>';
 }
 
-//EXPERIENCES//
 const LABELS_STATUT_EXP = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu', RECHERCHE: 'En recherche' };
 
 async function chargerExperiences() {
@@ -578,7 +560,6 @@ function renderExperience(exp) {
     '</div></div>';
 }
 
-//COMPETENCES//
 const LABELS_CATEGORIE_COMP = {
   FRONTEND: 'Front-end', BACKEND: 'Back-end', MOBILE: 'Mobile',
   RESEAUX_INFRA: 'Réseaux', MARKETING_DIGITAL: 'Marketing digital',
@@ -597,7 +578,6 @@ async function chargerCompetences() {
   } catch (err) { liste.innerHTML = '<div class="etat-vide-liste">' + echapper(err.message) + '</div>'; }
 }
 
-//PROFIL CV//
 async function chargerProfilCV() {
   try {
     const d = await req('GET', '/formations?resource=settings');
@@ -636,7 +616,6 @@ async function resoudreImageProfilCV() {
   return d.url;
 }
 
-//LANGUES//
 async function chargerLangues() {
   const liste = document.getElementById('liste-langues');
   liste.innerHTML = '<div class="chargement-liste">Chargement...</div>';
@@ -726,7 +705,6 @@ function renderCompetence(c) {
     '</div></div>';
 }
 
-//BINDING GENERIQUE DES LISTES//
 const ROUTES_TYPE = { projects: '/projects', formations: '/formations', experiences: '/experiences', skills: '/skills' };
 const LISTE_TYPE = { projects: '/projects', formations: '/formations', experiences: '/experiences', skills: '/skills' };
 
@@ -749,7 +727,6 @@ function bindListe(idListe, type, rechargerFn) {
   });
 }
 
-//MODALE DE MODIFICATION//
 function ouvrirModale(titre, corps, boutons) {
   let m = document.getElementById('mg');
   if (!m) {
@@ -959,9 +936,7 @@ async function sauvegarderModif(id, type, rechargerFn) {
   }
 }
 
-//FORMULAIRES D'AJOUT//
 function bindFormulaires() {
-  // --- Ajout projet ---
   document.getElementById('form-ajout-projet').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-ajouter-projet');
@@ -994,7 +969,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Ajouter le projet'; }
   });
 
-  // --- Ajout formation ---
   document.getElementById('form-ajout-formation').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-ajouter-formation');
@@ -1019,7 +993,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Ajouter la formation'; }
   });
 
-  // --- Ajout expérience ---
   document.getElementById('form-ajout-experience').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-ajouter-experience');
@@ -1045,7 +1018,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = "Ajouter l'expérience"; }
   });
 
-  // --- Ajout compétence ---
   document.getElementById('form-ajout-competence').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-ajouter-competence');
@@ -1069,7 +1041,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Ajouter la compétence'; }
   });
 
-  // --- Profil CV ---
   document.getElementById('form-profil-cv').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-enregistrer-profil-cv');
@@ -1090,7 +1061,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
   });
 
-  // --- Ajout langue ---
   document.getElementById('form-ajout-langue').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-ajouter-langue');
@@ -1105,7 +1075,6 @@ function bindFormulaires() {
     finally { btn.disabled = false; btn.textContent = 'Ajouter la langue'; }
   });
 
-  // --- Changement de mot de passe ---
   document.getElementById('formulaire-mdp').addEventListener('submit', async (e) => {
     e.preventDefault();
     const current = val('mdp-actuel');
@@ -1135,7 +1104,6 @@ function bindFormulaires() {
   });
 }
 
-//ANALYTICS//
 async function chargerAnalytics() {
   try {
     const d = await req('GET', '/analytics?view=resume');

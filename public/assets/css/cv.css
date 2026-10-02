@@ -3,10 +3,13 @@
 /* Version corrigee : pagination multi-page correcte pour affichage, impression et export PDF */
 
 :root {
-  --bleu-cv: #0B3B73;
-  --texte-sombre: #1E293B;
-  --texte-gris: #64748B;
-  --fond-bureau: #E2E8F0;
+  --bleu-cv: #013373;
+  --couleur-theme: #013373;
+  --couleur-theme-fonce: #011F4B;
+  --couleur-theme-pastel: #E8F0FC;
+  --texte-sombre: #1A202C;
+  --texte-gris: #4A5568;
+  --fond-bureau: #060D1A;
   --fond-feuille: #FFFFFF;
   --police-titres: 'Oswald', sans-serif;
   --police-corps: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -26,7 +29,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* -- BARRE D'OUTILS SUPERIEURE ------------------------------------------ */
 .barre-outils {
   position: sticky;
   top: 0;
@@ -34,10 +36,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
-  background: #FFFFFF;
-  border-bottom: 1px solid #CBD5E1;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 14px 28px;
+  background: #0C1628;
+  border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .groupe-gauche-outils,
@@ -63,61 +65,54 @@ body {
 }
 
 .bouton-outil-retour {
-  background: transparent;
-  color: #475569;
-  border-color: #CBD5E1;
+  background: rgba(255, 255, 255, 0.06);
+  color: #00E5FF;
+  border-color: rgba(0, 198, 255, 0.3);
 }
 
 .bouton-outil-retour:hover {
-  background: #F1F5F9;
-  color: var(--bleu-cv);
+  background: rgba(0, 198, 255, 0.15);
+  color: #FFFFFF;
 }
 
 .bouton-outil-secondaire {
-  background: #FFFFFF;
-  color: var(--bleu-cv);
-  border-color: var(--bleu-cv);
+  background: rgba(255, 255, 255, 0.08);
+  color: #E8F0FF;
+  border-color: rgba(0, 198, 255, 0.35);
 }
 
 .bouton-outil-secondaire:hover {
-  background: rgba(11, 59, 115, 0.05);
+  background: rgba(0, 198, 255, 0.2);
+  border-color: rgba(0, 198, 255, 0.6);
+  color: #FFFFFF;
 }
 
 .bouton-outil-primaire {
-  background: var(--bleu-cv);
-  color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(11, 59, 115, 0.25);
+  background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(0, 198, 255, 0.35);
 }
 
 .bouton-outil-primaire:hover {
-  background: #082A52;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
 }
 
-/* -- CONTENEUR DU DOCUMENT ----------------------------------------------- */
 .enveloppe-cv {
   padding: 24px 16px 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px; /* espace visuel entre les pages, comme un aperçu Word */
+  gap: 32px;
 }
 
-/* Utilisée temporairement pendant la génération du PDF (voir cv.js) pour ne
-   pas capturer le padding/espacement d'affichage en plus des marges PDF. */
 .enveloppe-cv--export {
   padding: 0 !important;
   gap: 0 !important;
 }
 
-/* CORRECTION IMPORTANTE : ces règles forcent l'apparence "bureau" (deux
-   colonnes, dimensions A4) pendant l'export PDF, MÊME SI le téléchargement
-   est lancé depuis un téléphone. Sans elles, html2canvas capture la mise en
-   page mobile empilée en une seule colonne (@media max-width:820px), ce qui
-   donnait un PDF complètement désordonné. Comme ces règles sont en dehors de
-   toute media query et utilisent !important, elles l'emportent sur les
-   règles mobiles, quelle que soit la largeur réelle de l'écran. */
 .enveloppe-cv--export .feuille-cv {
   width: 210mm !important;
   min-height: 297mm !important;
@@ -125,39 +120,47 @@ body {
 }
 
 .enveloppe-cv--export .bandeau-bleu-haut {
-  width: 68% !important;
-  height: 185px !important;
-  margin-left: auto !important;
-  padding: 0 36px !important;
+  width: 100% !important;
+  height: 230px !important;
+  margin-left: 0 !important;
+  padding: 0 40px 0 300px !important;
   text-align: left !important;
+  background: var(--bleu-cv) !important;
 }
 
 .enveloppe-cv--export .nom-candidat {
-  font-size: 44px !important;
+  font-size: 46px !important;
 }
 
 .enveloppe-cv--export .titre-candidat {
-  font-size: 15px !important;
+  font-size: 16px !important;
 }
 
 .enveloppe-cv--export .corps-cv-grid {
-  grid-template-columns: 215px 1fr !important;
-  padding: 0 34px 28px !important;
-  gap: 34px !important;
+  grid-template-columns: 220px 1fr !important;
+  padding: 0 36px 28px !important;
+  gap: 36px !important;
 }
 
 .enveloppe-cv--export .colonne-gauche-cadre {
-  width: 215px !important;
-  max-width: 215px !important;
-  margin: -160px 0 0 0 !important;
+  width: 220px !important;
+  max-width: 220px !important;
+  margin: -180px 0 0 0 !important;
+  border-radius: 110px 110px 0 0 !important;
+  border: 2.5px solid var(--bleu-cv) !important;
+}
+
+.enveloppe-cv--export .photo-arche,
+.enveloppe-cv--export .photo-vide {
+  width: 130px !important;
+  height: 130px !important;
+  border-radius: 50% !important;
+  border: none !important;
 }
 
 .enveloppe-cv--export .colonne-gauche-cadre--suite {
-  margin: 14px 0 0 0 !important;
-}
-
-.enveloppe-cv--export .arche-photo-haut {
-  height: 220px !important;
+  margin: 0 !important;
+  border-radius: 18px !important;
 }
 
 .enveloppe-cv--export .sections-gauche {
@@ -198,11 +201,6 @@ body {
   font-size: 11px !important;
 }
 
-/* -- FEUILLE CV (LARGEUR A4 FIXE, HAUTEUR LIBRE) ------------------------- */
-/* CORRECTION : plus de "height: 297mm" ni de "overflow: hidden".
-   Avant, tout contenu dépassant une page A4 était invisible ou écrasé.
-   Maintenant la feuille grandit naturellement : 1, 2 ou 3 pages selon le
-   contenu réel (compétences, projets, expériences ajoutés depuis l'admin). */
 .feuille-cv {
   width: 210mm;
   min-height: 297mm;
@@ -212,16 +210,14 @@ body {
   box-sizing: border-box;
 }
 
-/* -- BANDEAU BLEU MARINE HAUT DROIT -------------------------------------- */
 .bandeau-bleu-haut {
-  width: 68%;
-  height: 185px;
+  width: 100%;
+  height: 230px;
   background: var(--bleu-cv);
-  margin-left: auto;
   display: flex;
   align-items: center;
-  padding-left: 36px;
-  padding-right: 36px;
+  padding-left: 300px;
+  padding-right: 40px;
   box-sizing: border-box;
 }
 
@@ -233,7 +229,7 @@ body {
 .nom-candidat {
   font-family: var(--police-titres);
   font-weight: 700;
-  font-size: 44px;
+  font-size: 46px;
   line-height: 1.0;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -245,91 +241,88 @@ body {
 }
 
 .titre-candidat {
-  font-family: var(--police-corps);
-  font-size: 15px;
+  font-family: var(--police-titres);
+  font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  color: #FFFFFF;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
   margin-top: 8px;
 }
 
-/* -- GRILLE DU CORPS DU CV ------------------------------------------------ */
-/* CORRECTION : align-items: start empêche la colonne de gauche de s'étirer
-   pour égaler la hauteur de la colonne de droite quand celle-ci est longue
-   (plusieurs expériences/projets). Chaque colonne garde sa hauteur naturelle. */
 .corps-cv-grid {
   display: grid;
-  grid-template-columns: 215px 1fr;
+  grid-template-columns: 220px 1fr;
   align-items: start;
-  gap: 34px;
-  padding: 0 34px 28px;
+  gap: 36px;
+  padding: 0 36px 28px;
   box-sizing: border-box;
 }
 
-/* -- COLONNE GAUCHE ENCADREE AVEC ARCHE ---------------------------------- */
+/* Cadre gauche avec arche supérieure 1:1 fidèle à la capture Canva */
 .colonne-gauche-cadre {
-  width: 215px;
-  margin-top: -160px; /* Remonte dans l'en-tête, comme sur le modèle */
-  border: 2.8px solid var(--bleu-cv);
-  border-radius: 108px 108px 6px 6px;
+  width: 220px;
+  margin-top: -180px;
+  border: 2.5px solid var(--couleur-theme);
+  border-radius: 110px 110px 0 0;
   background: #FFFFFF;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   z-index: 10;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  /* CORRECTION : le cadre entier (photo + coordonnées + langues + compétences
-     + centres d'intérêt) ne doit jamais être scindé entre deux pages. */
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
-/* L'arche de la photo */
 .arche-photo-haut {
   width: 100%;
-  height: 220px;
-  background: #FFFFFF;
-  border-radius: 104px 104px 0 0;
-  overflow: hidden;
-  border-bottom: 2.8px solid var(--bleu-cv);
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  border-bottom: none;
 }
 
 .photo-arche {
-  width: 100%;
-  height: 100%;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
   object-fit: cover;
   object-position: top center;
   display: block;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
 .photo-vide {
-  width: 100%;
-  height: 100%;
-  background: #EBF3FC;
-  color: var(--bleu-cv);
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--couleur-theme-pastel);
+  color: var(--couleur-theme);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--police-titres);
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 700;
+  border: none;
 }
 
 .masque {
   display: none !important;
 }
 
-/* CORRECTION : copie du cadre gauche sur une page ajoutée par paginerCV().
-   Sur la page 1, margin-top: -160px sert à remonter le cadre SOUS le bandeau
-   bleu. Sur les pages suivantes il n'y a pas de bandeau, donc ce décalage
-   négatif n'a pas lieu d'être : le cadre doit juste s'aligner normalement en
-   haut de page, avec un petit espace au lieu d'être collé au bord. */
 .colonne-gauche-cadre--suite {
-  margin-top: 14px;
+  margin-top: 0;
 }
 
-/* Sections internes du cadre gauche */
 .sections-gauche {
   padding: 16px 14px 18px;
   display: flex;
@@ -375,7 +368,6 @@ body {
   color: var(--bleu-cv);
 }
 
-/* -- COLONNE DROITE (CONTENU PRINCIPAL) ----------------------------------- */
 .colonne-droite-contenu {
   padding-top: 14px;
   display: flex;
@@ -386,8 +378,6 @@ body {
 .bloc-section-droite {
   display: flex;
   flex-direction: column;
-  /* CORRECTION : évite qu'une section (titre + un seul élément) se retrouve
-     scindée, titre en bas d'une page et contenu en haut de la suivante. */
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -412,8 +402,6 @@ body {
 .element-cv {
   display: flex;
   flex-direction: column;
-  /* CORRECTION : une expérience/formation/projet individuel ne doit jamais
-     être coupé en deux entre deux pages. */
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -454,7 +442,6 @@ body {
   color: #334155;
 }
 
-/* -- BADGE TYPE DE PROJET (académique / professionnel) -------------------- */
 .badge-type-projet {
   display: inline-block;
   font-family: var(--police-corps);
@@ -462,8 +449,8 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  color: var(--bleu-cv);
-  background: #EBF3FC;
+  color: var(--couleur-theme);
+  background: var(--couleur-theme-pastel);
   padding: 2px 8px;
   border-radius: 20px;
   white-space: nowrap;
@@ -491,11 +478,7 @@ body {
   color: var(--texte-gris);
 }
 
-/* -- RESPONSIVE MOBILE (POUR ECRANS ETROITS) ------------------------------ */
 @media (max-width: 820px) {
-  /* CORRECTION : la barre d'outils (Retour / Télécharger / Imprimer) passe
-     à la ligne au lieu de déborder de l'écran (le bouton "Imprimer" était
-     coupé à droite). Sur très petit écran, les boutons se centrent. */
   .barre-outils {
     flex-wrap: wrap;
     gap: 10px 8px;
@@ -538,16 +521,19 @@ body {
     width: 100%;
     margin-left: 0;
     height: auto;
-    padding: 28px 20px;
+    min-height: 140px;
+    padding: 30px 20px;
     text-align: center;
+    display: flex;
+    justify-content: center;
   }
 
   .nom-candidat {
-    font-size: 30px;
+    font-size: 32px;
   }
 
   .titre-candidat {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .corps-cv-grid {
@@ -559,20 +545,29 @@ body {
   .colonne-gauche-cadre {
     width: 100%;
     max-width: 320px;
-    margin: -44px auto 0;
+    margin: -70px auto 0;
+    border-radius: 140px 140px 0 0;
+    border: 2.5px solid var(--bleu-cv);
   }
 
   .colonne-gauche-cadre--suite {
     margin: 0 auto;
+    border-radius: 18px;
   }
 
   .arche-photo-haut {
-    height: 260px;
+    padding-top: 24px;
+    padding-bottom: 12px;
   }
 
-  /* CORRECTION : textes du cadre gauche trop petits (10.5px) pour un écran
-     de téléphone, avec peu d'air autour. On agrandit et on espace un peu
-     plus pour un rendu propre et lisible, plutôt que "tassé". */
+  .photo-arche,
+  .photo-vide {
+    width: 130px;
+    height: 130px;
+    border-radius: 50% !important;
+    border: none !important;
+  }
+
   .sections-gauche {
     padding: 20px 18px 22px;
     gap: 20px;
@@ -616,8 +611,6 @@ body {
   }
 }
 
-
-/* -- STYLES D'IMPRESSION & EXPORT PDF (MULTI-PAGE CORRECT) ---------------- */
 @media print {
   @page {
     size: A4 portrait;
@@ -642,9 +635,6 @@ body {
     display: block !important;
   }
 
-  /* CORRECTION : plus de hauteur/overflow forcés à une seule page A4.
-     Le CV peut désormais s'étaler sur autant de pages A4 que nécessaire,
-     chaque bloc restant entier grâce aux règles break-inside ci-dessus. */
   .feuille-cv {
     width: 210mm !important;
     min-height: 297mm !important;
@@ -653,10 +643,11 @@ body {
   }
 
   .bandeau-bleu-haut {
-    width: 68% !important;
-    height: 185px !important;
-    background: #0B3B73 !important;
-    margin-left: auto !important;
+    width: 100% !important;
+    height: 230px !important;
+    background: #013373 !important;
+    padding-left: 300px !important;
+    margin-left: 0 !important;
   }
 
   .nom-candidat {
@@ -668,32 +659,34 @@ body {
   }
 
   .colonne-gauche-cadre {
-    border-color: #0B3B73 !important;
-    margin-top: -160px !important;
+    border-color: #013373 !important;
+    margin-top: -180px !important;
+    border-radius: 110px 110px 0 0 !important;
+    border-width: 2.5px !important;
   }
 
-  .arche-photo-haut {
-    border-bottom-color: #0B3B73 !important;
+  .photo-arche,
+  .photo-vide {
+    border: none !important;
+    border-radius: 50% !important;
+    width: 130px !important;
+    height: 130px !important;
   }
 
   .titre-section-gauche,
   .titre-section-droite,
   .poste-titre {
-    color: #0B3B73 !important;
+    color: #013373 !important;
   }
 
-  /* CORRECTION : chaque page ajoutée par paginerCV() démarre sur une
-     nouvelle feuille physique, sans l'espace d'aperçu écran. */
   .feuille-cv-suite {
     break-before: page;
     page-break-before: always;
     margin-top: 0 !important;
   }
 
-  /* Sur ces pages, pas de bandeau bleu à contourner : on annule le
-     décalage négatif de -160px hérité de la règle .colonne-gauche-cadre
-     ci-dessus (la double classe l'emporte car déclarée après). */
   .colonne-gauche-cadre.colonne-gauche-cadre--suite {
-    margin-top: 14px !important;
+    margin-top: 0 !important;
+    border-radius: 18px !important;
   }
 }

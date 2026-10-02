@@ -1,23 +1,8 @@
-// api/formations.js
-// GET (public) : liste. POST (admin) : ajout. PUT/DELETE (admin) via ?id=.
-//
-// Fusionne aussi (pour rester sous la limite de fonctions serverless du plan
-// Vercel Hobby, 12 max) :
-//   - les réglages/profil du site, via ?resource=settings
-//       GET  /api/formations?resource=settings   (public)  -> { settings: {...} }
-//       PUT  /api/formations?resource=settings   (admin)   -> body: { titrePro, bio, photoUrl, telephone, emailPublic, localisation, qualites }
-//   - les langues, via ?resource=languages
-//       GET    /api/formations?resource=languages           (public)  -> { languages: [...] }
-//       POST   /api/formations?resource=languages           (admin)   -> body: { nom, niveau, ordre }
-//       PUT    /api/formations?resource=languages&id=xxx    (admin)
-//       DELETE /api/formations?resource=languages&id=xxx    (admin)
-
 const { getPrismaClient } = require('../lib/db');
 const { requireAuth } = require('../lib/auth');
 
 const STATUTS_VALIDES = ['EN_COURS', 'OBTENU'];
 
-// ── Réglages / profil du CV (ex api/settings.js) ────────────────────────────
 async function handlerSettings(req, res, prisma) {
   if (req.method === 'GET') {
     try {
@@ -34,8 +19,7 @@ async function handlerSettings(req, res, prisma) {
           qualites: s ? s.qualites : null,
         },
       });
-    } catch (err) {
-      console.error('[formations/settings GET]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -69,8 +53,7 @@ async function handlerSettings(req, res, prisma) {
         create: { id: 'main', ...data },
       });
       return res.status(200).json({ success: true, settings });
-    } catch (err) {
-      console.error('[formations/settings PUT]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -78,7 +61,6 @@ async function handlerSettings(req, res, prisma) {
   return res.status(405).json({ error: 'Méthode non autorisée.' });
 }
 
-// ── Langues (nouveau, fusionné ici) ─────────────────────────────────────────
 async function handlerLanguages(req, res, prisma) {
   const { id } = req.query;
 
@@ -86,8 +68,7 @@ async function handlerLanguages(req, res, prisma) {
     try {
       const languages = await prisma.langue.findMany({ orderBy: { ordre: 'asc' } });
       return res.status(200).json({ success: true, languages });
-    } catch (err) {
-      console.error('[formations/languages GET]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -106,8 +87,7 @@ async function handlerLanguages(req, res, prisma) {
 
       const langue = await prisma.langue.create({ data: { nom, niveau, ordre } });
       return res.status(201).json({ success: true, langue });
-    } catch (err) {
-      console.error('[formations/languages POST]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -126,7 +106,6 @@ async function handlerLanguages(req, res, prisma) {
       return res.status(200).json({ success: true, langue });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Langue introuvable.' });
-      console.error('[formations/languages PUT]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -138,7 +117,6 @@ async function handlerLanguages(req, res, prisma) {
       return res.status(200).json({ success: true });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Langue introuvable.' });
-      console.error('[formations/languages DELETE]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -146,7 +124,6 @@ async function handlerLanguages(req, res, prisma) {
   return res.status(405).json({ error: 'Méthode non autorisée.' });
 }
 
-// ── Formations ───────────────────────────────────────────────────────────────
 async function handler(req, res) {
   const prisma = getPrismaClient();
   const { id, resource } = req.query;
@@ -162,8 +139,7 @@ async function handler(req, res) {
     try {
       const formations = await prisma.formation.findMany({ orderBy: { ordre: 'asc' } });
       return res.status(200).json({ success: true, formations });
-    } catch (err) {
-      console.error('[formations GET]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -187,8 +163,7 @@ async function handler(req, res) {
         data: { titre, ecole: ecole || null, periode: periode || null, description: description || null, statut, ordre },
       });
       return res.status(201).json({ success: true, formation });
-    } catch (err) {
-      console.error('[formations POST]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -212,7 +187,6 @@ async function handler(req, res) {
       return res.status(200).json({ success: true, formation });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Formation introuvable.' });
-      console.error('[formations PUT]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -224,7 +198,6 @@ async function handler(req, res) {
       return res.status(200).json({ success: true });
     } catch (err) {
       if (err.code === 'P2025') return res.status(404).json({ error: 'Formation introuvable.' });
-      console.error('[formations DELETE]', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }

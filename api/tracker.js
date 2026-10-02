@@ -1,7 +1,3 @@
-// api/tracker.js
-// POST uniquement, public. body.event = 'visite' | 'action' | 'duree'.
-// Consolide tracker/visite.js + action.js + duree.js.
-
 const { getPrismaClient } = require('../lib/db');
 const { clientIP, hasherIP, genererSessionId, geoLocaliser } = require('../lib/tracking');
 
@@ -9,6 +5,25 @@ const ACTIONS_AUTORISEES = [
   'scroll_bas', 'clic_contact', 'clic_projet', 'clic_cv',
   'clic_github', 'clic_linkedin', 'clic_whatsapp',
 ];
+
+const rateLimitMap = new Map();
+const LIMITE_PAR_MINUTE = 60;
+
+function verifierRateLimit(ip) {
+  const maintenant = Date.now();
+  const entree = rateLimitMap.get(ip) || { nb: 0, debut: maintenant };
+
+  if (maintenant - entree.debut > 60000) {
+    rateLimitMap.set(ip, { nb: 1, debut: maintenant });
+    return true;
+  }
+
+  if (entree.nb >= LIMITE_PAR_MINUTE) return false;
+
+  entree.nb++;
+  rateLimitMap.set(ip, entree);
+  return true;
+}
 
 async function traiterVisite(req, res, prisma) {
   const page = String(req.body.page || '/').slice(0, 255);
@@ -61,6 +76,11 @@ async function traiterDuree(req, res, prisma) {
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée.' });
 
+  const ip = String((req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown');
+  if (!verifierRateLimit(ip)) {
+    return res.status(429).json({ ok: false });
+  }
+
   try {
     const prisma = getPrismaClient();
     const event = req.body.event;
@@ -70,8 +90,7 @@ module.exports = async (req, res) => {
     if (event === 'duree') return await traiterDuree(req, res, prisma);
 
     return res.status(400).json({ error: 'Événement inconnu.' });
-  } catch (err) {
-    console.error('[tracker]', err.message);
+  } catch {
     return res.status(500).json({ ok: false });
   }
 };

@@ -1,5 +1,3 @@
-// api/admin/login.js
-// Connexion admin. Retourne un JWT si les identifiants sont corrects.
 
 const bcrypt = require('bcrypt');
 const validator = require('validator');

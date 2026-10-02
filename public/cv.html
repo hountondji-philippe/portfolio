@@ -10,13 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/cv.css">
-<!-- Librairie pour générer directement le vrai fichier PDF au clic -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body>
 
-<!-- BARRE D'ACTION SUPÉRIEURE (NON IMPRIMÉE) -->
 <header class="barre-outils no-print">
   <div class="groupe-gauche-outils">
     <a href="index.html" class="bouton-outil bouton-outil-retour">
@@ -37,12 +36,11 @@
   </div>
 </header>
 
-<!-- ZONE DU DOCUMENT CV (FORMAT A4 RÉEL) -->
 <div class="enveloppe-cv">
 
   <div class="feuille-cv" id="feuille-cv">
 
-    <!-- BANDEAU BLEU HAUT DROIT -->
+    
     <div class="bandeau-bleu-haut">
       <div class="contenu-bandeau">
         <h1 class="nom-candidat" id="cv-nom">
@@ -53,19 +51,19 @@
       </div>
     </div>
 
-    <!-- GRILLE CORPS CV -->
+    
     <div class="corps-cv-grid">
 
-      <!-- COLONNE GAUCHE AVEC ARCHE ENCADRÉE INTÉGRALE -->
+      
       <aside class="colonne-gauche-cadre">
 
-        <!-- Arche de la photo -->
+        
         <div class="arche-photo-haut">
           <img id="cv-photo" src="images/philippe.jpeg" alt="Philippe Hountondji" class="photo-arche" onerror="this.style.display='none'; document.getElementById('cv-photo-vide').classList.remove('masque');">
           <div id="cv-photo-vide" class="photo-vide masque">PH</div>
         </div>
 
-        <!-- Sections internes du cadre gauche -->
+        
         <div class="sections-gauche">
 
           <div class="groupe-section-gauche">
@@ -112,7 +110,7 @@
 
       </aside>
 
-      <!-- COLONNE DROITE : EXPÉRIENCES, FORMATIONS & PROJETS -->
+      
       <main class="colonne-droite-contenu">
 
         <section class="bloc-section-droite">
@@ -168,12 +166,22 @@
         </section>
 
         <section class="bloc-section-droite">
-          <h2 class="titre-section-droite">PROJETS</h2>
+          <h2 class="titre-section-droite">PROJETS PHARES</h2>
           <div class="liste-droite" id="cv-projets">
             <article class="element-cv">
-              <h3 class="poste-titre">Portfolio Personnel</h3>
-              <p class="contexte-ligne">Projet personnel | 2025</p>
-              <p class="desc-simple">Portfolio professionnel présentant compétences, projets et contacts. HTML, CSS, JavaScript.</p>
+              <h3 class="poste-titre">NEXTMUX &amp; RestoDirect — Plateformes Full-Stack</h3>
+              <p class="contexte-ligne">Production | Laravel, React, Node.js, PostgreSQL, WebSockets</p>
+              <p class="desc-simple">Conception de plateformes scalables pour le traitement automatisé des flux de données et la gestion de commandes en temps réel.</p>
+            </article>
+            <article class="element-cv">
+              <h3 class="poste-titre">VBG Bénin — Plateforme Citoyenne Chiffrée</h3>
+              <p class="contexte-ligne">Sécurité &amp; Impact Social | Laravel, AES-256, Leaflet</p>
+              <p class="desc-simple">Système hautement sécurisé pour le signalement anonyme et la protection des données sensibles avec géolocalisation.</p>
+            </article>
+            <article class="element-cv">
+              <h3 class="poste-titre">Infrastructure Réseau Campus Multi-Sites</h3>
+              <p class="contexte-ligne">Cisco IOS, Packet Tracer, OSPF, VLANs 802.1Q, ACLs</p>
+              <p class="desc-simple">Architecture réseau d'entreprise complète avec segmentation départementale, routage dynamique et haute disponibilité.</p>
             </article>
           </div>
         </section>

@@ -1,9 +1,3 @@
-// api/analytics.js
-// GET (résumé/sessions/live) + DELETE (supprimer une action ou une session), admin.
-// GET  ?view=resume | sessions | live
-// DELETE ?type=action&id=...        (supprime une entrée d'activité récente)
-// DELETE ?type=session&sessionId=... (supprime une session + ses visites/actions)
-
 const { getPrismaClient } = require('../lib/db');
 const { requireAuth } = require('../lib/auth');
 
@@ -94,7 +88,6 @@ async function supprimerAction(req, res, prisma) {
     return res.status(200).json({ success: true });
   } catch (err) {
     if (err.code === 'P2025') return res.status(404).json({ error: 'Action introuvable.' });
-    console.error('[analytics DELETE action]', err.message);
     return res.status(500).json({ error: 'Erreur serveur.' });
   }
 }
@@ -103,9 +96,6 @@ async function supprimerSession(req, res, prisma) {
   const sessionId = req.query.sessionId;
   if (!sessionId) return res.status(400).json({ error: 'sessionId requis.' });
   try {
-    // Pas de relation en cascade dans le schéma (sessionId est un simple
-    // champ, pas une clé étrangère) : suppression manuelle dans les trois
-    // tables concernées, regroupée en une seule transaction.
     await prisma.$transaction([
       prisma.visitorAction.deleteMany({ where: { sessionId } }),
       prisma.visit.deleteMany({ where: { sessionId } }),
@@ -114,7 +104,6 @@ async function supprimerSession(req, res, prisma) {
     return res.status(200).json({ success: true });
   } catch (err) {
     if (err.code === 'P2025') return res.status(404).json({ error: 'Session introuvable.' });
-    console.error('[analytics DELETE session]', err.message);
     return res.status(500).json({ error: 'Erreur serveur.' });
   }
 }
@@ -129,8 +118,7 @@ async function handler(req, res) {
       if (view === 'sessions') return await vueSessions(req, res, prisma);
       if (view === 'live') return await vueLive(req, res, prisma);
       return res.status(400).json({ error: 'Vue inconnue.' });
-    } catch (err) {
-      console.error('[analytics]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }
@@ -141,8 +129,7 @@ async function handler(req, res) {
       if (type === 'action') return await supprimerAction(req, res, prisma);
       if (type === 'session') return await supprimerSession(req, res, prisma);
       return res.status(400).json({ error: 'Type de suppression inconnu.' });
-    } catch (err) {
-      console.error('[analytics DELETE]', err.message);
+    } catch {
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
   }

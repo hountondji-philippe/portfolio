@@ -1,5 +1,3 @@
-// api/contact.js
-// Reçoit le formulaire de contact et enregistre le message en base.
 
 const validator = require('validator');
 const { getPrismaClient } = require('../lib/db');
