@@ -18,9 +18,9 @@ async function handler(req, res) {
   }
 
   try {
-    const name = sanitize(req.body.name, 100);
+    const name = sanitize(req.body.name || req.body.nom, 100);
     const email = sanitize(req.body.email, 254);
-    const phone = sanitize(req.body.phone, 20);
+    const phone = sanitize(req.body.phone || req.body.telephone, 20);
     const message = sanitize(req.body.message, 2000);
 
     if (name.length < 2) return res.status(400).json({ error: 'Nom invalide.' });
