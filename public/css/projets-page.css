@@ -1,0 +1,253 @@
+/* ============================================================
+   PROJETS-PAGE.CSS — Pages projets professionnels & académiques
+   Design system violet cyberpunk — Philippe Hountondji Portfolio
+   ============================================================ */
+
+/* ── HERO DE LA PAGE PROJETS ─────────────────────────────── */
+.proj-page-hero {
+  padding: 9rem 1.5rem 4rem;
+  background: linear-gradient(180deg,
+    rgba(124, 58, 237, 0.06) 0%,
+    transparent 100%
+  );
+  border-bottom: 1px solid var(--bdr);
+  position: relative;
+  overflow: hidden;
+}
+
+.proj-page-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.proj-page-hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.proj-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--txt3);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.proj-breadcrumb a {
+  color: var(--txt3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.proj-breadcrumb a:hover { color: var(--ac); }
+
+.proj-bc-sep {
+  font-size: 0.6rem;
+  opacity: 0.4;
+}
+
+.proj-page-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proj-page-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--txt);
+  letter-spacing: -0.02em;
+}
+
+.proj-page-title span {
+  background: linear-gradient(135deg, var(--ac), #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.proj-page-lead {
+  font-size: 1.05rem;
+  color: var(--txt2);
+  line-height: 1.75;
+  max-width: 680px;
+}
+
+.proj-page-badges {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+/* ── SECTION GRILLE ──────────────────────────────────────── */
+.proj-page-grid-section {
+  padding: 4rem 1.5rem 6rem;
+}
+
+.proj-page-grid-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.proj-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
+}
+
+/* ── CARTES PROJETS ──────────────────────────────────────── */
+.proj-card {
+  background: var(--bg2);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: default;
+}
+
+.proj-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.3);
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
+.proj-card-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--bg3);
+}
+
+.proj-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.proj-card:hover .proj-card-img img {
+  transform: scale(1.05);
+}
+
+.proj-card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.65) 100%);
+}
+
+.proj-card-statut {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.proj-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.4rem;
+  flex: 1;
+}
+
+.proj-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.proj-card-icon {
+  font-size: 1.3rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--r2);
+  border: 1px solid var(--bdr);
+}
+
+.proj-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--txt);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
+.proj-card-slogan {
+  font-size: 0.78rem;
+  color: var(--ac);
+  font-family: var(--mono);
+  line-height: 1.4;
+}
+
+.proj-card-desc {
+  font-size: 0.875rem;
+  color: var(--txt2);
+  line-height: 1.7;
+}
+
+.proj-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Réutilise .pcn-tag du portfolio principal */
+
+.proj-card-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--bdr);
+}
+
+/* ── SQUELETTES DE CHARGEMENT ────────────────────────────── */
+.proj-skeleton {
+  background: var(--bg2);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r3);
+  height: 380px;
+  animation: skel-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes skel-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .proj-page-hero { padding: 7rem 1rem 3rem; }
+  .proj-page-grid { grid-template-columns: 1fr; }
+  .proj-page-grid-section { padding: 3rem 1rem 4rem; }
+  .proj-card-img { height: 160px; }
+}

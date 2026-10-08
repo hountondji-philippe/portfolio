@@ -1,11 +1,11 @@
 :root {
-  --bleu-cv: #013373;
-  --couleur-theme: #013373;
-  --couleur-theme-fonce: #011F4B;
-  --couleur-theme-pastel: #E8F0FC;
+  --bleu-cv: #7c3aed;
+  --couleur-theme: #7c3aed;
+  --couleur-theme-fonce: #4c1d95;
+  --couleur-theme-pastel: #f3eeff;
   --texte-sombre: #1A202C;
   --texte-gris: #4A5568;
-  --fond-bureau: #060D1A;
+  --fond-bureau: #0a0514;
   --fond-feuille: #FFFFFF;
   --police-titres: 'Oswald', sans-serif;
   --police-corps: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -33,8 +33,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 14px 28px;
-  background: #0C1628;
-  border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+  background: #100523;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.25);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -62,37 +62,37 @@ body {
 
 .bouton-outil-retour {
   background: rgba(255, 255, 255, 0.06);
-  color: #00E5FF;
-  border-color: rgba(0, 198, 255, 0.3);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.35);
 }
 
 .bouton-outil-retour:hover {
-  background: rgba(0, 198, 255, 0.15);
+  background: rgba(168, 85, 247, 0.15);
   color: #FFFFFF;
 }
 
 .bouton-outil-secondaire {
   background: rgba(255, 255, 255, 0.08);
-  color: #E8F0FF;
-  border-color: rgba(0, 198, 255, 0.35);
+  color: #e9d5ff;
+  border-color: rgba(168, 85, 247, 0.35);
 }
 
 .bouton-outil-secondaire:hover {
-  background: rgba(0, 198, 255, 0.2);
-  border-color: rgba(0, 198, 255, 0.6);
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.6);
   color: #FFFFFF;
 }
 
 .bouton-outil-primaire {
-  background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
-  color: #000000;
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: #FFFFFF;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0, 198, 255, 0.35);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.45);
 }
 
 .bouton-outil-primaire:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
 }
 
 .enveloppe-cv {
@@ -669,10 +669,10 @@ body.mode-export-pdf .feuille-cv {
   }
 
   .bandeau-bleu-haut {
-    background: #013373 !important;
+    background: #7c3aed !important;
   }
 
   .bandeau-page2 {
-    background: #013373 !important;
+    background: #7c3aed !important;
   }
 }

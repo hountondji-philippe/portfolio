@@ -1,47 +1,176 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="sombre">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projets personnels & professionnels | Philippe Hountondji</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;1,800;1,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projets Professionnels — Philippe Hountondji</title>
+  <meta name="description" content="Projets professionnels et personnels de Philippe Hountondji — Développeur Full-Stack & Administrateur Réseau, Bénin.">
+
+  <!-- Fonts (identiques au portfolio principal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS principal du portfolio -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/enhancements.css">
+  <link rel="stylesheet" href="css/settings.css">
+
+  <!-- CSS spécifique aux pages projets -->
+  <link rel="stylesheet" href="css/projets-page.css">
 </head>
-<body data-type-projets="PROFESSIONNEL">
+<body>
 
-<nav class="barre-navigation">
-  <a href="index.html" class="logo-nav">
-    <span class="pastille-logo">PH</span>
-    Philippe H.
-  </a>
-  <div class="groupe-actions-nav">
-    <button class="bascule-theme" id="basculeTheme" aria-label="Changer de thème">
-      <span class="icone-soleil">☀</span>
-      <span class="icone-lune">☾</span>
-    </button>
-    <a href="index.html#contact" class="bouton-nav-cta">Me contacter</a>
-  </div>
-</nav>
+  <!-- NAVBAR (identique au portfolio) -->
+  <header id="hdr" role="banner">
+    <div class="ni">
+      <a href="index.html" class="logo" aria-label="Retour au portfolio">
+        <div class="logo-ic"><i class="fas fa-terminal"></i></div>
+        Philippe H.
+      </a>
+      <nav class="nl" role="navigation" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#about">À propos</a>
+        <a href="index.html#tools">Compétences</a>
+        <a href="index.html#projects" class="act">Projets</a>
+        <a href="projets-academiques.html">Projets académiques</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="ncta">
+        <a href="index.html#contact" class="btn btn-p">Me contacter <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </header>
 
-<section class="section-generale" style="padding-top:140px">
-  <div class="fil-ariane">
-    <a href="index.html">Accueil</a> <span>/</span> <a href="index.html#projets">Projets</a> <span>/</span> <span>Professionnels</span>
-  </div>
-  <div class="entete-section">
-    <span class="etiquette-section">Autonomie</span>
-    <h2 class="titre-section">Projets personnels & professionnels</h2>
-    <p class="sous-titre-section">Applications construites en dehors du cadre scolaire, en autonomie.</p>
-  </div>
-  <div class="grille-cartes-projets" id="grilleCartesProjets">
-    <p style="color:var(--texte-attenue)">Chargement des projets...</p>
-  </div>
-</section>
+  <!-- PAGE HERO -->
+  <section class="proj-page-hero">
+    <div class="proj-page-hero-inner">
+      <!-- Fil d'Ariane -->
+      <nav class="proj-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <span class="proj-bc-sep"><i class="fas fa-chevron-right"></i></span>
+        <a href="index.html#projects">Projets</a>
+        <span class="proj-bc-sep"><i class="fas fa-chevron-right"></i></span>
+        <span>Professionnels</span>
+      </nav>
 
-<footer class="pied-de-page">
-  <p>&copy; 2026 Philippe Hountondji — Porto-Novo, Bénin</p>
-</footer>
+      <div class="proj-page-hero-content rv">
+        <div class="ey"><i class="fas fa-briefcase" style="margin-right:6px;"></i>Vitrine Professionnelle</div>
+        <h1 class="proj-page-title">Projets <span>Personnels &amp; Professionnels</span></h1>
+        <p class="proj-page-lead">
+          Applications conçues en dehors du cadre scolaire — en autonomie, avec des vraies contraintes, de vraies décisions d'architecture et de vrais utilisateurs.
+        </p>
+        <div class="proj-page-badges">
+          <span class="badge"><i class="fas fa-circle" style="font-size:.4rem;animation:blk 2s infinite;color:var(--ac)"></i> 3 projets livrés</span>
+          <span class="badge" style="background:rgba(0,188,235,0.1);border-color:rgba(0,188,235,0.3);color:#00bceb;"><i class="fas fa-layer-group" style="margin-right:5px;"></i>Full-Stack &bull; Réseaux &bull; SaaS</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script src="assets/js/script.js"></script>
+  <!-- GRILLE DE PROJETS -->
+  <section class="proj-page-grid-section">
+    <div class="proj-page-grid-wrap">
+      <div class="proj-page-grid" id="grilleCartesProjets">
+        <!-- Cartes générées par le JS -->
+        <div class="proj-skeleton"></div>
+        <div class="proj-skeleton"></div>
+        <div class="proj-skeleton"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo" style="border-top: 1px solid var(--bdr); padding: 2rem 1rem; text-align:center; color: var(--txt3); font-size: 0.85rem;">
+    <p>&copy; 2026 HOUNTONDJI Philippe — <a href="index.html" style="color:var(--ac);">Retour au portfolio</a></p>
+    <p style="margin-top:0.4rem; opacity:0.6;"><i class="fas fa-heart" style="color:var(--ac);"></i> Conçu depuis Porto-Novo, Bénin 🇧🇯</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/settings.js"></script>
+  <script>
+    /* Chargement des projets professionnels depuis les données par défaut */
+    const PROJETS_PRO = [
+      {
+        titre: 'Plateforme Citoyenne VBG Bénin',
+        slogan: 'Signalement sécurisé & chiffré de bout en bout',
+        description: 'Architecture confidentielle et résiliente pour la collecte sécurisée des signalements de violences basées sur le genre. Chiffrement AES-256, cartographie interactive Leaflet et tableaux de bord d\'analyse pour les intervenants.',
+        statut: 'Terminé',
+        technologies: ['Laravel 11', 'PostgreSQL', 'AES-256', 'Leaflet Maps', 'Sécurité OWASP'],
+        imageUrl: 'images/VBG.png',
+        lienGithub: 'https://github.com/hountondji-philippe',
+        icone: 'fas fa-shield-alt',
+        couleurIcone: '#10b981'
+      },
+      {
+        titre: 'NEXTMUX — Moteur de Multiplexage',
+        slogan: 'Routage, transformation & flux asynchrones',
+        description: 'Architecture backend haute performance pour le traitement continu de flux multi-sources. Authentification JWT, files d\'attente asynchrones, rate limiting et monitoring proactif en production.',
+        statut: 'Production',
+        technologies: ['Laravel 11', 'PHP 8.2', 'MySQL', 'REST API', 'Redis', 'JWT'],
+        imageUrl: 'images/apropos.jpeg',
+        lienGithub: 'https://github.com/hountondji-philippe',
+        icone: 'fas fa-bolt',
+        couleurIcone: '#f59e0b'
+      },
+      {
+        titre: 'RestoDirect — SaaS Temps Réel',
+        slogan: 'Gestion réactive de commandes & flux WebSockets',
+        description: 'Système SaaS réactif pour la restauration et les services de livraison : synchronisation bidirectionnelle instantanée sans rechargement, dashboards cuisine temps réel et gestion des stocks intégrée.',
+        statut: 'Terminé',
+        technologies: ['React.js', 'Node.js', 'Socket.io', 'PostgreSQL', 'Express'],
+        imageUrl: 'images/acceuil.jpeg',
+        lienGithub: 'https://github.com/hountondji-philippe',
+        icone: 'fas fa-utensils',
+        couleurIcone: '#f55247'
+      }
+    ];
+
+    function renderProjets(projets) {
+      const conteneur = document.getElementById('grilleCartesProjets');
+      conteneur.innerHTML = projets.map((p, i) => `
+        <div class="proj-card rv" style="animation-delay:${i * 0.1}s;">
+          <div class="proj-card-img">
+            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}" loading="lazy">` : ''}
+            <div class="proj-card-img-overlay"></div>
+            <span class="proj-card-statut">${p.statut}</span>
+          </div>
+          <div class="proj-card-body">
+            <div class="proj-card-header">
+              <div class="proj-card-icon" style="color:${p.couleurIcone};"><i class="${p.icone}"></i></div>
+              <div>
+                <h3 class="proj-card-title">${p.titre}</h3>
+                <p class="proj-card-slogan">${p.slogan}</p>
+              </div>
+            </div>
+            <p class="proj-card-desc">${p.description}</p>
+            <div class="proj-card-tags">
+              ${p.technologies.map(t => `<span class="pcn-tag">${t}</span>`).join('')}
+            </div>
+            <div class="proj-card-actions">
+              ${p.lienSite ? `<a href="${p.lienSite}" target="_blank" rel="noopener" class="btn btn-p" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-external-link-alt"></i> Voir le site</a>` : ''}
+              ${p.lienGithub ? `<a href="${p.lienGithub}" target="_blank" rel="noopener" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fab fa-github"></i> GitHub</a>` : ''}
+              <a href="index.html#projects" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-file-alt"></i> Étude de cas</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Essaie l'API, sinon fallback
+    (async () => {
+      try {
+        const r = await fetch('/api/projects?type=PROFESSIONNEL');
+        const d = await r.json();
+        if (d.success && d.projects && d.projects.length) {
+          renderProjets(d.projects); return;
+        }
+      } catch(_) {}
+      renderProjets(PROJETS_PRO);
+    })();
+  </script>
 </body>
 </html>
