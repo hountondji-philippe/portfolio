@@ -5,26 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projets Professionnels — Philippe Hountondji</title>
   <meta name="description" content="Projets professionnels et personnels de Philippe Hountondji — Développeur Full-Stack & Administrateur Réseau, Bénin.">
-
-  <!-- Fonts (identiques au portfolio principal) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- CSS principal du portfolio -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/enhancements.css">
   <link rel="stylesheet" href="css/settings.css">
-
-  <!-- CSS spécifique aux pages projets -->
   <link rel="stylesheet" href="css/projets-page.css">
 </head>
 <body>
 
-  <!-- NAVBAR (identique au portfolio) -->
   <header id="hdr" role="banner">
     <div class="ni">
       <a href="index.html" class="logo" aria-label="Retour au portfolio">
@@ -35,7 +26,8 @@
         <a href="index.html">Accueil</a>
         <a href="index.html#about">À propos</a>
         <a href="index.html#tools">Compétences</a>
-        <a href="index.html#projects" class="act">Projets</a>
+        <a href="index.html#projects">Projets</a>
+        <a href="projets-professionnels.html" style="color:var(--ac)">Projets pro</a>
         <a href="projets-academiques.html">Projets académiques</a>
         <a href="index.html#contact">Contact</a>
       </nav>
@@ -45,10 +37,9 @@
     </div>
   </header>
 
-  <!-- PAGE HERO -->
+  <!-- HERO -->
   <section class="proj-page-hero">
     <div class="proj-page-hero-inner">
-      <!-- Fil d'Ariane -->
       <nav class="proj-breadcrumb" aria-label="Fil d'Ariane">
         <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
         <span class="proj-bc-sep"><i class="fas fa-chevron-right"></i></span>
@@ -56,26 +47,24 @@
         <span class="proj-bc-sep"><i class="fas fa-chevron-right"></i></span>
         <span>Professionnels</span>
       </nav>
-
-      <div class="proj-page-hero-content rv">
-        <div class="ey"><i class="fas fa-briefcase" style="margin-right:6px;"></i>Vitrine Professionnelle</div>
+      <div class="proj-page-hero-content">
+        <div class="ey" style="opacity:1;transform:none;"><i class="fas fa-briefcase" style="margin-right:6px;"></i>Vitrine Professionnelle</div>
         <h1 class="proj-page-title">Projets <span>Personnels &amp; Professionnels</span></h1>
         <p class="proj-page-lead">
-          Applications conçues en dehors du cadre scolaire — en autonomie, avec des vraies contraintes, de vraies décisions d'architecture et de vrais utilisateurs.
+          Applications conçues en dehors du cadre scolaire — en autonomie, avec de vraies contraintes, de vraies décisions d'architecture et de vrais utilisateurs.
         </p>
         <div class="proj-page-badges">
-          <span class="badge"><i class="fas fa-circle" style="font-size:.4rem;animation:blk 2s infinite;color:var(--ac)"></i> 3 projets livrés</span>
+          <span class="badge"><i class="fas fa-circle" style="font-size:.4rem;color:var(--ac)"></i> Projets livrés</span>
           <span class="badge" style="background:rgba(0,188,235,0.1);border-color:rgba(0,188,235,0.3);color:#00bceb;"><i class="fas fa-layer-group" style="margin-right:5px;"></i>Full-Stack &bull; Réseaux &bull; SaaS</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- GRILLE DE PROJETS -->
+  <!-- GRILLE -->
   <section class="proj-page-grid-section">
     <div class="proj-page-grid-wrap">
       <div class="proj-page-grid" id="grilleCartesProjets">
-        <!-- Cartes générées par le JS -->
         <div class="proj-skeleton"></div>
         <div class="proj-skeleton"></div>
         <div class="proj-skeleton"></div>
@@ -84,92 +73,99 @@
   </section>
 
   <!-- FOOTER -->
-  <footer role="contentinfo" style="border-top: 1px solid var(--bdr); padding: 2rem 1rem; text-align:center; color: var(--txt3); font-size: 0.85rem;">
+  <footer style="border-top:1px solid var(--bdr);padding:2rem 1rem;text-align:center;color:var(--txt3);font-size:.85rem;">
     <p>&copy; 2026 HOUNTONDJI Philippe — <a href="index.html" style="color:var(--ac);">Retour au portfolio</a></p>
-    <p style="margin-top:0.4rem; opacity:0.6;"><i class="fas fa-heart" style="color:var(--ac);"></i> Conçu depuis Porto-Novo, Bénin 🇧🇯</p>
+    <p style="margin-top:.4rem;opacity:.6;"><i class="fas fa-heart" style="color:var(--ac);"></i> Conçu depuis Porto-Novo, Bénin 🇧🇯</p>
   </footer>
 
-  <!-- SCRIPTS -->
   <script src="js/settings.js"></script>
   <script>
-    /* Chargement des projets professionnels depuis les données par défaut */
-    const PROJETS_PRO = [
+    /* ── Données fallback (affichées si l'API ne répond pas) ── */
+    const PROJETS_PRO_FALLBACK = [
       {
         titre: 'Plateforme Citoyenne VBG Bénin',
         slogan: 'Signalement sécurisé & chiffré de bout en bout',
-        description: 'Architecture confidentielle et résiliente pour la collecte sécurisée des signalements de violences basées sur le genre. Chiffrement AES-256, cartographie interactive Leaflet et tableaux de bord d\'analyse pour les intervenants.',
+        description: 'Architecture confidentielle pour la collecte sécurisée des signalements de violences basées sur le genre. Chiffrement AES-256, cartographie Leaflet et tableaux de bord analytiques.',
         statut: 'Terminé',
-        technologies: ['Laravel 11', 'PostgreSQL', 'AES-256', 'Leaflet Maps', 'Sécurité OWASP'],
+        technologies: ['Laravel 11', 'PostgreSQL', 'AES-256', 'Leaflet Maps', 'OWASP'],
         imageUrl: 'images/VBG.png',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-shield-alt',
-        couleurIcone: '#10b981'
+        icone: 'fas fa-shield-alt', couleurIcone: '#10b981'
       },
       {
         titre: 'NEXTMUX — Moteur de Multiplexage',
         slogan: 'Routage, transformation & flux asynchrones',
-        description: 'Architecture backend haute performance pour le traitement continu de flux multi-sources. Authentification JWT, files d\'attente asynchrones, rate limiting et monitoring proactif en production.',
+        description: 'Backend haute performance pour le traitement continu de flux multi-sources. Authentification JWT, files asynchrones, rate limiting et monitoring proactif en production.',
         statut: 'Production',
         technologies: ['Laravel 11', 'PHP 8.2', 'MySQL', 'REST API', 'Redis', 'JWT'],
         imageUrl: 'images/apropos.jpeg',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-bolt',
-        couleurIcone: '#f59e0b'
+        icone: 'fas fa-bolt', couleurIcone: '#f59e0b'
       },
       {
         titre: 'RestoDirect — SaaS Temps Réel',
-        slogan: 'Gestion réactive de commandes & flux WebSockets',
-        description: 'Système SaaS réactif pour la restauration et les services de livraison : synchronisation bidirectionnelle instantanée sans rechargement, dashboards cuisine temps réel et gestion des stocks intégrée.',
+        slogan: 'Gestion réactive de commandes & WebSockets',
+        description: 'SaaS réactif pour la restauration : synchronisation bidirectionnelle en temps réel, dashboards cuisine et gestion des stocks intégrée.',
         statut: 'Terminé',
         technologies: ['React.js', 'Node.js', 'Socket.io', 'PostgreSQL', 'Express'],
         imageUrl: 'images/acceuil.jpeg',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-utensils',
-        couleurIcone: '#f55247'
+        icone: 'fas fa-utensils', couleurIcone: '#f55247'
       }
     ];
 
-    function renderProjets(projets) {
-      const conteneur = document.getElementById('grilleCartesProjets');
-      conteneur.innerHTML = projets.map((p, i) => `
-        <div class="proj-card rv" style="animation-delay:${i * 0.1}s;">
+    const LABELS_STATUT = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
+
+    function renderProjets(liste) {
+      const c = document.getElementById('grilleCartesProjets');
+      if (!liste || !liste.length) {
+        c.innerHTML = '<p style="color:var(--txt3);grid-column:1/-1;text-align:center;padding:3rem;">Aucun projet pour le moment.</p>';
+        return;
+      }
+      c.innerHTML = liste.map((p, i) => `
+        <div class="proj-card" style="animation-delay:${i * 0.08}s">
           <div class="proj-card-img">
-            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}" loading="lazy">` : ''}
+            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}" loading="lazy" onerror="this.parentElement.style.background='var(--bg3)'">` : ''}
             <div class="proj-card-img-overlay"></div>
-            <span class="proj-card-statut">${p.statut}</span>
+            <span class="proj-card-statut">${LABELS_STATUT[p.statut] || p.statut || 'Terminé'}</span>
           </div>
           <div class="proj-card-body">
             <div class="proj-card-header">
-              <div class="proj-card-icon" style="color:${p.couleurIcone};"><i class="${p.icone}"></i></div>
-              <div>
+              <div class="proj-card-icon" style="color:${p.couleurIcone || 'var(--ac)'}">
+                <i class="${p.icone || 'fas fa-code'}"></i>
+              </div>
+              <div style="flex:1;min-width:0;">
                 <h3 class="proj-card-title">${p.titre}</h3>
-                <p class="proj-card-slogan">${p.slogan}</p>
+                <p class="proj-card-slogan">${p.slogan || p.description?.slice(0,60) || ''}</p>
               </div>
             </div>
             <p class="proj-card-desc">${p.description}</p>
+            ${p.technologies ? `
             <div class="proj-card-tags">
-              ${p.technologies.map(t => `<span class="pcn-tag">${t}</span>`).join('')}
-            </div>
+              ${(Array.isArray(p.technologies) ? p.technologies : p.technologies.split(',')).map(t => `<span class="pcn-tag">${t.trim()}</span>`).join('')}
+            </div>` : ''}
             <div class="proj-card-actions">
               ${p.lienSite ? `<a href="${p.lienSite}" target="_blank" rel="noopener" class="btn btn-p" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-external-link-alt"></i> Voir le site</a>` : ''}
               ${p.lienGithub ? `<a href="${p.lienGithub}" target="_blank" rel="noopener" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fab fa-github"></i> GitHub</a>` : ''}
-              <a href="index.html#projects" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-file-alt"></i> Étude de cas</a>
             </div>
           </div>
         </div>
       `).join('');
     }
 
-    // Essaie l'API, sinon fallback
+    /* ── Chargement depuis l'API, fallback sur données locales ── */
     (async () => {
       try {
         const r = await fetch('/api/projects?type=PROFESSIONNEL');
-        const d = await r.json();
-        if (d.success && d.projects && d.projects.length) {
-          renderProjets(d.projects); return;
+        if (r.ok) {
+          const d = await r.json();
+          if (d.success && d.projects && d.projects.length) {
+            renderProjets(d.projects);
+            return;
+          }
         }
-      } catch(_) {}
-      renderProjets(PROJETS_PRO);
+      } catch (_) {}
+      renderProjets(PROJETS_PRO_FALLBACK);
     })();
   </script>
 </body>

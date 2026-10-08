@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projets Académiques ENEAM — Philippe Hountondji</title>
-  <meta name="description" content="Projets académiques de Philippe Hountondji à l'ENEAM — Réseaux Cisco, modélisation MERISE, sécurité réseau.">
-
-  <!-- Fonts -->
+  <meta name="description" content="Projets académiques de Philippe Hountondji à l'ENEAM — Réseaux Cisco, MERISE, sécurité réseau.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- CSS principal du portfolio -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/enhancements.css">
   <link rel="stylesheet" href="css/settings.css">
@@ -22,7 +16,6 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <header id="hdr" role="banner">
     <div class="ni">
       <a href="index.html" class="logo" aria-label="Retour au portfolio">
@@ -33,8 +26,9 @@
         <a href="index.html">Accueil</a>
         <a href="index.html#about">À propos</a>
         <a href="index.html#tools">Compétences</a>
-        <a href="index.html#projects" class="act">Projets</a>
-        <a href="projets-professionnels.html">Projets professionnels</a>
+        <a href="index.html#projects">Projets</a>
+        <a href="projets-professionnels.html">Projets pro</a>
+        <a href="projets-academiques.html" style="color:var(--ac)">Projets académiques</a>
         <a href="index.html#contact">Contact</a>
       </nav>
       <div class="ncta">
@@ -43,7 +37,7 @@
     </div>
   </header>
 
-  <!-- PAGE HERO -->
+  <!-- HERO -->
   <section class="proj-page-hero">
     <div class="proj-page-hero-inner">
       <nav class="proj-breadcrumb" aria-label="Fil d'Ariane">
@@ -53,22 +47,21 @@
         <span class="proj-bc-sep"><i class="fas fa-chevron-right"></i></span>
         <span>Académiques</span>
       </nav>
-
-      <div class="proj-page-hero-content rv">
-        <div class="ey"><i class="fas fa-graduation-cap" style="margin-right:6px;"></i>Archive Académique ENEAM</div>
+      <div class="proj-page-hero-content">
+        <div class="ey" style="opacity:1;transform:none;"><i class="fas fa-graduation-cap" style="margin-right:6px;"></i>Archive Académique ENEAM</div>
         <h1 class="proj-page-title">Projets <span>Académiques</span></h1>
         <p class="proj-page-lead">
-          Travaux réalisés dans le cadre de mes études en Licence 3 à l'<strong>ENEAM (UAC)</strong> — spécialité Réseaux &amp; Systèmes. Des projets d'ingénierie réelle : topologies Cisco, bases de données, sécurité.
+          Travaux réalisés dans le cadre de mes études en <strong>Licence 3 à l'ENEAM (UAC)</strong> — spécialité Réseaux &amp; Systèmes. Des projets d'ingénierie réelle : topologies Cisco, modélisation MERISE, sécurité réseau.
         </p>
         <div class="proj-page-badges">
-          <span class="badge"><i class="fas fa-circle" style="font-size:.4rem;animation:blk 2s infinite;color:var(--ac)"></i> ENEAM · Université d'Abomey-Calavi</span>
-          <span class="badge" style="background:rgba(0,188,235,0.1);border-color:rgba(0,188,235,0.3);color:#00bceb;"><i class="fas fa-network-wired" style="margin-right:5px;"></i>Cisco IOS &bull; OSPF &bull; VLANs &bull; Sécurité</span>
+          <span class="badge"><i class="fas fa-circle" style="font-size:.4rem;color:var(--ac)"></i> ENEAM · Université d'Abomey-Calavi</span>
+          <span class="badge" style="background:rgba(0,188,235,0.1);border-color:rgba(0,188,235,0.3);color:#00bceb;"><i class="fas fa-network-wired" style="margin-right:5px;"></i>Cisco IOS &bull; OSPF &bull; VLANs</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- GRILLE DE PROJETS -->
+  <!-- GRILLE -->
   <section class="proj-page-grid-section">
     <div class="proj-page-grid-wrap">
       <div class="proj-page-grid" id="grilleCartesProjets">
@@ -80,35 +73,33 @@
   </section>
 
   <!-- FOOTER -->
-  <footer role="contentinfo" style="border-top: 1px solid var(--bdr); padding: 2rem 1rem; text-align:center; color: var(--txt3); font-size: 0.85rem;">
+  <footer style="border-top:1px solid var(--bdr);padding:2rem 1rem;text-align:center;color:var(--txt3);font-size:.85rem;">
     <p>&copy; 2026 HOUNTONDJI Philippe — <a href="index.html" style="color:var(--ac);">Retour au portfolio</a></p>
-    <p style="margin-top:0.4rem; opacity:0.6;"><i class="fas fa-heart" style="color:var(--ac);"></i> Conçu depuis Porto-Novo, Bénin 🇧🇯</p>
+    <p style="margin-top:.4rem;opacity:.6;"><i class="fas fa-heart" style="color:var(--ac);"></i> Conçu depuis Porto-Novo, Bénin 🇧🇯</p>
   </footer>
 
   <script src="js/settings.js"></script>
   <script>
-    const PROJETS_ACAD = [
+    const PROJETS_ACAD_FALLBACK = [
       {
         titre: 'Architecture Réseau Campus Multi-Sites (Cisco IOS)',
         slogan: 'Routage dynamique OSPF & VLANs 802.1Q',
-        description: 'Déploiement complet d\'une topologie d\'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage par listes de contrôle d\'accès (ACL).',
+        description: 'Déploiement complet d\'une topologie d\'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage ACL.',
         statut: 'Terminé',
         technologies: ['Cisco IOS', 'OSPF', 'VLAN 802.1Q', 'HSRP', 'ACLs', 'Wireshark'],
         imageUrl: 'images/projets-3.jpeg',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-network-wired',
-        couleurIcone: '#00bceb'
+        icone: 'fas fa-network-wired', couleurIcone: '#00bceb'
       },
       {
-        titre: 'Système d\'Information Bancaire — Modélisation MERISE',
+        titre: 'Système d\'Information Bancaire — MERISE',
         slogan: 'MCD, MLD, MPD & implémentation PostgreSQL',
-        description: 'Analyse et conception complète d\'un système d\'information de gestion selon la méthode MERISE (MCD, MLD, MPD) et implémentation sur base relationnelle PostgreSQL avec contraintes d\'intégrité strictes et triggers.',
+        description: 'Analyse et conception complète d\'un système d\'information de gestion selon la méthode MERISE (MCD, MLD, MPD) et implémentation PostgreSQL avec contraintes d\'intégrité strictes et triggers.',
         statut: 'Terminé',
         technologies: ['PostgreSQL', 'MERISE', 'UML', 'SQL Avancé', 'Triggers'],
         imageUrl: 'images/apropos.jpeg',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-database',
-        couleurIcone: '#336791'
+        icone: 'fas fa-database', couleurIcone: '#336791'
       },
       {
         titre: 'Audit de Sécurité Réseau & Analyse de Trames',
@@ -118,35 +109,43 @@
         technologies: ['Wireshark', 'Linux Debian', 'Nmap', 'TCP/IP', 'Durcissement'],
         imageUrl: 'images/projets-3.jpeg',
         lienGithub: 'https://github.com/hountondji-philippe',
-        icone: 'fas fa-shield-alt',
-        couleurIcone: '#10b981'
+        icone: 'fas fa-shield-alt', couleurIcone: '#10b981'
       }
     ];
 
-    function renderProjets(projets) {
-      const conteneur = document.getElementById('grilleCartesProjets');
-      conteneur.innerHTML = projets.map((p, i) => `
-        <div class="proj-card rv" style="animation-delay:${i * 0.1}s;">
+    const LABELS_STATUT = { TERMINE: 'Terminé', EN_COURS: 'En cours', PREVU: 'Prévu' };
+
+    function renderProjets(liste) {
+      const c = document.getElementById('grilleCartesProjets');
+      if (!liste || !liste.length) {
+        c.innerHTML = '<p style="color:var(--txt3);grid-column:1/-1;text-align:center;padding:3rem;">Aucun projet pour le moment.</p>';
+        return;
+      }
+      c.innerHTML = liste.map((p, i) => `
+        <div class="proj-card" style="animation-delay:${i * 0.08}s">
           <div class="proj-card-img">
-            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}" loading="lazy">` : ''}
+            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.titre}" loading="lazy" onerror="this.parentElement.style.background='var(--bg3)'">` : ''}
             <div class="proj-card-img-overlay"></div>
-            <span class="proj-card-statut">${p.statut}</span>
+            <span class="proj-card-statut">${LABELS_STATUT[p.statut] || p.statut || 'Terminé'}</span>
           </div>
           <div class="proj-card-body">
             <div class="proj-card-header">
-              <div class="proj-card-icon" style="color:${p.couleurIcone};"><i class="${p.icone}"></i></div>
-              <div>
+              <div class="proj-card-icon" style="color:${p.couleurIcone || 'var(--ac)'}">
+                <i class="${p.icone || 'fas fa-code'}"></i>
+              </div>
+              <div style="flex:1;min-width:0;">
                 <h3 class="proj-card-title">${p.titre}</h3>
-                <p class="proj-card-slogan">${p.slogan}</p>
+                <p class="proj-card-slogan">${p.slogan || ''}</p>
               </div>
             </div>
             <p class="proj-card-desc">${p.description}</p>
+            ${p.technologies ? `
             <div class="proj-card-tags">
-              ${p.technologies.map(t => `<span class="pcn-tag">${t}</span>`).join('')}
-            </div>
+              ${(Array.isArray(p.technologies) ? p.technologies : p.technologies.split(',')).map(t => `<span class="pcn-tag">${t.trim()}</span>`).join('')}
+            </div>` : ''}
             <div class="proj-card-actions">
               ${p.lienGithub ? `<a href="${p.lienGithub}" target="_blank" rel="noopener" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fab fa-github"></i> GitHub</a>` : ''}
-              <a href="index.html#projects" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-file-alt"></i> Portfolio</a>
+              <a href="index.html#projects" class="btn btn-s" style="font-size:.8rem;padding:.5rem 1rem;"><i class="fas fa-arrow-left"></i> Portfolio</a>
             </div>
           </div>
         </div>
@@ -156,12 +155,15 @@
     (async () => {
       try {
         const r = await fetch('/api/projects?type=ACADEMIQUE');
-        const d = await r.json();
-        if (d.success && d.projects && d.projects.length) {
-          renderProjets(d.projects); return;
+        if (r.ok) {
+          const d = await r.json();
+          if (d.success && d.projects && d.projects.length) {
+            renderProjets(d.projects);
+            return;
+          }
         }
-      } catch(_) {}
-      renderProjets(PROJETS_ACAD);
+      } catch (_) {}
+      renderProjets(PROJETS_ACAD_FALLBACK);
     })();
   </script>
 </body>
