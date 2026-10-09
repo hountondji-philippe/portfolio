@@ -28,6 +28,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+          entry.target.classList.add('in'); // compatibilité dynamic-content.js
           observer.unobserve(entry.target);
         }
       });
@@ -37,9 +38,13 @@
     });
 
     revealEls.forEach(el => observer.observe(el));
+
+    // Exposer globalement pour les éléments injectés dynamiquement
+    window._rvObserver = observer;
   } else {
     // Fallback
-    revealEls.forEach(el => el.classList.add('visible'));
+    revealEls.forEach(el => { el.classList.add('visible'); el.classList.add('in'); });
+    window._rvObserver = null;
   }
 
   // ===========================

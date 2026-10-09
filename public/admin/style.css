@@ -2,11 +2,36 @@
    ce qui est spécifique au dashboard admin. */
 
 :root {
-  --ombre-carte: 0 1px 2px rgba(18,20,18,0.04), 0 8px 24px rgba(18,20,18,0.05);
+  --fond-principal: #0a0a0b;
+  --fond-secondaire: #111113;
+  --fond-carte: #18181c;
+  --texte-principal: #f9f8f5;
+  --texte-attenue: #88868e;
+  --vert-accent: #a855f7;
+  --vert-pastel: rgba(168, 85, 247, 0.15);
+  --accent: #a855f7;
+  --ligne-discrete: rgba(255, 255, 255, 0.08);
+  --ombre-carte: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --police-titre: 'Plus Jakarta Sans', sans-serif;
+  --police-texte: 'Plus Jakarta Sans', sans-serif;
+  --police-mono: 'JetBrains Mono', monospace;
 }
 
-html, body { overflow-x: hidden; width: 100%; }
-body { background: var(--fond-secondaire); }
+html[data-theme="clair"] {
+  --fond-principal: #f8fafc;
+  --fond-secondaire: #f1f5f9;
+  --fond-carte: #ffffff;
+  --texte-principal: #0f172a;
+  --texte-attenue: #64748b;
+  --vert-accent: #7c3aed;
+  --vert-pastel: rgba(124, 58, 237, 0.12);
+  --accent: #7c3aed;
+  --ligne-discrete: rgba(0, 0, 0, 0.08);
+  --ombre-carte: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+html, body { overflow-x: hidden; width: 100%; color: var(--texte-principal); font-family: var(--police-texte); }
+body { background: var(--fond-principal); }
 
 /*CONNEXION*/
 .zone-connexion {
