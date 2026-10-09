@@ -157,12 +157,26 @@
               <span class="terminal-dot green"></span>
             </div>
             <div class="terminal-tabs">
+              <button class="t-tab" id="btn-tab-photo" onclick="switchTerminalTab('photo')"><i class="fas fa-user-circle" style="margin-right:4px;"></i>Portrait</button>
               <button class="t-tab active" id="btn-tab-sys" onclick="switchTerminalTab('system')">Système</button>
               <button class="t-tab" id="btn-tab-int" onclick="switchTerminalTab('interactive')">Interactif</button>
-              <button class="t-tab" id="btn-tab-ia" onclick="switchTerminalTab('ia')">IA Assistant</button>
+              <button class="t-tab" id="btn-tab-ia" onclick="switchTerminalTab('ia')">IA</button>
             </div>
             <div style="width: 42px; flex-shrink: 0; display:flex; justify-content:flex-end;">
               <a href="#tools" title="Voir toute la stack" style="color: var(--ac); font-size:0.85rem; text-decoration:none;"><i class="fas fa-layer-group"></i></a>
+            </div>
+          </div>
+          <!-- TAB PHOTO / PORTRAIT DE PHILIPPE -->
+          <div class="tb-photo" id="tPhoto" style="display:none;">
+            <div class="hero-photo-wrapper">
+              <img src="images/philippe.jpeg" alt="Philippe Hountondji — Développeur Full-Stack & Administrateur Réseau" class="hero-photo-img" />
+              <div class="hero-photo-overlay">
+                <div class="hero-photo-badge">
+                  <span class="pulsar-vert-pulse"></span>
+                  <span>Philippe Hountondji</span>
+                </div>
+                <p class="hero-photo-title">Full-Stack &amp; Network Engineer · ENEAM (UAC)</p>
+              </div>
             </div>
           </div>
           <div class="tb" id="tBody" aria-hidden="true"></div>

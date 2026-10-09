@@ -1549,3 +1549,240 @@ body.theme-light .terminal-interactive-input {
   }
   .exp-pro-num { font-size: 1.2rem; min-width: 2rem; }
 }
+
+/* ============================================================
+   HERO PHOTO TAB & PORTRAIT STYLES
+   ============================================================ */
+.tb-photo {
+  height: 336px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg2);
+}
+
+.hero-photo-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-photo-wrapper:hover .hero-photo-img {
+  transform: scale(1.05);
+}
+
+.hero-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.4) 40%, transparent 80%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem 1.5rem;
+}
+
+.hero-photo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.pulsar-vert-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 12px #10b981;
+  display: inline-block;
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.hero-photo-title {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--acl);
+  margin: 0;
+}
+
+/* ============================================================
+   RESPONSIVE POLISH GLOBAL — MOBILE & TABLETTES
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Menu Hamburger & Header */
+  .mbn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: var(--bg2);
+    border: 1px solid var(--bdr);
+    border-radius: var(--r2);
+    color: var(--txt);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .mbn:hover {
+    background: var(--bg3);
+    border-color: var(--ac);
+  }
+
+  .nl {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 85vw);
+    height: 100vh;
+    background: var(--bg1);
+    border-left: 1px solid var(--bdr);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 5rem 1.25rem 2rem;
+    transform: translateX(110%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10000;
+    overflow-y: auto;
+  }
+
+  .nl.open {
+    transform: translateX(0);
+  }
+
+  .nl a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--txt2);
+    border-radius: var(--r2);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .nl a:hover,
+  .nl a.act {
+    background: var(--acd);
+    color: var(--ac);
+  }
+
+  /* Hero & Title */
+  .hi {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .hleft {
+    text-align: left;
+  }
+
+  .hh {
+    font-size: clamp(2rem, 8vw, 2.7rem) !important;
+    line-height: 1.15;
+  }
+
+  .hs {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .hbadge {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ha {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ha .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Terminal height on mobile */
+  .tc {
+    max-width: 100%;
+    border-radius: var(--r3);
+  }
+
+  .tb, .tb-shell, .tb-photo {
+    height: 300px;
+  }
+
+  .terminal-tabs {
+    gap: 0.2rem;
+  }
+
+  .t-tab {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.68rem;
+  }
+
+  /* Projects & Expertise Grids */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .pcn-image {
+    height: 190px !important;
+  }
+
+  /* Contact section */
+  .ctwrap {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Settings floating button safe area */
+  #settingsFab {
+    bottom: 16px !important;
+    padding: 0.6rem 1.1rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hh {
+    font-size: 1.85rem !important;
+  }
+  .sbi {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+  }
+  .sbn {
+    font-size: 1.7rem !important;
+  }
+  .sbl {
+    font-size: 0.75rem !important;
+  }
+}
+

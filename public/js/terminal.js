@@ -6,19 +6,25 @@ window.switchTerminalTab = function(tabName) {
   const tBody        = document.getElementById('tBody');
   const tInteractive = document.getElementById('tInteractive');
   const tIA          = document.getElementById('tIA');
+  const tPhoto       = document.getElementById('tPhoto');
   const btnSys       = document.getElementById('btn-tab-sys');
   const btnInt       = document.getElementById('btn-tab-int');
   const btnIA        = document.getElementById('btn-tab-ia');
+  const btnPhoto     = document.getElementById('btn-tab-photo');
 
   if (!tBody || !tInteractive || !tIA) return;
 
   tBody.style.display        = 'none';
   tInteractive.style.display = 'none';
   tIA.style.display          = 'none';
+  if (tPhoto) tPhoto.style.display = 'none';
 
-  [btnSys, btnInt, btnIA].forEach(b => b && b.classList.remove('active'));
+  [btnSys, btnInt, btnIA, btnPhoto].forEach(b => b && b.classList.remove('active'));
 
-  if (tabName === 'system') {
+  if (tabName === 'photo') {
+    if (tPhoto) tPhoto.style.display = 'block';
+    if (btnPhoto) btnPhoto.classList.add('active');
+  } else if (tabName === 'system') {
     tBody.style.display = 'block';
     if (btnSys) btnSys.classList.add('active');
   } else if (tabName === 'interactive') {

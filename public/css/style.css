@@ -1,4 +1,4 @@
-﻿/* Collez ici tout votre CSS depuis index.html */
+/* Collez ici tout votre CSS depuis index.html */
 :root {
   --bg: #0a0a0b;
   --bg1: #111113;
@@ -3577,11 +3577,21 @@ footer::before {
 
 @media(max-width:768px) {
   header {
-    display: none
+    display: block;
+    background: rgba(10, 10, 11, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--bdr);
+  }
+
+  .ni {
+    height: 64px;
+    padding: 0 1rem;
   }
 
   .mbn {
-    display: flex
+    display: flex;
+    margin-left: auto;
   }
 
   .nl {
@@ -3617,7 +3627,8 @@ footer::before {
   }
 
   #home {
-    padding: 4rem 10px 3rem
+    padding: 5.5rem 1rem 3rem;
+    min-height: auto;
   }
 
   .abgrid {
