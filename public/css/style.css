@@ -395,15 +395,15 @@ header.sc .ni {
   line-height: 1.18;
   color: var(--txt);
   margin-bottom: 1.25rem;
-  opacity: 0;
-  animation: fuA .7s .2s var(--ease) forwards
+  opacity: 1;
+  animation: fuA .7s .15s var(--ease) both;
 }
 
 .hh span {
   background: linear-gradient(135deg, var(--acl), #e8b89a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text
+  background-clip: text;
 }
 
 .hs {
@@ -413,26 +413,26 @@ header.sc .ni {
   line-height: 1.7;
   max-width: 440px;
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fuA .7s .3s var(--ease) forwards
+  opacity: 1;
+  animation: fuA .7s .25s var(--ease) both;
 }
 
 .hs strong {
   color: var(--txt);
-  font-weight: 600
+  font-weight: 600;
 }
 
 .ha {
   display: flex;
   gap: .85rem;
   flex-wrap: wrap;
-  opacity: 0;
-  animation: fuA .7s .4s var(--ease) forwards
+  opacity: 1;
+  animation: fuA .7s .35s var(--ease) both;
 }
 
 .hright {
-  opacity: 0;
-  animation: fuA .9s .5s var(--ease) forwards
+  opacity: 1;
+  animation: fuA .9s .45s var(--ease) both;
 }
 
 /* ===========================
@@ -3407,8 +3407,6 @@ footer::before {
   background: var(--ac);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-}
-  transform: translateY(-2px)
 }
 
 /* ANIMATIONS */

@@ -104,49 +104,49 @@
       titre: "Stamux — Internship OS",
       type: "PROFESSIONNEL",
       technologies: "Laravel 12 · Sanctum · DomPDF · React · MySQL",
-      description: "Plateforme complète de gestion de stagiaires avec architecture multicouche (SOLID). Rôles Admin/Tuteur/Stagiaire, 68 routes API sécurisées, génération de conventions de stage en PDF.",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      description: "Plateforme complète de gestion de stagiaires avec architecture multicouche (SOLID). Rôles Admin/Tuteur/Stagiaire, 68 routes API sécurisées, génération automatisée de bilans et conventions de stage en PDF.",
+      url: "github.com/hountondji-philippe/stamux",
+      lienGithub: "https://github.com/hountondji-philippe/stamux"
     },
     {
       titre: "Simulation Réseau Campus Multi-Sites",
       type: "ACADEMIQUE",
-      technologies: "Cisco IOS · OSPF Multi-Area · VLANs 802.1Q · ACLs",
-      description: "Architecture réseau campus simulant 3 bâtiments avec redondance de liens. Routage dynamique OSPF, segmentation en 4 VLANs, sécurisation par listes de contrôle d'accès (ACLs) et NAT/PAT.",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      technologies: "Cisco IOS · OSPF Multi-Area · VLANs 802.1Q · HSRP",
+      description: "Architecture réseau campus simulant 3 bâtiments avec redondance de liens. Routage dynamique OSPF, segmentation en 4 VLANs, haute disponibilité de passerelle HSRP et plan d'adressage VLSM.",
+      url: "github.com/hountondji-philippe/cisco-campus-network",
+      lienGithub: "https://github.com/hountondji-philippe/cisco-campus-network"
     },
     {
       titre: "RestoDirect — Commande & Livraison",
       type: "PROFESSIONNEL",
       technologies: "Next.js · Prisma · PostgreSQL · WebSockets · Tailwind",
-      description: "Application web temps réel de commande pour restaurants. Mises à jour en direct cuisine-livreur, géolocalisation Leaflet, paiement mobile et tableaux de bord analytics.",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      description: "Application web temps réel de commande pour restaurants. Mises à jour en direct cuisine-livreur par WebSockets, géolocalisation Leaflet, paiement mobile et tableaux de bord de gestion.",
+      url: "github.com/hountondji-philippe/restodirect",
+      lienGithub: "https://github.com/hountondji-philippe/restodirect"
     },
     {
       titre: "Plateforme Citoyenne VBG Bénin",
       type: "PROFESSIONNEL",
       technologies: "Node.js · Express · Chiffrement AES-256 · Leaflet",
-      description: "Système de signalement 100% anonyme et sécurisé contre les violences basées sur le genre. Chiffrement des dépositions, cartographie anonymisée des zones d'alerte et interface réactive.",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      description: "Système de signalement 100% anonyme et sécurisé contre les violences basées sur le genre. Chiffrement des dépositions, cartographie anonymisée des zones d'alerte et interface réactive adaptée mobile.",
+      url: "github.com/hountondji-philippe/vbg-benin",
+      lienGithub: "https://github.com/hountondji-philippe/vbg-benin"
     },
     {
       titre: "Mémoire+ — Gestion Académique ENEAM",
       type: "ACADEMIQUE",
       technologies: "Laravel · React · MySQL · Workflow de Validation",
       description: "Solution de dépôt, contrôle de conformité et archivage des mémoires de fin de cycle universitaire. Workflow à double validation tuteur/jury et moteur de recherche plein texte par filière.",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      url: "github.com/hountondji-philippe/memoire-plus",
+      lienGithub: "https://github.com/hountondji-philippe/memoire-plus"
     },
     {
-      titre: "Portfolio Cyberpunk & Lab Cybersécurité",
+      titre: "Portfolio Cyberpunk & Lab Technique",
       type: "PROFESSIONNEL",
       technologies: "JavaScript ES6+ · Vercel Functions · JWT · CSRF HMAC",
-      description: "Vitrine d'ingénierie moderne sans framework lourd : terminal interactif Cisco, PWA hors-ligne, audit de sécurité OWASP (en-têtes stricts, CSP, validation cryptographique de tokens, zéro faille).",
-      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
-      lienGithub: "https://github.com/hountondji-philippe"
+      description: "Vitrine d'ingénierie moderne sans framework lourd : terminal interactif Cisco, PWA hors-ligne, audit de sécurité OWASP (en-têtes stricts, CSP, validation cryptographique de tokens).",
+      url: "portfolio-seven-delta-21jq5u35et.vercel.app",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/"
     }
   ];
 
@@ -156,9 +156,8 @@
     const items = (projets && projets.length >= 6) ? projets : PROJETS_PAR_DEFAUT;
 
     cont.innerHTML = items.map((p) => {
-      const liens = [];
-      if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener">Démo</a>');
-      if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener">GitHub</a>');
+      const urlAffichee = p.url || (p.lienGithub ? p.lienGithub.replace('https://', '') : (p.lienSite ? p.lienSite.replace('https://', '') : ''));
+      const lienHref = p.lienGithub || p.lienSite || ('https://' + urlAffichee);
 
       return '<article class="carte-projet-cv">' +
         '<div class="titre-projet-cv">' +
@@ -167,7 +166,7 @@
         '</div>' +
         (p.technologies ? '<div class="techs-projet-cv">' + echapper(p.technologies) + '</div>' : '') +
         '<p class="desc-projet-cv">' + echapper(p.description) + '</p>' +
-        (liens.length ? '<div class="liens-projet-cv">' + liens.join(' • ') + '</div>' : '') +
+        (urlAffichee ? '<div class="liens-projet-cv"><a href="' + echapper(lienHref) + '" target="_blank" rel="noopener">Lien : ' + echapper(urlAffichee) + '</a></div>' : '') +
         '</article>';
     }).join('');
   }
