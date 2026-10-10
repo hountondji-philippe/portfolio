@@ -1702,8 +1702,10 @@ body.theme-light .terminal-interactive-input {
   }
 
   .hh {
-    font-size: clamp(2rem, 8vw, 2.7rem) !important;
-    line-height: 1.15;
+    font-size: clamp(1.65rem, 6.8vw, 2.4rem) !important;
+    line-height: 1.2 !important;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .hs {
@@ -1745,6 +1747,26 @@ body.theme-light .terminal-interactive-input {
     font-size: 0.68rem;
   }
 
+  /* Stack & Tools Grids */
+  .tlgrid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .tlp {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 1.25rem 1rem !important;
+  }
+
+  .tlrow {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   /* Projects & Expertise Grids */
   .projects-grid {
     grid-template-columns: 1fr !important;
@@ -1761,17 +1783,16 @@ body.theme-light .terminal-interactive-input {
     gap: 2rem !important;
   }
 
-  /* Settings floating button safe area */
+  /* Settings floating button hidden on mobile for clean screen */
   #settingsFab {
-    bottom: 16px !important;
-    padding: 0.6rem 1.1rem !important;
-    font-size: 0.78rem !important;
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .hh {
-    font-size: 1.85rem !important;
+    font-size: 1.6rem !important;
+    line-height: 1.25 !important;
   }
   .sbi {
     grid-template-columns: 1fr 1fr;
@@ -1784,5 +1805,10 @@ body.theme-light .terminal-interactive-input {
   .sbl {
     font-size: 0.75rem !important;
   }
+
+  .tlp {
+    padding: 1rem !important;
+  }
 }
+
 

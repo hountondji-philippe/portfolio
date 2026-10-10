@@ -388,10 +388,10 @@ header.sc .ni {
 }
 
 .hh {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(1.65rem, 6vw, 3.4rem);
   font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: 1.1;
+  letter-spacing: -.03em;
+  line-height: 1.18;
   color: var(--txt);
   margin-bottom: 1.25rem;
   opacity: 0;
@@ -3886,41 +3886,32 @@ footer::before {
 
 @media(max-width:480px) {
   .tlgrid {
-    display: grid;
-    grid-template-rows: repeat(2, auto); /* Deux lignes */
-    grid-auto-flow: column; /* Remplissage par colonne pour scroller horizontalement */
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 12px;
-    padding: 0 15px 15px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-    margin-left: -5px;
-    margin-right: -5px;
-  }
-
-  .tlgrid::-webkit-scrollbar {
-    display: none;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-auto-flow: row !important;
+    overflow-x: visible !important;
+    gap: 1rem !important;
+    padding: 0 !important;
   }
 
   .tlp {
-    width: 260px; /* Largeur pour forcer le scroll */
-    scroll-snap-align: center;
-    flex: none;
+    width: 100% !important;
+    flex: auto !important;
   }
 
   .ha {
-    flex-direction: column
+    flex-direction: column;
   }
 
   .btnlg {
     width: 100%;
-    justify-content: center
+    justify-content: center;
   }
 
   .hh {
-    font-size: 2.1rem
+    font-size: 1.85rem !important;
+    line-height: 1.2 !important;
+    word-break: normal;
   }
 }
 

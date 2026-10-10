@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    SETTINGS — Panel Paramètres + FAB
    Refonte majeure — Horizontal desktop / Sheet mobile
    ============================================================ */
@@ -1857,9 +1857,7 @@ body.theme-light nav.scrolled {
   }
 
   #settingsFab {
-    bottom: 20px;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.8rem;
+    display: none !important;
   }
 }
 
