@@ -1568,16 +1568,56 @@ body.theme-light {
 
 /* Nav en thème clair */
 body.theme-light header,
+body.theme-light #hdr,
 body.theme-light #mainNav {
-  background: rgba(245,243,239,0.92) !important;
-  border-bottom-color: rgba(0,0,0,0.09) !important;
+  background: rgba(245, 243, 239, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
+body.theme-light header.sc,
 body.theme-light header.sc .ni,
 body.theme-light nav.scrolled {
-  background: rgba(245,243,239,0.96) !important;
+  background: rgba(245, 243, 239, 0.98) !important;
   backdrop-filter: blur(20px);
-  border-bottom: none !important;
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.theme-light .logo {
+  color: #121212 !important;
+}
+
+body.theme-light .mbn {
+  background: #ffffff !important;
+  color: #121212 !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .mbn:hover,
+body.theme-light .mbn:active {
+  background: #eae7e1 !important;
+  color: var(--ac) !important;
+  border-color: var(--ac) !important;
+}
+
+body.theme-light .nl {
+  background: #ffffff !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.theme-light .stbtn {
+  background: #ffffff !important;
+  color: #121212 !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.theme-light .stbtn:hover {
+  background: var(--ac) !important;
+  color: #ffffff !important;
+  border-color: var(--ac) !important;
 }
 
 /* Texte légèrement teint accent en thème clair */

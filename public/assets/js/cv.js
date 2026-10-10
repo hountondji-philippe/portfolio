@@ -12,62 +12,28 @@
   const btnTelechargerPdf = document.getElementById('btn-telecharger-pdf');
 
   async function declencherTelechargementPdf() {
-    const page1 = document.getElementById('page-1');
-    const page2 = document.getElementById('page-2');
-    if (!page1 || !page2 || !btnTelechargerPdf) return;
+    if (!btnTelechargerPdf) return;
 
     const contenuOriginal = btnTelechargerPdf.innerHTML;
-    btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading"></iconify-icon> <span>Génération du PDF...</span>';
+    btnTelechargerPdf.innerHTML = '<iconify-icon icon="mdi:loading" class="spin-icon"></iconify-icon> <span>Téléchargement...</span>';
     btnTelechargerPdf.disabled = true;
 
-    document.body.classList.add('mode-export-pdf');
-    window.scrollTo(0, 0);
-
-    await new Promise((r) => setTimeout(r, 150));
-
     try {
-      const jsPdfClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
-      if (!jsPdfClass || typeof html2canvas === 'undefined') {
-        throw new Error('Bibliothèque PDF manquante');
-      }
-
-      const pdf = new jsPdfClass({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-        compress: true,
-      });
-
-      const canvas1 = await html2canvas(page1, {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-        scrollY: 0,
-        scrollX: 0,
-        backgroundColor: '#FFFFFF',
-      });
-      const img1 = canvas1.toDataURL('image/jpeg', 0.98);
-      pdf.addImage(img1, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-
-      pdf.addPage();
-      const canvas2 = await html2canvas(page2, {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-        scrollY: 0,
-        scrollX: 0,
-        backgroundColor: '#FFFFFF',
-      });
-      const img2 = canvas2.toDataURL('image/jpeg', 0.98);
-      pdf.addImage(img2, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-
-      pdf.save('CV_Philippe_Hountondji.pdf');
+      // Téléchargement direct du PDF vectoriel officiel (haute fidélité)
+      const lien = document.createElement('a');
+      lien.href = 'assets/CV_Philippe_Hountondji.pdf';
+      lien.download = 'CV_Philippe_Hountondji.pdf';
+      document.body.appendChild(lien);
+      lien.click();
+      lien.remove();
     } catch (err) {
+      // Fallback via impression système
       window.print();
     } finally {
-      document.body.classList.remove('mode-export-pdf');
-      btnTelechargerPdf.innerHTML = contenuOriginal;
-      btnTelechargerPdf.disabled = false;
+      setTimeout(() => {
+        btnTelechargerPdf.innerHTML = contenuOriginal;
+        btnTelechargerPdf.disabled = false;
+      }, 800);
     }
   }
 
@@ -133,12 +99,63 @@
     cont.innerHTML = items.map((q) => '<p>' + echapper(q) + '</p>').join('');
   }
 
+  const PROJETS_PAR_DEFAUT = [
+    {
+      titre: "Stamux — Internship OS",
+      type: "PROFESSIONNEL",
+      technologies: "Laravel 12 · Sanctum · DomPDF · React · MySQL",
+      description: "Plateforme complète de gestion de stagiaires avec architecture multicouche (SOLID). Rôles Admin/Tuteur/Stagiaire, 68 routes API sécurisées, génération de conventions de stage en PDF.",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    },
+    {
+      titre: "Simulation Réseau Campus Multi-Sites",
+      type: "ACADEMIQUE",
+      technologies: "Cisco IOS · OSPF Multi-Area · VLANs 802.1Q · ACLs",
+      description: "Architecture réseau campus simulant 3 bâtiments avec redondance de liens. Routage dynamique OSPF, segmentation en 4 VLANs, sécurisation par listes de contrôle d'accès (ACLs) et NAT/PAT.",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    },
+    {
+      titre: "RestoDirect — Commande & Livraison",
+      type: "PROFESSIONNEL",
+      technologies: "Next.js · Prisma · PostgreSQL · WebSockets · Tailwind",
+      description: "Application web temps réel de commande pour restaurants. Mises à jour en direct cuisine-livreur, géolocalisation Leaflet, paiement mobile et tableaux de bord analytics.",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    },
+    {
+      titre: "Plateforme Citoyenne VBG Bénin",
+      type: "PROFESSIONNEL",
+      technologies: "Node.js · Express · Chiffrement AES-256 · Leaflet",
+      description: "Système de signalement 100% anonyme et sécurisé contre les violences basées sur le genre. Chiffrement des dépositions, cartographie anonymisée des zones d'alerte et interface réactive.",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    },
+    {
+      titre: "Mémoire+ — Gestion Académique ENEAM",
+      type: "ACADEMIQUE",
+      technologies: "Laravel · React · MySQL · Workflow de Validation",
+      description: "Solution de dépôt, contrôle de conformité et archivage des mémoires de fin de cycle universitaire. Workflow à double validation tuteur/jury et moteur de recherche plein texte par filière.",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    },
+    {
+      titre: "Portfolio Cyberpunk & Lab Cybersécurité",
+      type: "PROFESSIONNEL",
+      technologies: "JavaScript ES6+ · Vercel Functions · JWT · CSRF HMAC",
+      description: "Vitrine d'ingénierie moderne sans framework lourd : terminal interactif Cisco, PWA hors-ligne, audit de sécurité OWASP (en-têtes stricts, CSP, validation cryptographique de tokens, zéro faille).",
+      lienSite: "https://portfolio-seven-delta-21jq5u35et.vercel.app/",
+      lienGithub: "https://github.com/hountondji-philippe"
+    }
+  ];
+
   function renderProjets(projets) {
     const cont = document.getElementById('cv-projets-grille');
     if (!cont) return;
-    if (!projets || !projets.length) return;
+    const items = (projets && projets.length >= 6) ? projets : PROJETS_PAR_DEFAUT;
 
-    cont.innerHTML = projets.map((p) => {
+    cont.innerHTML = items.map((p) => {
       const liens = [];
       if (p.lienSite) liens.push('<a href="' + echapper(p.lienSite) + '" target="_blank" rel="noopener">Démo</a>');
       if (p.lienGithub) liens.push('<a href="' + echapper(p.lienGithub) + '" target="_blank" rel="noopener">GitHub</a>');
@@ -150,7 +167,7 @@
         '</div>' +
         (p.technologies ? '<div class="techs-projet-cv">' + echapper(p.technologies) + '</div>' : '') +
         '<p class="desc-projet-cv">' + echapper(p.description) + '</p>' +
-        (liens.length ? '<div class="liens-projet-cv">' + liens.join('') + '</div>' : '') +
+        (liens.length ? '<div class="liens-projet-cv">' + liens.join(' • ') + '</div>' : '') +
         '</article>';
     }).join('');
   }

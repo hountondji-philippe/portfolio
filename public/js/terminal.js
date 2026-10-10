@@ -5,21 +5,18 @@
 window.switchTerminalTab = function(tabName) {
   const tBody        = document.getElementById('tBody');
   const tInteractive = document.getElementById('tInteractive');
-  const tIA          = document.getElementById('tIA');
   const tPhoto       = document.getElementById('tPhoto');
   const btnSys       = document.getElementById('btn-tab-sys');
   const btnInt       = document.getElementById('btn-tab-int');
-  const btnIA        = document.getElementById('btn-tab-ia');
   const btnPhoto     = document.getElementById('btn-tab-photo');
 
-  if (!tBody || !tInteractive || !tIA) return;
+  if (!tBody || !tInteractive) return;
 
   tBody.style.display        = 'none';
   tInteractive.style.display = 'none';
-  tIA.style.display          = 'none';
   if (tPhoto) tPhoto.style.display = 'none';
 
-  [btnSys, btnInt, btnIA, btnPhoto].forEach(b => b && b.classList.remove('active'));
+  [btnSys, btnInt, btnPhoto].forEach(b => b && b.classList.remove('active'));
 
   if (tabName === 'photo') {
     if (tPhoto) tPhoto.style.display = 'block';
@@ -34,22 +31,12 @@ window.switchTerminalTab = function(tabName) {
     if (input) setTimeout(() => input.focus(), 50);
     const out = document.getElementById('iOutput');
     if (out) out.scrollTop = out.scrollHeight;
-  } else if (tabName === 'ia') {
-    tIA.style.display = 'flex';
-    if (btnIA) btnIA.classList.add('active');
-    const input = document.getElementById('iaInput');
-    if (input) setTimeout(() => input.focus(), 50);
-    const out = document.getElementById('iaOutput');
-    if (out) out.scrollTop = out.scrollHeight;
   }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   const tInput   = document.getElementById('tInput');
   const iOutput  = document.getElementById('iOutput');
-  const iaInput  = document.getElementById('iaInput');
-  const iaOutput = document.getElementById('iaOutput');
-
   if (!tInput || !iOutput) return;
 
   const COLOR_MAP = {
@@ -339,39 +326,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         break;
     }
-  }
-
-  // Onglet IA
-  if (iaInput && iaOutput) {
-    tLog('iaOutput', 'Assistant IA Philippe Portfolio activé (Groq / LLaMA-3).', 'ok');
-    tLog('iaOutput', 'Posez-moi des questions sur les compétences de Philippe, ses projets ou son parcours.', 'dim');
-    tLog('iaOutput', '────────────────────────────────────────────────────────', 'dim');
-
-    iaInput.addEventListener('keydown', async (e) => {
-      if (e.key !== 'Enter') return;
-      const q = iaInput.value.trim();
-      iaInput.value = '';
-      if (!q) return;
-
-      tLog('iaOutput', `❯ ${q}`, 'bright');
-      const qLower = q.toLowerCase();
-
-      let answer = "";
-      if (qLower.includes('qui') || qLower.includes('philippe') || qLower.includes('profil')) {
-        answer = "Philippe Hountondji est un développeur full-stack (Laravel, React, Node.js, Flutter) et administrateur réseau étudiant en Licence 3 à l'ENEAM (UAC) au Bénin. Il allie compétences logicielles et maîtrise des infrastructures d'entreprise.";
-      } else if (qLower.includes('projet') || qLower.includes('vbg') || qLower.includes('nextmux')) {
-        answer = "Parmi ses réalisations phares : la plateforme citoyenne VBG Bénin (chiffrement AES-256 et cartographie), le moteur de multiplexage NEXTMUX (Laravel/MySQL), la simulation d'infrastructure campus multi-sites Cisco (OSPF & VLANs) et l'application temps réel RestoDirect.";
-      } else if (qLower.includes('reseau') || qLower.includes('cisco') || qLower.includes('ospf') || qLower.includes('vlan')) {
-        answer = "En réseau, Philippe maîtrise le CLI Cisco IOS, le routage dynamique OSPF/BGP, la segmentation VLAN 802.1Q, la haute disponibilité HSRP, la sécurité par pare-feu/ACLs et l'analyse de paquets Wireshark.";
-      } else if (qLower.includes('contact') || qLower.includes('recrut') || qLower.includes('stage') || qLower.includes('embauche')) {
-        answer = "Philippe est disponible immédiatement pour des opportunités de stage ou des projets clients. Vous pouvez lui écrire via le formulaire de contact, par email à hountondjiphilippe58@gmail.com ou par WhatsApp au +229 01 58 15 69 30.";
-      } else {
-        answer = `Merci pour votre question ! Philippe maîtrise un profil complet : architecture web full-stack, intégration d'APIs et administration de réseaux Cisco sécurisés. N'hésitez pas à explorer ses projets ou à le contacter directement.`;
-      }
-
-      setTimeout(() => {
-        tLog('iaOutput', answer, 'purple');
-      }, 300);
-    });
   }
 });

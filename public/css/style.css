@@ -94,9 +94,10 @@ header {
 }
 
 header.sc .ni {
-  background: rgba(10, 10, 11, .9);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(20px);
-  border-bottom-color: var(--bdr)
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--bdr);
 }
 
 .logo {
@@ -3374,14 +3375,15 @@ footer::before {
 .stbtn {
   position: fixed;
   bottom: 2rem;
-  left: 2rem;
-  width: 40px;
-  height: 40px;
+  right: 2rem;
+  left: auto;
+  width: 42px;
+  height: 42px;
   background: var(--bg2);
   border: 1px solid var(--bdr);
-  border-radius: var(--r1);
-  color: var(--txt2);
-  font-size: .8rem;
+  border-radius: var(--r2);
+  color: var(--txt);
+  font-size: .85rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3390,18 +3392,22 @@ footer::before {
   opacity: 0;
   transform: translateY(8px);
   transition: all .3s var(--ease);
-  z-index: 500
+  z-index: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .stbtn.show {
   opacity: 1;
-  transform: translateY(0)
+  transform: translateY(0);
 }
 
 .stbtn:hover {
-  color: var(--ac);
+  color: #fff;
   border-color: var(--ac);
-  background: var(--acd);
+  background: var(--ac);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
   transform: translateY(-2px)
 }
 
@@ -3578,7 +3584,7 @@ footer::before {
 @media(max-width:768px) {
   header {
     display: block;
-    background: rgba(10, 10, 11, 0.95);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--bdr);
@@ -3592,6 +3598,24 @@ footer::before {
   .mbn {
     display: flex;
     margin-left: auto;
+    width: 42px;
+    height: 42px;
+    background: var(--bg2);
+    border: 1px solid var(--bdr);
+    border-radius: var(--r2);
+    color: var(--txt);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all .2s ease;
+  }
+
+  .mbn:hover,
+  .mbn:active {
+    background: var(--bg3);
+    border-color: var(--ac);
+    color: var(--ac);
   }
 
   .nl {
@@ -3658,22 +3682,54 @@ footer::before {
   }
 
   .sbi {
-    gap: 1.5rem
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem 0.75rem !important;
+    text-align: center;
+    padding: 0 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .sbi .rv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sbn {
+    font-size: 1.65rem !important;
+  }
+
+  .sbl {
+    font-size: 0.72rem !important;
+    line-height: 1.3;
   }
 
   .sdv {
-    display: none
+    display: none;
+  }
+
+  .stbtn {
+    bottom: 1.25rem !important;
+    right: 1.25rem !important;
+    left: auto !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 0.8rem !important;
   }
 
   #about {
-    padding: 5rem 6px
+    padding: 4.5rem 1.25rem 3rem;
   }
 
   #tools,
   #expertise,
   #services,
-  #contact {
-    padding: 5rem 10px
+  #contact,
+  #projects {
+    padding: 4.5rem 1.25rem 3.5rem;
   }
 
   .expgrid {

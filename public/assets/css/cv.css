@@ -448,6 +448,39 @@ body {
 
 .carte-projet-cv .liens-projet-cv a:hover {
   text-decoration: underline;
+.titre-section-page2 {
+  font-family: var(--police-titres);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--bleu-cv);
+  margin: 12px 0 6px;
+  border-bottom: 1.5px solid var(--bleu-cv);
+  padding-bottom: 2px;
+}
+
+.cadre-competence-cv {
+  background: var(--couleur-theme-pastel);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 9px;
+  line-height: 1.5;
+  color: var(--texte-sombre);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cadre-competence-cv.cadre-gris-cv {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+
+.cadre-competence-cv strong {
+  color: var(--bleu-cv);
+  font-size: 9px;
 }
 
 .pied-page-cv {

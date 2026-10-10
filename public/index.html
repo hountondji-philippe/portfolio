@@ -159,8 +159,7 @@
             <div class="terminal-tabs">
               <button class="t-tab" id="btn-tab-photo" onclick="switchTerminalTab('photo')"><i class="fas fa-user-circle" style="margin-right:4px;"></i>Portrait</button>
               <button class="t-tab active" id="btn-tab-sys" onclick="switchTerminalTab('system')">Système</button>
-              <button class="t-tab" id="btn-tab-int" onclick="switchTerminalTab('interactive')">Interactif</button>
-              <button class="t-tab" id="btn-tab-ia" onclick="switchTerminalTab('ia')">IA</button>
+              <button class="t-tab" id="btn-tab-int" onclick="switchTerminalTab('interactive')">Console</button>
             </div>
             <div style="width: 42px; flex-shrink: 0; display:flex; justify-content:flex-end;">
               <a href="#tools" title="Voir toute la stack" style="color: var(--ac); font-size:0.85rem; text-decoration:none;"><i class="fas fa-layer-group"></i></a>
@@ -180,20 +179,12 @@
             </div>
           </div>
           <div class="tb" id="tBody" aria-hidden="true"></div>
-          <!-- INTERACTIVE TAB -->
+          <!-- CONSOLE / INTERACTIVE TAB -->
           <div class="tb-shell" id="tInteractive" style="display:none;">
             <div class="tb-output" id="iOutput"></div>
             <div class="tb-input-row">
               <span class="tb-prompt" style="color:var(--ac);">$</span>
               <input type="text" id="tInput" class="tb-cmd-input" autocomplete="off" spellcheck="false" placeholder="Tapez une commande (help, profil, cisco, vlan...)" />
-            </div>
-          </div>
-          <!-- IA TAB -->
-          <div class="tb-shell" id="tIA" style="display:none;">
-            <div class="tb-output" id="iaOutput"></div>
-            <div class="tb-input-row" style="border-top-color:rgba(168,85,247,0.2);">
-              <span class="tb-prompt" style="color:var(--ac);">❯</span>
-              <input type="text" id="iaInput" class="tb-cmd-input" autocomplete="off" spellcheck="false" placeholder="Posez une question sur le profil de Philippe…" />
             </div>
           </div>
         </div>
@@ -647,7 +638,7 @@
         </p>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
           <a href="cv.html" class="btn btn-p"><i class="fas fa-eye" style="margin-right:6px;"></i>Ouvrir le CV interactif</a>
-          <a href="cv.html?download=1" target="_blank" class="btn btn-s"><i class="fas fa-file-pdf" style="margin-right:6px;"></i>Télécharger le PDF</a>
+          <a href="assets/CV_Philippe_Hountondji.pdf" download="CV_Philippe_Hountondji.pdf" class="btn btn-s"><i class="fas fa-file-pdf" style="margin-right:6px;"></i>Télécharger le PDF</a>
           <a href="cv.html?print=1" target="_blank" class="btn btn-s"><i class="fas fa-print" style="margin-right:6px;"></i>Imprimer</a>
         </div>
       </div>
