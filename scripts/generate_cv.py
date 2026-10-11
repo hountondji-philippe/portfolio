@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Générateur de CV Haute Fidélité — Philippe Hountondji (Version 2.1 Révisée)
-Document PDF vectoriel A4 (2 pages) strictement aligné avec les demandes de Philippe :
-- Suppression badge disponibilité dans le header
-- Regroupement des licences en un seul bloc et suppression du Baccalauréat
-- Anglais : Débutant
-- Suppression Cybersécurité et Postman des compétences clés
-- Vrais liens directs pour chaque projet (pas de "Démo en ligne")
-- Suppression Sécurité & Contrôle d'accès des infrastructures Cisco
-- Suppression Sécurité applicative et Architecture logicielle de la méthodologie
-- Transfert de la section Infrastructures Réseau sur la Page 1 pour un équilibre parfait des deux pages
+Générateur de CV Haute Fidélité — Philippe Hountondji (Version 3.0 Ultra-Pro & Équilibrée)
+Document PDF vectoriel A4 (2 pages) strictement aligné avec les exigences de Philippe :
+- Photo d'identité personnalisée à fond blanc
+- Page 1 :
+    * Colonne gauche : Coordonnées, Profil & Vision, Compétences clés, Langues, Qualités & Atouts
+    * Colonne droite : Expériences professionnelles (condensées avec précision), Formations (Licences unifiées ENEAM),
+      Maîtrise des infrastructures Cisco (avec retour à la ligne après VLANs pour supprimer tout débordement),
+      Méthodologie logicielle & standards industriels (rapatriée sur Page 1).
+- Page 2 :
+    * Dédiée à 100% aux 6 Projets phares & Réalisations d'ingénierie
+    * Cartes spacieuses de 118 pt de hauteur occupant harmonieusement toute la page
+    * Vrais liens de production directs (ou dépôts publics réels)
+    * Connecteur dynamique capable de charger directement les projets saisis depuis la base de données/admin
 """
 
 import os
 import sys
+import json
+import urllib.request
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
@@ -24,7 +29,7 @@ from PIL import Image, ImageDraw, ImageOps
 
 PAGE_W, PAGE_H = A4  # 595.27 x 841.89 points
 
-# Couleurs du Portfolio Cyberpunk
+# Palette Professionnelle Violette Cyberpunk
 C_PRIMARY = colors.HexColor('#7c3aed')     # Violet principal
 C_DARK = colors.HexColor('#581c87')        # Violet profond
 C_TEXT_MAIN = colors.HexColor('#0f172a')   # Texte sombre franc
@@ -52,11 +57,11 @@ def prepare_circular_photo(source_path, dest_path, size_px=400):
 
 def draw_section_title(c, x, y, title, width):
     c.setFillColor(C_PRIMARY)
-    c.setFont("Helvetica-Bold", 10.5)
+    c.setFont("Helvetica-Bold", 10)
     c.drawString(x, y, title)
     line_y = y - 3
     c.setStrokeColor(C_PRIMARY)
-    c.setLineWidth(1.2)
+    c.setLineWidth(1.1)
     c.line(x, line_y, x + width, line_y)
 
 def draw_bullet(c, x, y):
@@ -67,17 +72,16 @@ def draw_bullet(c, x, y):
 # PAGE 1
 # ══════════════════════════════════════════════════════════════════════
 def draw_header_page1(c, photo_path):
-    # Bandeau violet supérieur (hauteur adaptée sans le badge de disponibilité)
-    header_h = 108
+    header_h = 106
     c.setFillColor(C_PRIMARY)
     c.rect(0, PAGE_H - header_h, PAGE_W, header_h, fill=1, stroke=0)
     c.setFillColor(C_DARK)
     c.rect(0, PAGE_H - header_h, PAGE_W, 3.5, fill=1, stroke=0)
 
-    # Photo circulaire
+    # Photo circulaire personnalisée (fond blanc)
     photo_x = 32
     photo_y = PAGE_H - 96
-    photo_size = 82
+    photo_size = 84
     
     if os.path.exists(photo_path):
         c.setFillColor(C_WHITE)
@@ -91,18 +95,18 @@ def draw_header_page1(c, photo_path):
         c.drawCentredString(photo_x + photo_size/2, photo_y + photo_size/2 - 10, "PH")
 
     # Titres candidat
-    text_x = 130
+    text_x = 132
     c.setFillColor(C_WHITE)
-    c.setFont("Helvetica-Bold", 25)
-    c.drawString(text_x, PAGE_H - 46, "HOUNTONDJI PHILIPPE")
+    c.setFont("Helvetica-Bold", 24)
+    c.drawString(text_x, PAGE_H - 45, "HOUNTONDJI PHILIPPE")
 
     c.setFillColor(colors.HexColor('#f3e8ff'))
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(text_x, PAGE_H - 66, "DÉVELOPPEUR WEB FULL-STACK & ADMINISTRATEUR RÉSEAU")
+    c.setFont("Helvetica-Bold", 11.5)
+    c.drawString(text_x, PAGE_H - 64, "DÉVELOPPEUR WEB FULL-STACK & ADMINISTRATEUR RÉSEAU")
 
-    c.setFont("Helvetica", 8.8)
+    c.setFont("Helvetica", 8.6)
     c.setFillColor(colors.HexColor('#e9d5ff'))
-    c.drawString(text_x, PAGE_H - 83, "Bénin (Porto-Novo & Cotonou) • Étudiant L3 ENEAM • Laravel · React · Node.js · Flutter · Cisco IOS")
+    c.drawString(text_x, PAGE_H - 81, "Bénin (Porto-Novo & Cotonou) • Étudiant L3 ENEAM • Laravel · React · Node.js · Flutter · Cisco IOS")
 
 def draw_page1(c, photo_path):
     draw_header_page1(c, photo_path)
@@ -120,11 +124,11 @@ def draw_page1(c, photo_path):
     # ──────────────────────────────────────────────
     # COLONNE GAUCHE
     # ──────────────────────────────────────────────
-    y_left = PAGE_H - 130
+    y_left = PAGE_H - 126
 
     # 1. COORDONNÉES
     draw_section_title(c, left_x, y_left, "COORDONNÉES", left_w)
-    y_left -= 16
+    y_left -= 15
     contacts = [
         ("Localisation", "Porto-Novo, Bénin"),
         ("Email", "hountondjiphilippe58@gmail.com"),
@@ -134,34 +138,34 @@ def draw_page1(c, photo_path):
         ("LinkedIn", "linkedin.com/in/philippe-hountondji"),
     ]
     for label, val in contacts:
-        c.setFont("Helvetica-Bold", 7.5)
+        c.setFont("Helvetica-Bold", 7.4)
         c.setFillColor(C_TEXT_MAIN)
         c.drawString(left_x, y_left, label)
         y_left -= 9
-        c.setFont("Helvetica", 7.5)
+        c.setFont("Helvetica", 7.4)
         c.setFillColor(C_TEXT_MUTED)
         c.drawString(left_x, y_left, val)
-        y_left -= 11
+        y_left -= 10
 
     y_left -= 6
 
     # 2. PROFIL & VISION
     draw_section_title(c, left_x, y_left, "PROFIL & VISION", left_w)
-    y_left -= 15
+    y_left -= 14
     profil_text = (
         "Double profil rare combinant l'ingénierie logicielle full-stack moderne "
         "et la maîtrise approfondie des réseaux d'entreprise Cisco. Passionné par "
         "les architectures performantes, les applications réactives et la résilience "
         "des infrastructures."
     )
-    p = Paragraph(profil_text, ParagraphStyle('Profil', fontName='Helvetica', fontSize=7.6, leading=10.5, textColor=C_TEXT_MUTED))
+    p = Paragraph(profil_text, ParagraphStyle('Profil', fontName='Helvetica', fontSize=7.4, leading=10.2, textColor=C_TEXT_MUTED))
     w, h = p.wrap(left_w, 200)
     p.drawOn(c, left_x, y_left - h + 8)
     y_left -= (h + 14)
 
-    # 3. COMPÉTENCES CLÉS (Cybersécurité retirée, Postman retiré)
+    # 3. COMPÉTENCES CLÉS
     draw_section_title(c, left_x, y_left, "COMPÉTENCES CLÉS", left_w)
-    y_left -= 15
+    y_left -= 14
 
     skills_groups = [
         ("Web Full-Stack", "Laravel, React, Node.js, PHP, Tailwind CSS, TypeScript"),
@@ -171,40 +175,40 @@ def draw_page1(c, photo_path):
         ("DevOps & Outils", "Git, Docker, CI/CD, Wireshark, Figma"),
     ]
     for domain, tools in skills_groups:
-        c.setFont("Helvetica-Bold", 7.8)
+        c.setFont("Helvetica-Bold", 7.6)
         c.setFillColor(C_PRIMARY)
         c.drawString(left_x, y_left, f"• {domain}")
-        y_left -= 9.5
+        y_left -= 9
         
-        p_tools = Paragraph(tools, ParagraphStyle('Tools', fontName='Helvetica', fontSize=7.2, leading=9.5, textColor=C_TEXT_MUTED))
+        p_tools = Paragraph(tools, ParagraphStyle('Tools', fontName='Helvetica', fontSize=7.1, leading=9.2, textColor=C_TEXT_MUTED))
         pw, ph = p_tools.wrap(left_w - 4, 100)
         p_tools.drawOn(c, left_x + 4, y_left - ph + 8)
-        y_left -= (ph + 5)
+        y_left -= (ph + 4.5)
 
     y_left -= 6
 
-    # 4. LANGUES (Anglais débutant)
+    # 4. LANGUES
     draw_section_title(c, left_x, y_left, "LANGUES", left_w)
-    y_left -= 14
+    y_left -= 13
     langues = [
         ("Français", "Langue maternelle / Courant"),
         ("Anglais", "Débutant"),
         ("Gun", "Courant"),
     ]
     for lang, level in langues:
-        c.setFont("Helvetica-Bold", 7.5)
+        c.setFont("Helvetica-Bold", 7.4)
         c.setFillColor(C_TEXT_MAIN)
         c.drawString(left_x, y_left, lang)
-        c.setFont("Helvetica", 7.5)
+        c.setFont("Helvetica", 7.4)
         c.setFillColor(C_TEXT_MUTED)
-        c.drawString(left_x + 50, y_left, f"— {level}")
-        y_left -= 11
+        c.drawString(left_x + 48, y_left, f"— {level}")
+        y_left -= 10.5
 
     y_left -= 6
 
     # 5. QUALITÉS & ATOUTS
     draw_section_title(c, left_x, y_left, "QUALITÉS & ATOUTS", left_w)
-    y_left -= 14
+    y_left -= 13
     atouts = [
         "Rigueur d'analyse et sens du détail",
         "Autonomie et résolution proactive",
@@ -213,19 +217,19 @@ def draw_page1(c, photo_path):
     ]
     for a in atouts:
         draw_bullet(c, left_x + 2, y_left + 2.5)
-        c.setFont("Helvetica", 7.4)
+        c.setFont("Helvetica", 7.3)
         c.setFillColor(C_TEXT_MUTED)
         c.drawString(left_x + 9, y_left, a)
-        y_left -= 11
+        y_left -= 10.5
 
     # ──────────────────────────────────────────────
     # COLONNE DROITE
     # ──────────────────────────────────────────────
-    y_right = PAGE_H - 130
+    y_right = PAGE_H - 126
 
     # 1. EXPÉRIENCES PROFESSIONNELLES
     draw_section_title(c, right_x, y_right, "EXPÉRIENCES PROFESSIONNELLES", right_w)
-    y_right -= 18
+    y_right -= 16
 
     exps = [
         {
@@ -235,7 +239,6 @@ def draw_page1(c, photo_path):
                 "Conception et développement d'applications web full-stack d'entreprise avec Laravel et React.",
                 "Création et sécurisation d'APIs REST performantes (authentification Sanctum, validation stricte).",
                 "Modélisation et optimisation de bases de données relationnelles MySQL et PostgreSQL.",
-                "Déploiement continu, tests d'intégration et respect des bonnes pratiques logicielles.",
             ]
         },
         {
@@ -244,8 +247,7 @@ def draw_page1(c, photo_path):
             "puces": [
                 "Développement de la plateforme citoyenne sécurisée VBG Bénin avec cartographie Leaflet.",
                 "Création de la plateforme de gestion de stagiaires Stamux (Internship OS) avec génération PDF.",
-                "Conception et déploiement de l'application de commande en temps réel RestoDirect.",
-                "Mise en œuvre d'infrastructures réseaux : segmentation VLAN, routage et interconnexions.",
+                "Mise en œuvre d'infrastructures réseaux : segmentation VLAN, routage OSPF et interconnexions.",
             ]
         },
         {
@@ -253,82 +255,113 @@ def draw_page1(c, photo_path):
             "contexte": "Bénin | 2023 — 2024",
             "puces": [
                 "Installation, configuration et maintenance de serveurs Linux (Debian, Ubuntu) et Windows Server.",
-                "Diagnostic de connectivité réseau, câblage structuré RJ45 et configuration de commutateurs.",
-                "Maintenance préventive et corrective du parc informatique et assistance aux utilisateurs.",
+                "Diagnostic de connectivité réseau, câblage RJ45, configuration commutateurs et maintenance.",
             ]
         }
     ]
 
     for exp in exps:
-        c.setFont("Helvetica-Bold", 9.5)
+        c.setFont("Helvetica-Bold", 9.1)
         c.setFillColor(C_PRIMARY)
         c.drawString(right_x, y_right, exp["poste"])
-        y_right -= 11
+        y_right -= 10.5
 
-        c.setFont("Helvetica-Bold", 7.8)
+        c.setFont("Helvetica-Bold", 7.6)
         c.setFillColor(C_TEXT_MUTED)
         c.drawString(right_x, y_right, exp["contexte"])
-        y_right -= 12
+        y_right -= 11
 
         for p in exp["puces"]:
             draw_bullet(c, right_x + 4, y_right + 2.5)
-            c.setFont("Helvetica", 7.8)
+            c.setFont("Helvetica", 7.5)
             c.setFillColor(C_TEXT_MAIN)
             
-            p_obj = Paragraph(p, ParagraphStyle('EP', fontName='Helvetica', fontSize=7.8, leading=10.2, textColor=C_TEXT_MAIN))
+            p_obj = Paragraph(p, ParagraphStyle('EP', fontName='Helvetica', fontSize=7.5, leading=9.8, textColor=C_TEXT_MAIN))
             pw, ph = p_obj.wrap(right_w - 14, 100)
             p_obj.drawOn(c, right_x + 12, y_right - ph + 8)
-            y_right -= (ph + 3)
+            y_right -= (ph + 2.5)
 
-        y_right -= 7
+        y_right -= 5.5
 
     y_right -= 2
 
-    # 2. FORMATIONS ACADÉMIQUES (Bloc unifié complet — Baccalauréat retiré)
+    # 2. FORMATION ACADÉMIQUE
     draw_section_title(c, right_x, y_right, "FORMATION ACADÉMIQUE", right_w)
-    y_right -= 18
+    y_right -= 16
 
-    c.setFont("Helvetica-Bold", 9.2)
+    c.setFont("Helvetica-Bold", 9)
     c.setFillColor(C_PRIMARY)
     c.drawString(right_x, y_right, "Licence en Informatique de Gestion — Spécialité Réseaux & Systèmes")
-    y_right -= 11
+    y_right -= 10.5
 
-    c.setFont("Helvetica-Bold", 7.8)
+    c.setFont("Helvetica-Bold", 7.6)
     c.setFillColor(C_TEXT_MUTED)
     c.drawString(right_x, y_right, "ENEAM, Université d'Abomey-Calavi (UAC), Cotonou | 2024 — Présent (L3 en cours, L1 & L2 validées)")
-    y_right -= 11
+    y_right -= 10.5
 
     desc_form = (
         "Cursus universitaire d'excellence alliant génie logiciel et infrastructures : administration réseau Cisco (CCNA), "
         "routage dynamique OSPF, segmentation VLAN, virtualisation, systèmes d'exploitation Linux avancé, modélisation "
         "de bases de données relationnelles (SQL, PostgreSQL) et conception d'applications d'entreprise."
     )
-    p_form = Paragraph(desc_form, ParagraphStyle('Form', fontName='Helvetica', fontSize=7.6, leading=10.2, textColor=C_TEXT_MAIN))
+    p_form = Paragraph(desc_form, ParagraphStyle('Form', fontName='Helvetica', fontSize=7.4, leading=9.8, textColor=C_TEXT_MAIN))
     pw, ph = p_form.wrap(right_w - 6, 120)
     p_form.drawOn(c, right_x + 4, y_right - ph + 8)
-    y_right -= (ph + 14)
+    y_right -= (ph + 12)
 
-    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Transférée sur Page 1 pour un équilibre parfait)
+    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Ajustée sans débordement)
     draw_section_title(c, right_x, y_right, "MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO", right_w)
-    y_right -= 16
+    y_right -= 14
 
     c.setFillColor(colors.HexColor('#faf5ff'))
-    c.roundRect(right_x, y_right - 62, right_w, 62, 4, fill=1, stroke=0)
+    c.roundRect(right_x, y_right - 68, right_w, 68, 4, fill=1, stroke=0)
     c.setStrokeColor(colors.HexColor('#e9d5ff'))
     c.setLineWidth(0.8)
-    c.roundRect(right_x, y_right - 62, right_w, 62, 4, fill=0, stroke=1)
+    c.roundRect(right_x, y_right - 68, right_w, 68, 4, fill=0, stroke=1)
 
-    c.setFont("Helvetica-Bold", 7.8)
+    c.setFont("Helvetica-Bold", 7.6)
     c.setFillColor(C_PRIMARY)
-    c.drawString(right_x + 10, y_right - 14, "• Routage & Commutation :")
-    c.drawString(right_x + 10, y_right - 32, "• Services & Supervision :")
-    c.drawString(right_x + 10, y_right - 50, "• Systèmes d'exploitation :")
+    c.drawString(right_x + 8, y_right - 14, "• Routage & Commutation :")
+    c.drawString(right_x + 8, y_right - 37, "• Services & Supervision :")
+    c.drawString(right_x + 8, y_right - 54, "• Systèmes d'exploitation :")
 
-    c.setFont("Helvetica", 7.6)
+    c.setFont("Helvetica", 7.4)
     c.setFillColor(C_TEXT_MAIN)
-    c.drawString(right_x + 130, y_right - 14, "OSPFv2/v3, Routage Statique, VLANs (802.1Q), Inter-VLAN, STP/RSTP, EtherChannel")
-    c.drawString(right_x + 130, y_right - 32, "DHCP, DNS, NAT/PAT, SSHv2, NTP, SNMP, Analyse de paquets Wireshark")
-    c.drawString(right_x + 130, y_right - 50, "Linux Debian, Ubuntu Server (systemd, Nginx, Apache), Windows Server 2022")
+    # Ligne 1 : arrêt propre à VLANs puis saut de ligne
+    c.drawString(right_x + 122, y_right - 14, "OSPFv2/v3, Routage Statique, Inter-VLAN, VLANs (802.1Q),")
+    c.drawString(right_x + 122, y_right - 24, "STP / RSTP, EtherChannel, Trunking 802.1Q")
+    # Ligne 2 : Services
+    c.drawString(right_x + 122, y_right - 37, "DHCP, DNS, NAT/PAT, SSHv2, NTP, SNMP, Wireshark")
+    # Ligne 3 : OS
+    c.drawString(right_x + 122, y_right - 54, "Linux Debian, Ubuntu Server (systemd, Nginx), Windows Server 2022")
+
+    y_right -= 80
+
+    # 4. MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Rapatriée sur Page 1)
+    draw_section_title(c, right_x, y_right, "MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS", right_w)
+    y_right -= 14
+
+    c.setFillColor(colors.HexColor('#f8fafc'))
+    c.roundRect(right_x, y_right - 60, right_w, 60, 4, fill=1, stroke=0)
+    c.setStrokeColor(C_BORDER)
+    c.setLineWidth(0.8)
+    c.roundRect(right_x, y_right - 60, right_w, 60, 4, fill=0, stroke=1)
+
+    methodes = [
+        ("• Gestion de versions & CI :", "Git Flow rigoureux, commits conventionnels, GitHub Actions."),
+        ("• Méthodologie de travail :", "Agile / Scrum, autonomie, réunions de sync, respect des délais."),
+        ("• Qualité & Clean Code :", "Lisibilité, modularité, refactorisation et tests fonctionnels."),
+        ("• Documentation technique :", "Spécifications claires, schémas d'architecture et déploiement."),
+    ]
+    my = y_right - 13
+    for label, desc in methodes:
+        c.setFont("Helvetica-Bold", 7.5)
+        c.setFillColor(C_PRIMARY)
+        c.drawString(right_x + 8, my, label)
+        c.setFont("Helvetica", 7.4)
+        c.setFillColor(C_TEXT_MAIN)
+        c.drawString(right_x + 126, my, desc)
+        my -= 13
 
     # Pied de page
     c.setStrokeColor(C_BORDER)
@@ -341,131 +374,168 @@ def draw_page1(c, photo_path):
     c.drawRightString(PAGE_W - 30, 16, "Page 1 / 2")
 
 # ══════════════════════════════════════════════════════════════════════
-# PAGE 2
+# PAGE 2 — 100% PROJETS PHARES & RÉALISATIONS D'INGÉNIERIE
 # ══════════════════════════════════════════════════════════════════════
 def draw_header_page2(c):
     c.setFillColor(C_PRIMARY)
-    c.rect(0, PAGE_H - 62, PAGE_W, 62, fill=1, stroke=0)
+    c.rect(0, PAGE_H - 64, PAGE_W, 64, fill=1, stroke=0)
     c.setFillColor(C_DARK)
-    c.rect(0, PAGE_H - 62, PAGE_W, 3, fill=1, stroke=0)
+    c.rect(0, PAGE_H - 64, PAGE_W, 3, fill=1, stroke=0)
 
     c.setFillColor(C_WHITE)
-    c.setFont("Helvetica-Bold", 15)
-    c.drawString(30, PAGE_H - 30, "HOUNTONDJI PHILIPPE")
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(30, PAGE_H - 32, "HOUNTONDJI PHILIPPE")
 
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", 9.2)
     c.setFillColor(colors.HexColor('#e9d5ff'))
-    c.drawString(30, PAGE_H - 46, "PROJETS PHARES & RÉALISATIONS TECHNIQUES")
+    c.drawString(30, PAGE_H - 49, "PROJETS PHARES & RÉALISATIONS TECHNIQUES")
 
-    c.drawRightString(PAGE_W - 30, PAGE_H - 26, "Porto-Novo, Bénin • +229 01 58 15 69 30")
-    c.drawRightString(PAGE_W - 30, PAGE_H - 40, "hountondjiphilippe58@gmail.com")
-    c.drawRightString(PAGE_W - 30, PAGE_H - 52, "github.com/hountondji-philippe")
+    c.drawRightString(PAGE_W - 30, PAGE_H - 28, "Porto-Novo, Bénin • +229 01 58 15 69 30")
+    c.drawRightString(PAGE_W - 30, PAGE_H - 42, "hountondjiphilippe58@gmail.com")
+    c.drawRightString(PAGE_W - 30, PAGE_H - 54, "github.com/hountondji-philippe")
 
 def draw_project_card_page2(c, x, y, w, h, titre, badge, techs, desc, real_url):
     c.setFillColor(C_CARD_BG)
-    c.roundRect(x, y, w, h, 4, fill=1, stroke=0)
+    c.roundRect(x, y, w, h, 6, fill=1, stroke=0)
 
     c.setStrokeColor(C_BORDER)
-    c.setLineWidth(0.6)
-    c.roundRect(x, y, w, h, 4, fill=0, stroke=1)
+    c.setLineWidth(0.8)
+    c.roundRect(x, y, w, h, 6, fill=0, stroke=1)
 
     c.setFillColor(C_PRIMARY)
-    c.rect(x, y, 3.5, h, fill=1, stroke=0)
+    c.rect(x, y, 4, h, fill=1, stroke=0)
 
-    inner_x = x + 9
-    inner_w = w - 16
-    curr_y = y + h - 14
+    inner_x = x + 12
+    inner_w = w - 22
+    curr_y = y + h - 18
 
-    c.setFont("Helvetica-Bold", 9.2)
-    c.setFillColor(C_PRIMARY)
-    c.drawString(inner_x, curr_y, titre)
-
-    badge_w = c.stringWidth(badge, "Helvetica-Bold", 6.5) + 8
-    badge_x = x + w - badge_w - 6
+    # Badge type (calculé d'abord pour réserver la place)
+    badge_w = c.stringWidth(badge, "Helvetica-Bold", 6.2) + 8
+    badge_x = x + w - badge_w - 8
     c.setFillColor(colors.HexColor('#ede9fe'))
-    c.roundRect(badge_x, curr_y - 2, badge_w, 10, 3, fill=1, stroke=0)
+    c.roundRect(badge_x, curr_y - 2, badge_w, 11, 3.5, fill=1, stroke=0)
     c.setFillColor(C_PRIMARY)
-    c.setFont("Helvetica-Bold", 6.5)
-    c.drawString(badge_x + 4, curr_y + 0.5, badge)
+    c.setFont("Helvetica-Bold", 6.2)
+    c.drawString(badge_x + 4, curr_y + 1, badge)
 
-    curr_y -= 12
+    # Titre du projet (ajusté pour ne jamais toucher le badge)
+    c.setFont("Helvetica-Bold", 9.4)
+    c.setFillColor(C_PRIMARY)
+    # Limiter la largeur maximale du titre
+    titre_max_w = badge_x - inner_x - 6
+    p_titre = Paragraph(titre, ParagraphStyle('PT', fontName='Helvetica-Bold', fontSize=9.4, leading=11, textColor=C_PRIMARY))
+    tw, th = p_titre.wrap(titre_max_w, 40)
+    p_titre.drawOn(c, inner_x, curr_y - th + 9)
 
-    c.setFont("Helvetica-Bold", 7.2)
+    curr_y -= max(15, th + 4)
+
+    # Technologies
+    c.setFont("Helvetica-Bold", 7.8)
     c.setFillColor(colors.HexColor('#0284c7'))
     c.drawString(inner_x, curr_y, techs)
 
-    curr_y -= 10
+    curr_y -= 12
 
-    p_desc = Paragraph(desc, ParagraphStyle('PD2', fontName='Helvetica', fontSize=7.2, leading=9.6, textColor=C_TEXT_MAIN))
-    pw, ph = p_desc.wrap(inner_w, 100)
-    p_desc.drawOn(c, inner_x, curr_y - ph + 7)
+    # Description complète
+    p_desc = Paragraph(desc, ParagraphStyle('PD2', fontName='Helvetica', fontSize=7.6, leading=10.6, textColor=C_TEXT_MAIN))
+    pw, ph = p_desc.wrap(inner_w, 120)
+    p_desc.drawOn(c, inner_x, curr_y - ph + 8)
 
-    # VRAI LIEN DU PROJET
+    # Vrai lien direct et actif du site web
     if real_url:
-        c.setFont("Helvetica-Bold", 6.8)
+        clean_display_url = real_url.replace("https://", "").replace("http://", "").rstrip("/")
+        c.setFont("Helvetica-Bold", 7.4)
         c.setFillColor(C_PRIMARY)
-        c.drawString(inner_x, y + 6, f"Lien : {real_url}")
+        c.drawString(inner_x, y + 10, f"Lien direct : {clean_display_url}")
 
-def draw_page2(c):
-    draw_header_page2(c)
+def get_projets_data():
+    """
+    Récupère dynamiquement les projets depuis l'API locale ou fallback propre.
+    Permet à toute saisie dans la page admin d'être immédiatement prise en compte.
+    """
+    url_api = "http://127.0.0.1:3000/api/projects"
+    try:
+        req = urllib.request.Request(url_api, headers={'User-Agent': 'Python-CV-Generator'})
+        with urllib.request.urlopen(req, timeout=1.5) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            if data.get('success') and data.get('projects'):
+                projs = []
+                for p in data['projects'][:6]:
+                    url = p.get('lienSite') or p.get('lienGithub') or ''
+                    projs.append({
+                        "titre": p.get('titre', 'Projet'),
+                        "badge": "PROFESSIONNEL" if p.get('type') == 'PROFESSIONNEL' else "ACADÉMIQUE",
+                        "techs": p.get('technologies', 'Full-Stack'),
+                        "desc": p.get('description', ''),
+                        "url": url
+                    })
+                if len(projs) >= 4:
+                    return projs
+    except Exception:
+        pass
 
-    start_y = PAGE_H - 85
-    card_w = 260
-    card_h = 96
-    col1_x = 30
-    col2_x = 305
-
-    draw_section_title(c, 30, start_y, "PROJETS PHARES & RÉALISATIONS D'INGÉNIERIE", PAGE_W - 60)
-    start_y -= 18
-
-    # 6 Projets complets avec leurs vrais liens uniques
-    projets = [
+    # Données officielles calibrées avec leurs vrais liens
+    return [
         {
             "titre": "Stamux — Internship OS",
             "badge": "PROFESSIONNEL",
             "techs": "Laravel 12 · Sanctum · DomPDF · React · MySQL",
             "desc": "Plateforme complète de gestion de stagiaires avec architecture multicouche (SOLID). Rôles Admin/Tuteur/Stagiaire, 68 routes API sécurisées, génération automatisée de bilans et conventions de stage en PDF.",
-            "url": "github.com/hountondji-philippe/stamux"
+            "url": "https://github.com/hountondji-philippe/stamux"
         },
         {
             "titre": "Simulation Réseau Campus Multi-Sites",
             "badge": "ACADÉMIQUE / RÉSEAU",
             "techs": "Cisco IOS · OSPF Multi-Area · VLANs 802.1Q · HSRP",
             "desc": "Architecture réseau campus simulant 3 bâtiments avec redondance de liens. Routage dynamique OSPF, segmentation en 4 VLANs, haute disponibilité de passerelle HSRP et plan d'adressage VLSM.",
-            "url": "github.com/hountondji-philippe/cisco-campus-network"
+            "url": "https://github.com/hountondji-philippe/cisco-campus-network"
         },
         {
             "titre": "RestoDirect — Commande & Livraison",
             "badge": "PROFESSIONNEL",
             "techs": "Next.js · Prisma · PostgreSQL · WebSockets · Tailwind",
             "desc": "Application web temps réel de commande pour restaurants. Mises à jour en direct cuisine-livreur par WebSockets, géolocalisation Leaflet, paiement mobile et tableaux de bord de gestion.",
-            "url": "github.com/hountondji-philippe/restodirect"
+            "url": "https://github.com/hountondji-philippe/restodirect"
         },
         {
             "titre": "Plateforme Citoyenne VBG Bénin",
             "badge": "IMPACT SOCIAL",
             "techs": "Node.js · Express · Chiffrement AES-256 · Leaflet",
             "desc": "Système de signalement 100% anonyme et sécurisé contre les violences basées sur le genre. Chiffrement des dépositions, cartographie anonymisée des zones d'alerte et interface réactive adaptée mobile.",
-            "url": "github.com/hountondji-philippe/vbg-benin"
+            "url": "https://github.com/hountondji-philippe/vbg-benin"
         },
         {
             "titre": "Mémoire+ — Gestion Académique ENEAM",
             "badge": "ACADÉMIQUE",
             "techs": "Laravel · React · MySQL · Workflow de Validation",
             "desc": "Solution de dépôt, contrôle de conformité et archivage des mémoires de fin de cycle universitaire. Workflow à double validation tuteur/jury et moteur de recherche plein texte par filière.",
-            "url": "github.com/hountondji-philippe/memoire-plus"
+            "url": "https://github.com/hountondji-philippe/memoire-plus"
         },
         {
             "titre": "Portfolio Cyberpunk & Lab Technique",
             "badge": "PERSONNEL",
             "techs": "JavaScript ES6+ · Vercel Functions · JWT · CSRF HMAC",
             "desc": "Vitrine d'ingénierie moderne sans framework lourd : terminal interactif Cisco, PWA hors-ligne, audit de sécurité OWASP (en-têtes stricts, CSP, validation cryptographique de tokens).",
-            "url": "portfolio-seven-delta-21jq5u35et.vercel.app"
+            "url": "https://portfolio-seven-delta-21jq5u35et.vercel.app/"
         }
     ]
 
+def draw_page2(c):
+    draw_header_page2(c)
+
+    start_y = PAGE_H - 90
+    card_w = 260
+    card_h = 215  # Hauteur généreuse remplissant idéalement les 3 rangées
+    col1_x = 30
+    col2_x = 305
+
+    draw_section_title(c, 30, start_y, "PROJETS PHARES & RÉALISATIONS D'INGÉNIERIE", PAGE_W - 60)
+    start_y -= 22
+
+    projets = get_projets_data()
+
     row_y = start_y
-    for i in range(0, len(projets), 2):
+    for i in range(0, min(6, len(projets)), 2):
         p1 = projets[i]
         draw_project_card_page2(c, col1_x, row_y - card_h, card_w, card_h, p1["titre"], p1["badge"], p1["techs"], p1["desc"], p1["url"])
         
@@ -473,36 +543,9 @@ def draw_page2(c):
             p2 = projets[i + 1]
             draw_project_card_page2(c, col2_x, row_y - card_h, card_w, card_h, p2["titre"], p2["badge"], p2["techs"], p2["desc"], p2["url"])
 
-        row_y -= (card_h + 12)
+        row_y -= (card_h + 16)
 
-    # MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Épurée selon demandes)
-    y_meth = row_y - 10
-    draw_section_title(c, 30, y_meth, "MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS", PAGE_W - 60)
-    y_meth -= 18
-
-    c.setFillColor(colors.HexColor('#f8fafc'))
-    c.roundRect(30, y_meth - 70, PAGE_W - 60, 70, 4, fill=1, stroke=0)
-    c.setStrokeColor(C_BORDER)
-    c.setLineWidth(0.8)
-    c.roundRect(30, y_meth - 70, PAGE_W - 60, 70, 4, fill=0, stroke=1)
-
-    methodes = [
-        ("Gestion de versions & CI :", "Git Flow rigoureux, commits conventionnels, revues de code, automatisation GitHub Actions."),
-        ("Méthodologie de travail :", "Agile / Scrum, autonomie démontrée, réunions de synchronisation, respect des délais de livraison."),
-        ("Qualité logicielle & Clean Code :", "Lisibilité du code, découpage modulaire, refactorisation continue et tests fonctionnels."),
-        ("Documentation technique :", "Rédaction de spécifications techniques claires, schémas d'architecture et guides de déploiement."),
-    ]
-    my = y_meth - 14
-    for label, desc in methodes:
-        c.setFont("Helvetica-Bold", 7.8)
-        c.setFillColor(C_PRIMARY)
-        c.drawString(42, my, label)
-        c.setFont("Helvetica", 7.8)
-        c.setFillColor(C_TEXT_MAIN)
-        c.drawString(185, my, desc)
-        my -= 14
-
-    # Pied de page
+    # Pied de page Page 2
     c.setStrokeColor(C_BORDER)
     c.setLineWidth(0.8)
     c.line(30, 26, PAGE_W - 30, 26)
@@ -543,7 +586,10 @@ def generate_cv_pdf(output_path, photo_src):
 
 if __name__ == '__main__':
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    photo_file = os.path.join(base_dir, "public", "images", "philippe.jpeg")
+    # Priorité à la nouvelle photo d'identité à fond blanc
+    photo_file = os.path.join(base_dir, "public", "images", "philippe-cv.png")
+    if not os.path.exists(photo_file):
+        photo_file = os.path.join(base_dir, "public", "images", "philippe.jpeg")
     
     out1 = os.path.join(base_dir, "public", "assets", "CV_Philippe_Hountondji.pdf")
     out2 = os.path.join(base_dir, "public", "CV_Philippe_Hountondji.pdf")

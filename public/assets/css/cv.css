@@ -371,31 +371,33 @@ body {
 }
 
 .corps-page2 {
-  padding: 14px 30px 25px;
+  padding: 18px 30px 30px;
   box-sizing: border-box;
 }
 
 .grille-projets-cv {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 16px;
+  gap: 16px 20px;
 }
 
 .carte-projet-cv {
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
-  border-left: 3.5px solid var(--bleu-cv);
-  border-radius: 6px;
-  padding: 8px 10px;
+  border-left: 4px solid var(--bleu-cv);
+  border-radius: 8px;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: space-between;
+  gap: 8px;
   box-sizing: border-box;
+  min-height: 195px;
 }
 
 .carte-projet-cv .titre-projet-cv {
   font-family: var(--police-titres);
-  font-size: 12.5px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--bleu-cv);
   display: flex;
@@ -420,22 +422,22 @@ body {
 }
 
 .carte-projet-cv .techs-projet-cv {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   color: #0284C7;
   font-family: 'JetBrains Mono', monospace;
 }
 
 .carte-projet-cv .desc-projet-cv {
-  font-size: 9px;
-  line-height: 1.32;
+  font-size: 9.5px;
+  line-height: 1.45;
   color: #334155;
   margin-top: 1px;
 }
 
 .carte-projet-cv .liens-projet-cv {
-  font-size: 8.5px;
-  margin-top: 2px;
+  font-size: 9px;
+  margin-top: 4px;
   display: flex;
   gap: 8px;
 }

@@ -153,16 +153,18 @@
   function renderProjets(projets) {
     const cont = document.getElementById('cv-projets-grille');
     if (!cont) return;
-    const items = (projets && projets.length >= 6) ? projets : PROJETS_PAR_DEFAUT;
+    const items = (projets && projets.length > 0) ? projets.slice(0, 6) : PROJETS_PAR_DEFAUT;
 
     cont.innerHTML = items.map((p) => {
-      const urlAffichee = p.url || (p.lienGithub ? p.lienGithub.replace('https://', '') : (p.lienSite ? p.lienSite.replace('https://', '') : ''));
-      const lienHref = p.lienGithub || p.lienSite || ('https://' + urlAffichee);
+      // Priorité absolue au vrai site web direct (lienSite), puis GitHub ou URL saisie
+      const lienBrut = p.lienSite || p.lienGithub || p.url || '';
+      let urlAffichee = lienBrut.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+      const lienHref = lienBrut.startsWith('http') ? lienBrut : ('https://' + lienBrut);
 
       return '<article class="carte-projet-cv">' +
         '<div class="titre-projet-cv">' +
         '<span>' + echapper(p.titre) + '</span>' +
-        '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type) + '</span>' +
+        '<span class="badge-type-projet">' + echapper(LABELS_TYPE_PROJET[p.type] || p.type || 'PROJET') + '</span>' +
         '</div>' +
         (p.technologies ? '<div class="techs-projet-cv">' + echapper(p.technologies) + '</div>' : '') +
         '<p class="desc-projet-cv">' + echapper(p.description) + '</p>' +

@@ -1045,24 +1045,24 @@ section {
 }
 
 .stitle {
-  font-size: clamp(1.9rem, 4vw, 2.85rem);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 800;
-  letter-spacing: -.03em;
-  line-height: 1.15;
+  letter-spacing: -.025em;
+  line-height: 1.2;
   color: var(--txt);
-  margin-bottom: 1rem
+  margin-bottom: 0.85rem;
 }
 
 .stitle span {
-  color: var(--ac)
+  color: var(--ac);
 }
 
 .slead {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 400;
   color: var(--txt2);
-  max-width: 520px;
-  line-height: 1.75
+  max-width: 540px;
+  line-height: 1.7;
 }
 
 /* STATS CARD */
@@ -3837,26 +3837,17 @@ footer::before {
     transition: transform .3s
   }
 
-  .form-toggle.open .form-toggle-icon {
-    transform: rotate(180deg)
-  }
-
   .ctform {
-    display: none;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .3s ease-out
-  }
-
-  .ctform.open {
-    display: block;
-    max-height: 1500px; /* Augmenté pour être sûr */
-    opacity: 1;
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    padding: 1.5rem 1.25rem;
     margin-top: 1rem;
   }
 
-  .form-hint-mobile {
-    display: block
+  .form-toggle {
+    display: none !important;
   }
 
   .footer-inner {
