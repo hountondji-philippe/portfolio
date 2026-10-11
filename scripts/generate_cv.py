@@ -43,12 +43,22 @@ def prepare_circular_photo(source_path, dest_path, size_px=400):
         if not os.path.exists(source_path):
             return False
         img = Image.open(source_path).convert("RGBA")
-        img = ImageOps.fit(img, (size_px, size_px), Image.Resampling.LANCZOS)
+        w, h = img.size
+        # Si image large/paysage (comme 494x282), découper le carré centré sur le buste et le visage
+        side = min(w, h)
+        left = (w - side) // 2
+        top = 0
+        cropped = img.crop((left, top, left + side, top + side))
+        cropped = cropped.resize((size_px, size_px), Image.Resampling.LANCZOS)
+
+        # Créer le masque circulaire
         mask = Image.new("L", (size_px, size_px), 0)
         draw = ImageDraw.Draw(mask)
         draw.ellipse((0, 0, size_px, size_px), fill=255)
-        output = Image.new("RGBA", (size_px, size_px), (0, 0, 0, 0))
-        output.paste(img, (0, 0), mask=mask)
+
+        # Fond blanc pour sublimer la découpe
+        output = Image.new("RGBA", (size_px, size_px), (255, 255, 255, 255))
+        output.paste(cropped, (0, 0), mask=mask)
         output.save(dest_path, format="PNG")
         return True
     except Exception as e:
@@ -441,12 +451,13 @@ def draw_project_card_page2(c, x, y, w, h, titre, badge, techs, desc, real_url):
     pw, ph = p_desc.wrap(inner_w, 120)
     p_desc.drawOn(c, inner_x, curr_y - ph + 8)
 
-    # Vrai lien direct et actif du site web
+    # Vrai lien direct et actif du site web (placé immédiatement sous la description)
     if real_url:
         clean_display_url = real_url.replace("https://", "").replace("http://", "").rstrip("/")
+        link_y = curr_y - ph - 4
         c.setFont("Helvetica-Bold", 7.4)
         c.setFillColor(C_PRIMARY)
-        c.drawString(inner_x, y + 10, f"Lien direct : {clean_display_url}")
+        c.drawString(inner_x, link_y, f"Lien direct : {clean_display_url}")
 
 def get_projets_data():
     """
@@ -525,12 +536,12 @@ def draw_page2(c):
 
     start_y = PAGE_H - 90
     card_w = 260
-    card_h = 215  # Hauteur généreuse remplissant idéalement les 3 rangées
+    card_h = 114  # Hauteur parfaitement proportionnée au contenu textuel + lien
     col1_x = 30
     col2_x = 305
 
     draw_section_title(c, 30, start_y, "PROJETS PHARES & RÉALISATIONS D'INGÉNIERIE", PAGE_W - 60)
-    start_y -= 22
+    start_y -= 20
 
     projets = get_projets_data()
 
@@ -543,7 +554,7 @@ def draw_page2(c):
             p2 = projets[i + 1]
             draw_project_card_page2(c, col2_x, row_y - card_h, card_w, card_h, p2["titre"], p2["badge"], p2["techs"], p2["desc"], p2["url"])
 
-        row_y -= (card_h + 16)
+        row_y -= (card_h + 14)
 
     # Pied de page Page 2
     c.setStrokeColor(C_BORDER)

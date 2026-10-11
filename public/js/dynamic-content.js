@@ -134,11 +134,23 @@ async function chargerProjets() {
     if (!success || !projects || !projects.length) return;
 
     const delays = ['d1','d2','d3','d4','d5','d6'];
+    function resoudreImageProjet(p) {
+      if (p.imageUrl && !p.imageUrl.includes('acceuil') && !p.imageUrl.includes('image-9')) return p.imageUrl;
+      const t = (p.titre || '').toLowerCase();
+      if (t.includes('vbg')) return 'images/vbg-benin.jpg';
+      if (t.includes('stamu')) return 'images/stamux.jpg';
+      if (t.includes('cisco') || t.includes('campus') || t.includes('réseau')) return 'images/cisco-campus.jpg';
+      if (t.includes('resto')) return 'images/restodirect.jpg';
+      if (t.includes('nextmux') || t.includes('multiplex')) return 'images/nextmux.jpg';
+      if (t.includes('mémoire') || t.includes('memoire')) return 'images/memoire-plus.jpg';
+      return 'images/restodirect.jpg';
+    }
+
     grid.innerHTML = projects.slice(0, 6).map((p, i) => {
       const statut = STATUTS[p.statut] || p.statut || 'Terminé';
       const sClass = p.statut === 'EN_COURS' ? 'en-cours' : p.statut === 'PREVU' ? 'prevu' : 'terminé';
       const techs  = p.technologies ? p.technologies.split(',').map(t=>t.trim()).filter(Boolean) : [];
-      const imageSrc = p.imageUrl || 'images/acceuil.jpeg';
+      const imageSrc = resoudreImageProjet(p);
 
       return `
         <div class="project-card-new rv ${delays[i]||''}" tabindex="0" role="article" aria-label="${p.titre}">
