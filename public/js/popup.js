@@ -7,7 +7,7 @@ const projectData = {
     title: 'Plateforme Citoyenne VBG Bénin',
     slogan: 'Système sécurisé de signalement chiffré',
     status: 'terminé',
-    image: 'images/VBG.png',
+    image: 'images/vbg-benin.jpg',
     description: "Architecture résiliente et hautement confidentielle dédiée à la collecte et au traitement sécurisé des signalements. Chiffrement de bout en bout des données sensibles, cartographie interactive et tableaux de bord de suivi pour les intervenants.",
     whatItDoes: `<div class="popup-detail-section">
       <h3><i class="fas fa-rocket"></i> Architecture & Fonctionnalités</h3>
@@ -37,7 +37,7 @@ const projectData = {
     title: 'NEXTMUX — Moteur de Multiplexage',
     slogan: 'Architecture de traitement et routage de flux',
     status: 'production',
-    image: 'images/apropos.jpeg',
+    image: 'images/nextmux.jpg',
     description: "Moteur backend haute performance conçu pour le routage, la transformation et la synchronisation continue de données multi-sources. Authentification JWT, files d'attente asynchrones et monitoring proactif.",
     whatItDoes: `<div class="popup-detail-section">
       <h3><i class="fas fa-rocket"></i> Conception Backend</h3>
@@ -65,7 +65,7 @@ const projectData = {
     title: 'Architecture Campus Multi-Sites Cisco',
     slogan: 'Routage dynamique OSPF, segmentation VLAN & haute disponibilité',
     status: 'terminé',
-    image: 'images/projets-3.jpeg',
+    image: 'images/cisco-campus.jpg',
     description: "Déploiement complet d'une topologie réseau d'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage par listes de contrôle d'accès (ACL).",
     whatItDoes: `<div class="popup-detail-section">
       <h3><i class="fas fa-network-wired"></i> Spécifications de l'infrastructure</h3>
@@ -94,7 +94,7 @@ const projectData = {
     title: 'RestoDirect — SaaS Temps Réel',
     slogan: 'Gestion réactive de commandes & flux WebSocket',
     status: 'terminé',
-    image: 'images/acceuil.jpeg',
+    image: 'images/restodirect.jpg',
     description: "Plateforme web réactive pour la gestion de commandes en restauration : synchronisation bidirectionnelle en temps réel par WebSockets, tableau de bord interactif des cuisines et gestion optimisée des stocks.",
     whatItDoes: `<div class="popup-detail-section">
       <h3><i class="fas fa-bolt"></i> Fonctionnalités Temps Réel</h3>
