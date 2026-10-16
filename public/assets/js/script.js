@@ -403,7 +403,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Déploiement complet d\'une topologie d\'entreprise sous Cisco IOS : routage dynamique OSPF multi-aires, segmentation 802.1Q par département, redondance de passerelle HSRP et filtrage par listes de contrôle d\'accès (ACL).',
       statut: 'TERMINE',
       technologies: 'Cisco IOS, OSPF, VLAN 802.1Q, HSRP, ACLs, Wireshark',
-      imageUrl: 'images/projets-3.jpeg',
+      imageUrl: 'images/cisco-campus.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     },
@@ -412,7 +412,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Analyse et conception complète d\'un système d\'information de gestion selon la méthode MERISE (MCD, MLD, MPD) et implémentation sur base relationnelle PostgreSQL avec contraintes d\'intégrité strictes.',
       statut: 'TERMINE',
       technologies: 'PostgreSQL, MERISE, Modélisation UML, SQL Avancé, Triggers',
-      imageUrl: 'images/apropos.jpeg',
+      imageUrl: 'images/memoire-plus.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     },
@@ -421,7 +421,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Analyse approfondie du trafic réseau via Wireshark, simulation d\'attaques (ARP spoofing, scans de ports) et mise en place de contre-mesures de durcissement sur serveurs Linux Debian/Ubuntu.',
       statut: 'TERMINE',
       technologies: 'Wireshark, Linux Debian, Nmap, TCP/IP, Durcissement',
-      imageUrl: 'images/projets-3.jpeg',
+      imageUrl: 'images/cisco-campus.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     }
@@ -432,7 +432,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Plateforme citoyenne à haute exigence de confidentialité pour la collecte et le traitement sécurisé des signalements. Chiffrement de bout en bout des données sensibles et tableaux de bord pour les intervenants.',
       statut: 'TERMINE',
       technologies: 'Laravel 11, AES-256, PostgreSQL, Leaflet Maps, Tailwind CSS',
-      imageUrl: 'images/VBG.png',
+      imageUrl: 'images/vbg-benin.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     },
@@ -441,7 +441,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Architecture backend haute performance pour le routage, la transformation et la synchronisation de données multi-sources. Authentification JWT, files d\'attente asynchrones et monitoring en temps réel.',
       statut: 'TERMINE',
       technologies: 'Laravel 11, PHP 8.2, MySQL, REST API, JWT, Redis',
-      imageUrl: 'images/apropos.jpeg',
+      imageUrl: 'images/nextmux.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     },
@@ -450,7 +450,7 @@ const PROJETS_DEFAUT_FALLBACK = {
       description: 'Système SaaS réactif pour la restauration et les services de livraison : suivi bidirectionnel en temps réel via WebSockets, gestion des stocks synchronisée et tableaux de bord interactifs.',
       statut: 'TERMINE',
       technologies: 'React.js, Node.js, Socket.io, PostgreSQL, Express',
-      imageUrl: 'images/acceuil.jpeg',
+      imageUrl: 'images/restodirect.jpg',
       lienSite: '',
       lienGithub: 'https://github.com/hountondji-philippe'
     }
