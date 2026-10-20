@@ -44,11 +44,24 @@ def prepare_circular_photo(source_path, dest_path, size_px=400):
             return False
         img = Image.open(source_path).convert("RGBA")
         w, h = img.size
-        # Si image large/paysage (comme 494x282), découper le carré centré sur le buste et le visage
-        side = min(w, h)
-        left = (w - side) // 2
-        top = 0
-        cropped = img.crop((left, top, left + side, top + side))
+
+        # Pour l'image paysage (494×282), recadrage précis visage + épaules
+        # Crop 250×250 centré horizontalement, top=5 pour cadrer le visage sans trop d'espace vide
+        if w > h:
+            # Image paysage : crop ciblé sur le visage
+            crop_size = min(250, h - 5)
+            left = (w - crop_size) // 2
+            top = 5
+            # S'assurer que le crop ne dépasse pas les limites
+            left = max(0, min(left, w - crop_size))
+            top_crop = max(0, min(top, h - crop_size))
+            cropped = img.crop((left, top_crop, left + crop_size, top_crop + crop_size))
+        else:
+            # Image portrait : crop simple centré
+            side = min(w, h)
+            left = (w - side) // 2
+            cropped = img.crop((left, 0, left + side, side))
+
         cropped = cropped.resize((size_px, size_px), Image.Resampling.LANCZOS)
 
         # Créer le masque circulaire
@@ -56,7 +69,7 @@ def prepare_circular_photo(source_path, dest_path, size_px=400):
         draw = ImageDraw.Draw(mask)
         draw.ellipse((0, 0, size_px, size_px), fill=255)
 
-        # Fond blanc pour sublimer la découpe
+        # Fond blanc propre
         output = Image.new("RGBA", (size_px, size_px), (255, 255, 255, 255))
         output.paste(cropped, (0, 0), mask=mask)
         output.save(dest_path, format="PNG")
@@ -485,51 +498,52 @@ def get_projets_data():
     except Exception:
         pass
 
-    # Données officielles calibrées avec leurs vrais liens
+    # Données officielles calibrées avec leurs vrais liens (vérifiés depuis l'API)
     return [
         {
             "titre": "Stamux — Internship OS",
             "badge": "PROFESSIONNEL",
             "techs": "Laravel 12 · Sanctum · DomPDF · React · MySQL",
             "desc": "Plateforme complète de gestion de stagiaires avec architecture multicouche (SOLID). Rôles Admin/Tuteur/Stagiaire, 68 routes API sécurisées, génération automatisée de bilans et conventions de stage en PDF.",
-            "url": "https://github.com/hountondji-philippe/stamux"
+            "url": "https://stamux.vercel.app"
         },
         {
             "titre": "Simulation Réseau Campus Multi-Sites",
             "badge": "ACADÉMIQUE / RÉSEAU",
             "techs": "Cisco IOS · OSPF Multi-Area · VLANs 802.1Q · HSRP",
             "desc": "Architecture réseau campus simulant 3 bâtiments avec redondance de liens. Routage dynamique OSPF, segmentation en 4 VLANs, haute disponibilité de passerelle HSRP et plan d'adressage VLSM.",
-            "url": "https://github.com/hountondji-philippe/cisco-campus-network"
+            "url": "https://github.com/hountondji-philippe"
         },
         {
             "titre": "RestoDirect — Commande & Livraison",
             "badge": "PROFESSIONNEL",
             "techs": "Next.js · Prisma · PostgreSQL · WebSockets · Tailwind",
             "desc": "Application web temps réel de commande pour restaurants. Mises à jour en direct cuisine-livreur par WebSockets, géolocalisation Leaflet, paiement mobile et tableaux de bord de gestion.",
-            "url": "https://github.com/hountondji-philippe/restodirect"
+            "url": "https://restodirect-web.vercel.app"
         },
         {
             "titre": "Plateforme Citoyenne VBG Bénin",
             "badge": "IMPACT SOCIAL",
             "techs": "Node.js · Express · Chiffrement AES-256 · Leaflet",
             "desc": "Système de signalement 100% anonyme et sécurisé contre les violences basées sur le genre. Chiffrement des dépositions, cartographie anonymisée des zones d'alerte et interface réactive adaptée mobile.",
-            "url": "https://github.com/hountondji-philippe/vbg-benin"
+            "url": "https://vbg-benin.netlify.app"
         },
         {
             "titre": "Mémoire+ — Gestion Académique ENEAM",
             "badge": "ACADÉMIQUE",
             "techs": "Laravel · React · MySQL · Workflow de Validation",
             "desc": "Solution de dépôt, contrôle de conformité et archivage des mémoires de fin de cycle universitaire. Workflow à double validation tuteur/jury et moteur de recherche plein texte par filière.",
-            "url": "https://github.com/hountondji-philippe/memoire-plus"
+            "url": "https://stage-taupe-nine.vercel.app"
         },
         {
             "titre": "Portfolio Cyberpunk & Lab Technique",
             "badge": "PERSONNEL",
             "techs": "JavaScript ES6+ · Vercel Functions · JWT · CSRF HMAC",
             "desc": "Vitrine d'ingénierie moderne sans framework lourd : terminal interactif Cisco, PWA hors-ligne, audit de sécurité OWASP (en-têtes stricts, CSP, validation cryptographique de tokens).",
-            "url": "https://portfolio-seven-delta-21jq5u35et.vercel.app/"
+            "url": "https://portfolio-seven-delta-21jq5u35et.vercel.app"
         }
     ]
+
 
 def draw_page2(c):
     draw_header_page2(c)
