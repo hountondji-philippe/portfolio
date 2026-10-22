@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Générateur de CV Haute Fidélité — Philippe Hountondji
-Version Perfectionnée — Conforme aux exigences strictes de Philippe :
-1. PHILIPPE HOUNTONDJI sur UNE SEULE LIGNE en haut
-2. Photo d'identité parfaitement CENTRÉE (visage + buste, tête au centre du cercle avec espace naturel)
-3. Bannière bleu profond Canva (#003478) uniquement en haut, AUCUN texte en couleur dans le corps
-4. Cartes projets compactes et équilibrées, bloc "démarche d'ingénierie" supprimé sur la Page 2
-5. Zéro débordement de texte : marges de sécurité rigoureuses (>30 pt) sur chaque bloc et encadré
+Version Finale Épurée & Professionnelle :
+1. PHILIPPE HOUNTONDJI sur UNE SEULE LIGNE dans la bannière supérieure
+2. Bannière supérieure bleu profond (#003478) pleine largeur et épurée (suppression du cadre blanc bizarre derrière la photo)
+3. Photo d'identité circulaire propre avec anneau blanc net, parfaitement intégrée dans l'en-tête
+4. AUCUN texte coloré dans le corps : typographie suisse sobre (noir profond & gris neutres)
+5. Page 2 : 6 cartes projets compactes, suppression totale du bloc "démarche environnementale / ingénierie"
+6. Zéro débordement de texte : marges de sécurité rigoureuses (>30 pt)
 """
 
 import os
@@ -26,7 +27,7 @@ PAGE_W, PAGE_H = A4  # 595.27 x 841.89 points
 # ══════════════════════════════════════════════════════════════════════
 # COULEURS CANVA & CORPS STRICTEMENT NEUTRE
 # ══════════════════════════════════════════════════════════════════════
-C_CANVA_BLUE = colors.HexColor('#003478')   # Bleu royal profond Canva (haut & contour arche)
+C_CANVA_BLUE = colors.HexColor('#003478')   # Bleu royal profond Canva (bannière supérieure)
 C_WHITE      = colors.white
 
 # Corps du document : AUCUN TEXTE COLORÉ (noir profond & gris neutres)
@@ -67,7 +68,7 @@ def prepare_circular_photo(source_path, dest_path, size_px=500):
         draw = ImageDraw.Draw(mask)
         draw.ellipse((0, 0, size_px, size_px), fill=255)
 
-        output = Image.new("RGBA", (size_px, size_px), (255, 255, 255, 255))
+        output = Image.new("RGBA", (size_px, size_px), (0, 0, 0, 0))
         output.paste(cropped, (0, 0), mask=mask)
         output.save(dest_path, format="PNG")
         return True
@@ -90,81 +91,76 @@ def draw_bullet(c, x, y):
 
 
 # ══════════════════════════════════════════════════════════════════════
-# PAGE 1 — MODÈLE CANVA (ARCHE & NOM SUR UNE SEULE LIGNE)
+# PAGE 1 — MODÈLE ÉPURÉ (BANNIÈRE PLEINE SANS CADRE BLANC DERRIÈRE)
 # ══════════════════════════════════════════════════════════════════════
 def draw_page1(c, photo_path):
-    # Bannière supérieure : hauteur optimisée pour nom sur une seule ligne
-    header_h = 138
+    # Bannière supérieure bleu profond pleine largeur (hauteur 114 pt)
+    header_h = 114
 
-    # 1. Bannière bleue supérieure
+    # 1. Bannière bleue supérieure pleine et nette
     c.setFillColor(C_CANVA_BLUE)
     c.rect(0, PAGE_H - header_h, PAGE_W, header_h, fill=1, stroke=0)
 
-    # 2. Arche de la colonne gauche
-    arch_x = 32
-    arch_w = 160
-    arch_rx = arch_x + arch_w
-    arch_top = PAGE_H - 18
-    arch_r = arch_w / 2.0  # 80 pt
-    arch_cx = arch_x + arch_r  # 112 pt
-    arch_cy = arch_top - arch_r  # PAGE_H - 98 pt
-    arch_bot = 40  # Descend proprement vers le bas de page
-
-    p = c.beginPath()
-    p.moveTo(arch_x, arch_bot)
-    p.lineTo(arch_x, arch_cy)
-    p.arc(arch_x, arch_cy - arch_r, arch_rx, arch_cy + arch_r, 180, -180)
-    p.lineTo(arch_rx, arch_bot)
-    p.lineTo(arch_x, arch_bot)
-    p.close()
-
-    # Fond blanc pur + contour bleu Canva 2 pt
-    c.setFillColor(C_WHITE)
-    c.setStrokeColor(C_CANVA_BLUE)
-    c.setLineWidth(2.0)
-    c.drawPath(p, fill=1, stroke=1)
-
-    # 3. PHOTO CENTRÉE DANS LE SOMMET DE L'ARCHE (avec marge élégante tout autour)
-    photo_size = 136
-    photo_x = arch_cx - photo_size / 2.0
-    photo_y = arch_cy - photo_size / 2.0
+    # 2. PHOTO CIRCULAIRE PROPREMENT INTÉGRÉE DANS L'EN-TÊTE BLEU (SANS AUCUN CADRE BLANC DERRIÈRE)
+    photo_size = 88
+    photo_cx = 76
+    photo_cy = PAGE_H - (header_h / 2.0)
+    photo_x = photo_cx - photo_size / 2.0
+    photo_y = photo_cy - photo_size / 2.0
 
     if os.path.exists(photo_path):
-        # Liseré blanc propre autour de la photo
-        c.setFillColor(C_WHITE)
-        c.circle(arch_cx, arch_cy, (photo_size / 2.0) + 1.5, fill=1, stroke=0)
+        # Clip circulaire vectoriel absolu pour garantir zéro coin ni cadre
+        c.saveState()
+        clip_p = c.beginPath()
+        clip_p.circle(photo_cx, photo_cy, photo_size / 2.0)
+        c.clipPath(clip_p, stroke=0, fill=0)
         c.drawImage(photo_path, photo_x, photo_y, width=photo_size, height=photo_size, mask='auto')
-        # Fin contour neutre pour délimiter la photo discrètement
-        c.setStrokeColor(C_BORDER)
-        c.setLineWidth(0.8)
-        c.circle(arch_cx, arch_cy, photo_size / 2.0, fill=0, stroke=1)
+        c.restoreState()
+
+        # Fin contour blanc net (1.2 pt) pour délimiter le portrait du fond bleu
+        c.setStrokeColor(colors.HexColor('#ffffff'))
+        c.setLineWidth(1.2)
+        c.circle(photo_cx, photo_cy, photo_size / 2.0, fill=0, stroke=1)
     else:
-        c.setFillColor(colors.HexColor('#e2e8f0'))
-        c.circle(arch_cx, arch_cy, photo_size / 2.0, fill=1, stroke=0)
-        c.setFillColor(C_CANVA_BLUE)
-        c.setFont("Helvetica-Bold", 36)
-        c.drawCentredString(arch_cx, arch_cy - 12, "PH")
+        c.setFillColor(colors.HexColor('#1e40af'))
+        c.circle(photo_cx, photo_cy, photo_size / 2.0, fill=1, stroke=0)
+        c.setFillColor(C_WHITE)
+        c.setFont("Helvetica-Bold", 32)
+        c.drawCentredString(photo_cx, photo_cy - 11, "PH")
 
-    # 4. EN-TÊTE DROITE : NOM ENTIER SUR UNE SEULE LIGNE
-    text_x = arch_rx + 22
+    # 3. EN-TÊTE DROITE : NOM ENTIER SUR UNE SEULE LIGNE
+    text_x = 138
     c.setFillColor(C_WHITE)
-    c.setFont("Helvetica-Bold", 20)
-    c.drawString(text_x, PAGE_H - 58, "PHILIPPE HOUNTONDJI")
+    c.setFont("Helvetica-Bold", 22)
+    c.drawString(text_x, PAGE_H - 45, "PHILIPPE HOUNTONDJI")
 
-    c.setFont("Helvetica-Bold", 9.8)
+    c.setFont("Helvetica-Bold", 10.5)
     c.setFillColor(colors.HexColor('#e0e7ff'))
-    c.drawString(text_x, PAGE_H - 77, "DÉVELOPPEUR FULL-STACK & ADMINISTRATEUR RÉSEAU")
+    c.drawString(text_x, PAGE_H - 66, "DÉVELOPPEUR FULL-STACK & ADMINISTRATEUR RÉSEAU")
 
-    c.setFont("Helvetica", 8.2)
+    c.setFont("Helvetica", 8.4)
     c.setFillColor(colors.HexColor('#cbd5e1'))
-    c.drawString(text_x, PAGE_H - 93, "Porto-Novo & Cotonou, Bénin • Étudiant L3 ENEAM • +229 01 58 15 69 30")
+    c.drawString(text_x, PAGE_H - 84, "Porto-Novo & Cotonou, Bénin • Étudiant L3 ENEAM • +229 01 58 15 69 30 • hountondjiphilippe58@gmail.com")
 
     # ──────────────────────────────────────────────
-    # COLONNE GAUCHE (Intérieur de l'arche blanche)
+    # COLONNE GAUCHE (Cadre neutre élégant)
     # ──────────────────────────────────────────────
-    left_pad_x = arch_x + 12
-    left_inner_w = arch_w - 24
-    y_left = photo_y - 18
+    col_gauche_x = 32
+    col_gauche_w = 162
+    col_gauche_bot = 40
+    col_gauche_top = PAGE_H - header_h - 14
+    col_gauche_h = col_gauche_top - col_gauche_bot
+
+    # Cadre élégant de la colonne gauche
+    c.setFillColor(C_WHITE)
+    c.roundRect(col_gauche_x, col_gauche_bot, col_gauche_w, col_gauche_h, 8, fill=1, stroke=0)
+    c.setStrokeColor(C_BORDER)
+    c.setLineWidth(0.8)
+    c.roundRect(col_gauche_x, col_gauche_bot, col_gauche_w, col_gauche_h, 8, fill=0, stroke=1)
+
+    left_pad_x = col_gauche_x + 12
+    left_inner_w = col_gauche_w - 24
+    y_left = col_gauche_top - 18
 
     # 1. COORDONNÉES
     draw_section_title(c, left_pad_x, y_left, "COORDONNÉES")
@@ -187,7 +183,7 @@ def draw_page1(c, photo_path):
         c.drawString(left_pad_x, y_left, val)
         y_left -= 10.5
 
-    y_left -= 6
+    y_left -= 8
 
     # 2. PROFIL & VISION
     draw_section_title(c, left_pad_x, y_left, "PROFIL & VISION")
@@ -200,7 +196,7 @@ def draw_page1(c, photo_path):
     p_prof = Paragraph(profil_text, ParagraphStyle('Prof', fontName='Helvetica', fontSize=7.3, leading=10.2, textColor=C_TEXT_BODY))
     pw, ph = p_prof.wrap(left_inner_w, 140)
     p_prof.drawOn(c, left_pad_x, y_left - ph + 7)
-    y_left -= (ph + 15)
+    y_left -= (ph + 18)
 
     # 3. LANGUES
     draw_section_title(c, left_pad_x, y_left, "LANGUES")
@@ -219,7 +215,7 @@ def draw_page1(c, photo_path):
         c.drawString(left_pad_x + 52, y_left, f"— {level}")
         y_left -= 11
 
-    y_left -= 6
+    y_left -= 8
 
     # 4. COMPÉTENCES CLÉS
     draw_section_title(c, left_pad_x, y_left, "COMPÉTENCES CLÉS")
@@ -240,9 +236,9 @@ def draw_page1(c, photo_path):
         p_tools = Paragraph(tools, ParagraphStyle('Tools', fontName='Helvetica', fontSize=7.1, leading=9.2, textColor=C_TEXT_MUTED))
         pw, ph = p_tools.wrap(left_inner_w - 4, 80)
         p_tools.drawOn(c, left_pad_x + 4, y_left - ph + 7)
-        y_left -= (ph + 4.5)
+        y_left -= (ph + 5)
 
-    y_left -= 6
+    y_left -= 8
 
     # 5. QUALITÉS & ATOUTS
     draw_section_title(c, left_pad_x, y_left, "QUALITÉS & ATOUTS")
@@ -263,9 +259,9 @@ def draw_page1(c, photo_path):
     # ──────────────────────────────────────────────
     # COLONNE DROITE (Fond blanc, typographie noire stricte)
     # ──────────────────────────────────────────────
-    right_x = text_x
+    right_x = col_gauche_x + col_gauche_w + 22
     right_w = PAGE_W - right_x - 32
-    y_right = PAGE_H - header_h - 18
+    y_right = col_gauche_top - 4
 
     # 1. EXPÉRIENCES PROFESSIONNELLES
     draw_section_title(c, right_x, y_right, "EXPÉRIENCES PROFESSIONNELLES")
@@ -320,7 +316,7 @@ def draw_page1(c, photo_path):
 
         y_right -= 6
 
-    y_right -= 4
+    y_right -= 6
 
     # 2. FORMATION ACADÉMIQUE
     draw_section_title(c, right_x, y_right, "FORMATION ACADÉMIQUE")
@@ -344,9 +340,9 @@ def draw_page1(c, photo_path):
     p_form = Paragraph(desc_form, ParagraphStyle('Form', fontName='Helvetica', fontSize=7.4, leading=10.0, textColor=C_TEXT_BODY))
     pw, ph = p_form.wrap(right_w - 6, 90)
     p_form.drawOn(c, right_x + 2, y_right - ph + 7)
-    y_right -= (ph + 16)
+    y_right -= (ph + 18)
 
-    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Calibrée avec >30 pt de marge à droite)
+    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Calibrée sans débordement : >30 pt de marge à droite)
     draw_section_title(c, right_x, y_right, "MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO")
     y_right -= 15
 
@@ -370,9 +366,9 @@ def draw_page1(c, photo_path):
     c.drawString(right_x + 120, y_right - 40, "DHCP, DNS, NAT/PAT, SSHv2, NTP, SNMP, Wireshark")
     c.drawString(right_x + 120, y_right - 60, "Linux Debian, Ubuntu Server, Windows Server 2022")
 
-    y_right -= (cisco_h + 16)
+    y_right -= (cisco_h + 18)
 
-    # 4. MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Calibrée avec >30 pt de marge à droite)
+    # 4. MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Calibrée sans débordement : >30 pt de marge à droite)
     draw_section_title(c, right_x, y_right, "MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS")
     y_right -= 15
 
@@ -411,7 +407,7 @@ def draw_page1(c, photo_path):
 
 
 # ══════════════════════════════════════════════════════════════════════
-# PAGE 2 — PROJETS PHARES (CARTES COMPACTES SANS BLOC EN TROP)
+# PAGE 2 — PROJETS PHARES (CARTES COMPACTES SANS AUCUN BLOC EN TROP)
 # ══════════════════════════════════════════════════════════════════════
 def draw_header_page2(c):
     header_h = 60
@@ -433,7 +429,7 @@ def draw_header_page2(c):
 
 def draw_project_card_compact(c, x, y, w, h, titre, badge, techs, desc, real_url):
     """
-    Carte projet compacte, équilibrée (hauteur 118 pt) pour un rendu net et non surchargé.
+    Carte projet compacte, équilibrée (hauteur 120 pt) pour un rendu net et non surchargé.
     """
     c.setFillColor(C_CARD_BG)
     c.roundRect(x, y, w, h, 6, fill=1, stroke=0)
@@ -586,7 +582,7 @@ def draw_page2(c):
 
         row_y -= (card_h + 18)
 
-    # Pied de page Page 2
+    # Pied de page Page 2 (aucun encadré supplémentaire en dessous)
     c.setStrokeColor(C_BORDER)
     c.setLineWidth(0.8)
     c.line(32, 26, PAGE_W - 32, 26)
