@@ -4,10 +4,10 @@
 Générateur de CV Haute Fidélité — Philippe Hountondji
 Version Perfectionnée — Conforme aux exigences strictes de Philippe :
 1. PHILIPPE HOUNTONDJI sur UNE SEULE LIGNE en haut
-2. Photo d'identité cadrée serrée (visage + buste) qui REMPLIT la zone réservée au sommet de l'arche
+2. Photo d'identité parfaitement CENTRÉE (visage + buste, tête au centre du cercle avec espace naturel)
 3. Bannière bleu profond Canva (#003478) uniquement en haut, AUCUN texte en couleur dans le corps
-4. Cartes projets à taille compacte et élégante (non surdimensionnées) avec vrais liens de production
-5. Zéro débordement de texte : marges de sécurité rigoureuses (>25 pt) sur chaque bloc et encadré
+4. Cartes projets compactes et équilibrées, bloc "démarche d'ingénierie" supprimé sur la Page 2
+5. Zéro débordement de texte : marges de sécurité rigoureuses (>30 pt) sur chaque bloc et encadré
 """
 
 import os
@@ -26,7 +26,7 @@ PAGE_W, PAGE_H = A4  # 595.27 x 841.89 points
 # ══════════════════════════════════════════════════════════════════════
 # COULEURS CANVA & CORPS STRICTEMENT NEUTRE
 # ══════════════════════════════════════════════════════════════════════
-C_CANVA_BLUE = colors.HexColor('#003478')   # Bleu royal profond Canva (haut & arche)
+C_CANVA_BLUE = colors.HexColor('#003478')   # Bleu royal profond Canva (haut & contour arche)
 C_WHITE      = colors.white
 
 # Corps du document : AUCUN TEXTE COLORÉ (noir profond & gris neutres)
@@ -40,8 +40,9 @@ C_BOX_BG     = colors.HexColor('#f8fafc')   # Fond gris très clair pour encadr�
 
 def prepare_circular_photo(source_path, dest_path, size_px=500):
     """
-    Cadre serré centré sur le visage et les épaules de Philippe
-    pour que la photo REMPLISSE pleinement le cercle sans vide blanc superflu.
+    Cadre centré harmonieusement sur le visage de Philippe (tête centrée avec espace au-dessus
+    et buste équilibré), exactement comme sur le modèle Canva.
+    Bbox tête réelle : x in [194, 292], y in [34, 173], centre tête: (243, 103).
     """
     try:
         if not os.path.exists(source_path):
@@ -49,13 +50,12 @@ def prepare_circular_photo(source_path, dest_path, size_px=500):
         img = Image.open(source_path).convert("RGBA")
         w, h = img.size
 
-        # Cadrage serré sur le visage et le buste (bbox x:[108,368], y:[34,281])
+        # Cadrage centré sur la tête et le haut des épaules
         if w > h:
-            crop_size = min(225, h - 10)
-            cx, cy = 238, 142
-            left = max(0, min(cx - crop_size // 2, w - crop_size))
-            top = max(0, min(cy - crop_size // 2, h - crop_size))
-            cropped = img.crop((left, top, left + crop_size, top + crop_size))
+            side = 210
+            top = 14
+            left = 138
+            cropped = img.crop((left, top, left + side, top + side))
         else:
             side = min(w, h)
             left = (w - side) // 2
@@ -90,7 +90,7 @@ def draw_bullet(c, x, y):
 
 
 # ══════════════════════════════════════════════════════════════════════
-# PAGE 1 — MODÈLE CANVA (ARCHE PLEINE & NOM SUR UNE LIGNE)
+# PAGE 1 — MODÈLE CANVA (ARCHE & NOM SUR UNE SEULE LIGNE)
 # ══════════════════════════════════════════════════════════════════════
 def draw_page1(c, photo_path):
     # Bannière supérieure : hauteur optimisée pour nom sur une seule ligne
@@ -106,7 +106,8 @@ def draw_page1(c, photo_path):
     arch_rx = arch_x + arch_w
     arch_top = PAGE_H - 18
     arch_r = arch_w / 2.0  # 80 pt
-    arch_cy = arch_top - arch_r  # 743.89
+    arch_cx = arch_x + arch_r  # 112 pt
+    arch_cy = arch_top - arch_r  # PAGE_H - 98 pt
     arch_bot = 40  # Descend proprement vers le bas de page
 
     p = c.beginPath()
@@ -123,23 +124,26 @@ def draw_page1(c, photo_path):
     c.setLineWidth(2.0)
     c.drawPath(p, fill=1, stroke=1)
 
-    # 3. PHOTO QUI REMPLIT LA ZONE RÉSERVÉE DU SOMMET DE L'ARCHE
-    photo_size = arch_w - 4
-    photo_x = arch_x + 2
+    # 3. PHOTO CENTRÉE DANS LE SOMMET DE L'ARCHE (avec marge élégante tout autour)
+    photo_size = 136
+    photo_x = arch_cx - photo_size / 2.0
     photo_y = arch_cy - photo_size / 2.0
 
     if os.path.exists(photo_path):
-        # Image circulaire plein cadre
+        # Liseré blanc propre autour de la photo
+        c.setFillColor(C_WHITE)
+        c.circle(arch_cx, arch_cy, (photo_size / 2.0) + 1.5, fill=1, stroke=0)
         c.drawImage(photo_path, photo_x, photo_y, width=photo_size, height=photo_size, mask='auto')
-        c.setStrokeColor(C_CANVA_BLUE)
-        c.setLineWidth(1.2)
-        c.circle(arch_x + arch_w/2.0, arch_cy, photo_size/2.0, fill=0, stroke=1)
+        # Fin contour neutre pour délimiter la photo discrètement
+        c.setStrokeColor(C_BORDER)
+        c.setLineWidth(0.8)
+        c.circle(arch_cx, arch_cy, photo_size / 2.0, fill=0, stroke=1)
     else:
         c.setFillColor(colors.HexColor('#e2e8f0'))
-        c.circle(arch_x + arch_w/2.0, arch_cy, photo_size/2.0, fill=1, stroke=0)
+        c.circle(arch_cx, arch_cy, photo_size / 2.0, fill=1, stroke=0)
         c.setFillColor(C_CANVA_BLUE)
         c.setFont("Helvetica-Bold", 36)
-        c.drawCentredString(arch_x + arch_w/2.0, arch_cy - 12, "PH")
+        c.drawCentredString(arch_cx, arch_cy - 12, "PH")
 
     # 4. EN-TÊTE DROITE : NOM ENTIER SUR UNE SEULE LIGNE
     text_x = arch_rx + 22
@@ -160,7 +164,7 @@ def draw_page1(c, photo_path):
     # ──────────────────────────────────────────────
     left_pad_x = arch_x + 12
     left_inner_w = arch_w - 24
-    y_left = photo_y - 20
+    y_left = photo_y - 18
 
     # 1. COORDONNÉES
     draw_section_title(c, left_pad_x, y_left, "COORDONNÉES")
@@ -342,7 +346,7 @@ def draw_page1(c, photo_path):
     p_form.drawOn(c, right_x + 2, y_right - ph + 7)
     y_right -= (ph + 16)
 
-    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Calibrée sans débordement : >30 pt de marge à droite)
+    # 3. MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO (Calibrée avec >30 pt de marge à droite)
     draw_section_title(c, right_x, y_right, "MAÎTRISE DES INFRASTRUCTURES RÉSEAU CISCO")
     y_right -= 15
 
@@ -368,7 +372,7 @@ def draw_page1(c, photo_path):
 
     y_right -= (cisco_h + 16)
 
-    # 4. MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Calibrée sans débordement : >30 pt de marge à droite)
+    # 4. MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS (Calibrée avec >30 pt de marge à droite)
     draw_section_title(c, right_x, y_right, "MÉTHODOLOGIE LOGICIELLE & STANDARDS INDUSTRIELS")
     y_right -= 15
 
@@ -407,7 +411,7 @@ def draw_page1(c, photo_path):
 
 
 # ══════════════════════════════════════════════════════════════════════
-# PAGE 2 — PROJETS PHARES (CARTES COMPACTES & ÉLÉGANTES)
+# PAGE 2 — PROJETS PHARES (CARTES COMPACTES SANS BLOC EN TROP)
 # ══════════════════════════════════════════════════════════════════════
 def draw_header_page2(c):
     header_h = 60
@@ -429,7 +433,7 @@ def draw_header_page2(c):
 
 def draw_project_card_compact(c, x, y, w, h, titre, badge, techs, desc, real_url):
     """
-    Carte projet compacte, équilibrée (hauteur 114 pt) pour un rendu net et non surchargé.
+    Carte projet compacte, équilibrée (hauteur 118 pt) pour un rendu net et non surchargé.
     """
     c.setFillColor(C_CARD_BG)
     c.roundRect(x, y, w, h, 6, fill=1, stroke=0)
@@ -471,7 +475,7 @@ def draw_project_card_compact(c, x, y, w, h, titre, badge, techs, desc, real_url
 
     # Description complète
     p_desc = Paragraph(desc, ParagraphStyle('PD2', fontName='Helvetica', fontSize=7.3, leading=10.2, textColor=C_TEXT_BODY))
-    pw, ph = p_desc.wrap(inner_w, 60)
+    pw, ph = p_desc.wrap(inner_w, 65)
     p_desc.drawOn(c, inner_x, curr_y - ph + 8)
 
     # Vrai lien direct et actif du site web
@@ -560,12 +564,12 @@ def draw_page2(c):
 
     start_y = PAGE_H - 85
     card_w = 258
-    card_h = 114  # Hauteur compacte et équilibrée demandée par Philippe
+    card_h = 120  # Hauteur compacte et élégante
     col1_x = 32
     col2_x = 305
 
     draw_section_title(c, 32, start_y, "PROJETS PHARES & RÉALISATIONS D'INGÉNIERIE")
-    start_y -= 18
+    start_y -= 22
 
     projets = get_projets_data()
 
@@ -580,26 +584,7 @@ def draw_page2(c):
             draw_project_card_compact(c, col2_x, row_y - card_h, card_w, card_h, 
                                       p2["titre"], p2["badge"], p2["techs"], p2["desc"], p2["url"])
 
-        row_y -= (card_h + 15)
-
-    # Bloc de synthèse méthodologique sous les 6 projets pour combler l'espace harmonieusement
-    synth_y = row_y - 12
-    synth_h = 75
-    c.setFillColor(C_BOX_BG)
-    c.roundRect(32, synth_y - synth_h, PAGE_W - 64, synth_h, 6, fill=1, stroke=0)
-    c.setStrokeColor(C_BORDER)
-    c.setLineWidth(0.8)
-    c.roundRect(32, synth_y - synth_h, PAGE_W - 64, synth_h, 6, fill=0, stroke=1)
-
-    c.setFont("Helvetica-Bold", 8.8)
-    c.setFillColor(C_TEXT_BLACK)
-    c.drawString(44, synth_y - 16, "DÉMARCHE D'INGÉNIERIE & ENVIRONNEMENT TECHNIQUE")
-
-    c.setFont("Helvetica", 7.4)
-    c.setFillColor(C_TEXT_BODY)
-    c.drawString(44, synth_y - 32, "• Architecture & Conception : Modélisation Merise/UML, principes SOLID, design patterns RESTful, séparation stricte des couches.")
-    c.drawString(44, synth_y - 46, "• Sécurité & Audit : Validation stricte des entrées, protection contre failles OWASP Top 10 (CSRF, XSS, Injections SQL, JWT sécurisés).")
-    c.drawString(44, synth_y - 60, "• Déploiement & Cloud : Intégration continue GitHub Actions, hébergement Vercel / Netlify, conteneurisation Docker, bases PostgreSQL Neon.")
+        row_y -= (card_h + 18)
 
     # Pied de page Page 2
     c.setStrokeColor(C_BORDER)
